@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>START TO UNDERSTAND ME</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f5f5;color:#222}
+.wrap{max-width:850px;margin:auto;padding:22px 16px 40px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 3px 14px rgba(0,0,0,.08)}
+h1,h2{margin-top:0}.muted{color:#666;line-height:1.5}.progress{height:8px;background:#ddd;border-radius:8px;overflow:hidden;margin:18px 0 24px}.bar{height:100%;background:#222;width:0}
+.statement{display:grid;grid-template-columns:1fr 160px;gap:14px;align-items:center;border-bottom:1px solid #eee;padding:18px 0}
+.statement:last-child{border-bottom:0}.text{line-height:1.45}.controls{display:flex;justify-content:center;align-items:center;gap:12px}
+.ctrl{width:40px;height:40px;border:1px solid #ccc;border-radius:9px;background:#f3f3f3;font-size:22px;cursor:pointer}.count{min-width:24px;text-align:center;font-weight:700;font-size:20px}
+button.main{background:#222;color:#fff;border:0;border-radius:10px;padding:13px 22px;font-size:16px;cursor:pointer}
+button.secondary{background:#eee;color:#222;border:0;border-radius:10px;padding:13px 22px;font-size:16px;cursor:pointer}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}.status{text-align:center;color:#666;margin-top:12px;font-size:14px}.error{color:#a40020;text-align:center;margin-top:10px;min-height:20px}
+.hidden{display:none}.intro p{line-height:1.6}.badge{display:inline-block;background:#eee;border-radius:999px;padding:6px 10px;font-size:13px}
+@media(max-width:600px){.statement{grid-template-columns:1fr 145px}.wrap{padding:14px 10px 30px}.card{padding:18px}.text{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="card intro" id="intro">
+<h1>START TO UNDERSTAND ME</h1>
+<p class="muted">For each group of four statements, you have <strong>three checks</strong> to distribute freely.</p>
+<p class="muted">You can put all three on one statement, split them 2+1, or use 1+1+1. You must use exactly three checks in each group.</p>
+<button class="main" id="start">Start</button>
+</section>
+
+<section class="card hidden" id="test">
+<div id="part"></div><div id="group" class="badge"></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div id="statements"></div>
+<div class="status" id="status"></div><div class="error" id="error"></div>
+<div class="nav"><button class="secondary" id="back">Back</button><button class="main" id="next">Next</button></div>
+</section>
+
+<section class="card hidden" id="done">
+<h2>Thank you</h2><p class="muted">You have completed the test.</p>
+<p class="muted">Your answers are stored in this browser session. This version does not send them to a server.</p>
+<button class="secondary" id="restart">Start again</button>
+</section>
+</div>
+
+<script>
+const groups=[
+[
+["Bring in new ideas.","Contribute to getting things done.","Make sure things are done properly.","Make sure everyone can contribute."],
+["Move discussions towards a decision.","Focus on facts and details.","Make sure different views are heard.","Change the focus when a new direction is needed."],
+["Keep things well organized.","Bring different strengths together.","Challenge old ways of doing things.","Drive things forward."],
+["Help people learn and grow.","Suggest new ways of doing things.","Get things done and move on.","Make sure nothing is overlooked."],
+["Look for opportunities.","Follow procedures.","Act quickly.","Make sure everyone is heard."],
+["Get through the workload.","Support people and be flexible.","Get things right the first time.","Work smarter, not harder."]
+],
+[
+["I enjoy bringing new ideas to the team.","I feel good when the team gets things done.","I am satisfied when the team does things properly.","I am at my best when everyone in the team can contribute."],
+["When people disagree, I focus on moving the discussion towards a decision.","When people disagree, I focus on the facts and details.","When people disagree, I help keep the discussion constructive.","When people disagree, I like to bring new perspectives to the table."],
+["I enjoy keeping things well organized.","I enjoy bringing different strengths together.","I enjoy challenging old ways of doing things.","I enjoy driving things forward."],
+["I enjoy helping people develop.","I like being the one who gets things started.","I like to get things done and move on.","I like delivering high-quality work."],
+["I get frustrated when we don't work smart.","I get frustrated when we change something that we know works well.","I get frustrated when we spend too much time thinking and not enough time doing.","I get frustrated when people are left out and not seen or heard."],
+["I struggle when people don't take action.","I struggle when people aren’t willing to learn from each other.","I struggle when people start doing before thinking.","I struggle when new ideas are not explored."]
+]
+];
+
+let page=0;
+let answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));
+
+const $=id=>document.getElementById(id);
+
+function start(){
+ $("intro").classList.add("hidden"); $("done").classList.add("hidden"); $("test").classList.remove("hidden"); page=0; render();
+}
+function render(){
+ const part=page<6?0:1, g=page%6;
+ $("part").innerHTML="<h2>"+(part===0?"HOW MY JOB REQUIRES ME TO BE":"HOW I NATURALLY AM")+"</h2>";
+ $("group").textContent="Group "+(g+1)+" of 6";
+ $("bar").style.width=((page+1)/12*100)+"%";
+ const box=$("statements"); box.innerHTML="";
+ groups[part][g].forEach((text,i)=>{
+   const row=document.createElement("div"); row.className="statement";
+   row.innerHTML='<div class="text">'+text+'</div><div class="controls">'+
+   '<button class="ctrl" aria-label="remove check" data-i="'+i+'" data-d="-1">−</button>'+
+   '<span class="count" id="c'+i+'">'+answers[part][g][i]+'</span>'+
+   '<button class="ctrl" aria-label="add check" data-i="'+i+'" data-d="1">+</button></div>';
+   box.appendChild(row);
+ });
+ box.querySelectorAll(".ctrl").forEach(b=>b.onclick=()=>change(+b.dataset.i,+b.dataset.d));
+ $("back").style.visibility=page===0?"hidden":"visible";
+ $("next").textContent=page===11?"Finish":"Next";
+ updateStatus();
+}
+function change(i,d){
+ const part=page<6?0:1,g=page%6,a=answers[part][g];
+ const next=a[i]+d,total=a.reduce((x,y)=>x+y,0);
+ if(next<0||next>3||total+d>3)return;
+ a[i]=next; $("c"+i).textContent=next; updateStatus();
+}
+function updateStatus(){
+ const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
+ $("status").textContent="Checks used: "+total+" / 3";
+ $("error").textContent=total===3?"":"Use exactly 3 checks to continue.";
+}
+function next(){
+ const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
+ if(total!==3){updateStatus();return}
+ if(page<11){page++;render();window.scrollTo({top:0,behavior:"smooth"});}
+ else{$("test").classList.add("hidden");$("done").classList.remove("hidden");}
+}
+function back(){if(page>0){page--;render();window.scrollTo({top:0,behavior:"smooth"});}}
+function restart(){answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));start();}
+$("start").onclick=start;$("next").onclick=next;$("back").onclick=back;$("restart").onclick=restart;
+</script>
+</body>
+</html>
