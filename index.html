@@ -5,26 +5,71 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>START TO UNDERSTAND ME</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f5f5;color:#222}
-.wrap{max-width:850px;margin:auto;padding:22px 16px 40px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 3px 14px rgba(0,0,0,.08)}
-h1,h2{margin-top:0}.muted{color:#666;line-height:1.5}.progress{height:8px;background:#ddd;border-radius:8px;overflow:hidden;margin:18px 0 24px}.bar{height:100%;background:#222;width:0}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f5f5;color:#222}
+.wrap{max-width:850px;margin:auto;padding:22px 16px 40px}
+.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 3px 14px rgba(0,0,0,.08)}
+h1,h2{margin-top:0}
+.muted{color:#666;line-height:1.5}
+.progress{height:8px;background:#ddd;border-radius:8px;overflow:hidden;margin:18px 0 24px}
+.bar{height:100%;background:#222;width:0}
 .statement{display:grid;grid-template-columns:1fr 160px;gap:14px;align-items:center;border-bottom:1px solid #eee;padding:18px 0}
-.statement:last-child{border-bottom:0}.text{line-height:1.45}.controls{display:flex;justify-content:center;align-items:center;gap:12px}
-.ctrl{width:40px;height:40px;border:1px solid #ccc;border-radius:9px;background:#f3f3f3;font-size:22px;cursor:pointer}.count{min-width:24px;text-align:center;font-weight:700;font-size:20px}
+.statement:last-child{border-bottom:0}
+.text{line-height:1.45}
+.controls{display:flex;justify-content:center;align-items:center;gap:12px}
+.ctrl{width:40px;height:40px;border:1px solid #ccc;border-radius:9px;background:#f3f3f3;font-size:22px;cursor:pointer}
+.count{min-width:24px;text-align:center;font-weight:700;font-size:20px}
 button.main{background:#222;color:#fff;border:0;border-radius:10px;padding:13px 22px;font-size:16px;cursor:pointer}
 button.secondary{background:#eee;color:#222;border:0;border-radius:10px;padding:13px 22px;font-size:16px;cursor:pointer}
-.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}.status{text-align:center;color:#666;margin-top:12px;font-size:14px}.error{color:#a40020;text-align:center;margin-top:10px;min-height:20px}
-.hidden{display:none}.intro p{line-height:1.6}.badge{display:inline-block;background:#eee;border-radius:999px;padding:6px 10px;font-size:13px}
-@media(max-width:600px){.statement{grid-template-columns:1fr 145px}.wrap{padding:14px 10px 30px}.card{padding:18px}.text{font-size:15px}}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}
+.status{text-align:center;color:#666;margin-top:12px;font-size:14px}
+.error{color:#a40020;text-align:center;margin-top:10px;min-height:20px}
+.hidden{display:none}
+.intro p{line-height:1.6}
+.badge{display:inline-block;background:#eee;border-radius:999px;padding:6px 10px;font-size:13px}
+.results-block{margin-top:22px}
+.results-title{font-size:18px;font-weight:700;margin:0 0 14px}
+.profile-row{display:grid;grid-template-columns:125px 1fr 62px;gap:12px;align-items:center;margin:11px 0}
+.profile-label{font-weight:600}
+.profile-track{height:12px;background:#e5e5e5;border-radius:8px;overflow:hidden}
+.profile-fill{height:100%;background:#222;border-radius:8px}
+.profile-value{text-align:right;font-weight:700}
+.profile-row.top .profile-label{font-weight:800}
+.profile-row.top .profile-fill{background:#111}
+.reflection{margin-top:30px;padding-top:24px;border-top:1px solid #eee}
+.reflection h2{margin-bottom:16px}
+.reflection h3{margin-top:20px;font-size:18px}
+.doey-intro{margin-top:26px;padding:20px 0 6px;border-top:1px solid #eee}
+.doey-intro h3{font-size:20px;margin:0 0 18px}
+.doey-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 28px}
+.doey-grid div{display:flex;flex-direction:column;gap:5px}
+.doey-grid strong{font-size:17px}
+.doey-grid span{color:#666;line-height:1.45}
+.wavelength-item{padding:16px 0;border-top:1px solid #eee}
+.wavelength-item:first-of-type{border-top:0}
+.wavelength-item h3{margin:0 0 8px;font-size:18px}
+.wavelength-item p{margin:0;color:#666;line-height:1.5}
+@media(max-width:700px){.doey-grid{grid-template-columns:1fr}}
+@media(max-width:600px){
+.statement{grid-template-columns:1fr 145px}
+.wrap{padding:14px 10px 30px}
+.card{padding:18px}
+.text{font-size:15px}
+.profile-row{grid-template-columns:115px 1fr 58px}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
+
 <section class="card intro" id="intro">
 <h1>START TO UNDERSTAND ME</h1>
 <p class="muted">For each group of four statements, you have <strong>three checks</strong> to distribute freely.</p>
 <p class="muted">You can put all three on one statement, split them 2+1, or use 1+1+1. You must use exactly three checks in each group.</p>
 <button class="main" id="start">Start</button>
+<p class="muted" style="margin-top:24px;font-size:14px;">This tool is designed to help us understand ourselves and others better. It is a starting point, not a final answer about who we are.</p>
+<p class="muted" style="margin-top:12px;font-size:14px;">For more information: <a href="mailto:sverre.gjestrum@bedriftspartner.com">sverre.gjestrum@bedriftspartner.com</a></p>
+<p class="muted" style="margin-top:12px;font-size:13px;">© Bedriftspartner AS – Sverre Gjestrum – START TO UNDERSTAND ME<br>Commercial use requires permission.</p>
 </section>
 
 <section class="card hidden" id="test">
@@ -35,9 +80,73 @@ button.secondary{background:#eee;color:#222;border:0;border-radius:10px;padding:
 <div class="nav"><button class="secondary" id="back">Back</button><button class="main" id="next">Next</button></div>
 </section>
 
+<section class="card hidden" id="transition">
+<h2>HOW I NATURALLY AM</h2>
+<p class="muted"><strong>What comes naturally to me?</strong></p>
+<p class="muted">So far, you have looked at what your job requires from you.<br>Now we will look at what comes more naturally to you.</p>
+<p class="muted">There are no right or wrong answers.</p>
+<div class="nav"><button class="secondary" id="transitionBack">Back</button><button class="main" id="transitionContinue">Continue</button></div>
+</section>
+
 <section class="card hidden" id="done">
-<h2>Thank you</h2><p class="muted">You have completed the test.</p>
-<p class="muted">Your answers are stored in this browser session. This version does not send them to a server.</p>
+<h2>Your Profile</h2>
+<p class="muted">Your profile shows how your responses are distributed across the four dimensions.</p>
+
+<div class="doey-intro">
+<h3>START TO UNDERSTAND ME</h3>
+<div class="doey-grid">
+<div><strong>🟢 Doer</strong><span>Creates progress and gets things done.</span></div>
+<div><strong>🔴 Organizer</strong><span>Creates structure and ensures quality.</span></div>
+<div><strong>🔵 Explorer</strong><span>Sees possibilities and thinks differently.</span></div>
+<div><strong>🟡 Unifier</strong><span>Brings people together and strengthens the team.</span></div>
+</div>
+</div>
+
+<div id="results"></div>
+
+<div class="reflection">
+<h3>What do you recognize as your natural strengths?</h3>
+</div>
+
+<div class="reflection">
+<h2>2. HOW MY JOB REQUIRES ME TO BE</h2>
+<div id="jobResults"></div>
+<p class="muted"><strong>This profile shows how you perceive your job requires you to contribute.</strong></p>
+<p class="muted">What does your job seem to require most from you?</p>
+</div>
+
+<div class="reflection">
+<h2>3. WHAT MIGHT THE GAP MEAN?</h2>
+<p class="muted"><strong>The two profiles do not have to be the same.</strong></p>
+<p class="muted">A difference may mean that your job requires you to use strengths that do not come as naturally to you. It may also reflect a difference between how you see the job and what your leader or team expects.</p>
+<h3>What do you notice when you compare the two profiles?</h3>
+</div>
+
+<div class="reflection" id="wavelength">
+<h2>HOW TO GET ON THE SAME WAVELENGTH</h2>
+<p class="muted">Different people bring different strengths. Here are some simple ways to work well with each one.</p>
+
+<div class="wavelength-item">
+<h3>🔵 Explorer</h3>
+<p>Give the Explorer space to share ideas and be heard. Capture good ideas in an idea bank, so they can be quality-checked and considered when the time is right.</p>
+</div>
+
+<div class="wavelength-item">
+<h3>🟢 Doer</h3>
+<p>Ask what they have achieved, what is on their to-do list, and how they are progressing towards their goals.</p>
+</div>
+
+<div class="wavelength-item">
+<h3>🔴 Organizer</h3>
+<p>Let the Organizer explain how the work should be done, how the plan has been thought through, and how it meets relevant rules and procedures.</p>
+</div>
+
+<div class="wavelength-item">
+<h3>🟡 Unifier</h3>
+<p>Ask about people’s strengths, individual development, how the team can work even better together, and how they can have a positive influence on others.</p>
+</div>
+</div>
+
 <button class="secondary" id="restart">Start again</button>
 </section>
 </div>
@@ -62,53 +171,155 @@ const groups=[
 ]
 ];
 
+const typeMap=[
+[["E","D","O","Y"],["D","O","Y","E"],["O","Y","E","D"],["Y","E","D","O"],["E","O","D","Y"],["D","Y","O","E"]],
+[["E","D","O","Y"],["D","O","Y","E"],["O","Y","E","D"],["Y","E","D","O"],["E","O","D","Y"],["D","Y","O","E"]]
+];
+
 let page=0;
 let answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));
-
 const $=id=>document.getElementById(id);
 
 function start(){
- $("intro").classList.add("hidden"); $("done").classList.add("hidden"); $("test").classList.remove("hidden"); page=0; render();
+$("intro").classList.add("hidden");
+$("done").classList.add("hidden");
+$("transition").classList.add("hidden");
+$("test").classList.remove("hidden");
+page=0;
+render();
 }
+
 function render(){
- const part=page<6?0:1, g=page%6;
- $("part").innerHTML="<h2>"+(part===0?"HOW MY JOB REQUIRES ME TO BE":"HOW I NATURALLY AM")+"</h2>";
- $("group").textContent="Group "+(g+1)+" of 6";
- $("bar").style.width=((page+1)/12*100)+"%";
- const box=$("statements"); box.innerHTML="";
- groups[part][g].forEach((text,i)=>{
-   const row=document.createElement("div"); row.className="statement";
-   row.innerHTML='<div class="text">'+text+'</div><div class="controls">'+
-   '<button class="ctrl" aria-label="remove check" data-i="'+i+'" data-d="-1">−</button>'+
-   '<span class="count" id="c'+i+'">'+answers[part][g][i]+'</span>'+
-   '<button class="ctrl" aria-label="add check" data-i="'+i+'" data-d="1">+</button></div>';
-   box.appendChild(row);
- });
- box.querySelectorAll(".ctrl").forEach(b=>b.onclick=()=>change(+b.dataset.i,+b.dataset.d));
- $("back").style.visibility=page===0?"hidden":"visible";
- $("next").textContent=page===11?"Finish":"Next";
- updateStatus();
+const part=page<6?0:1,g=page%6;
+$("part").innerHTML="<h2>"+(part===0?"HOW MY JOB REQUIRES ME TO BE":"HOW I NATURALLY AM")+"</h2>";
+$("group").textContent="Group "+(g+1)+" of 6";
+$("bar").style.width=((page+1)/12*100)+"%";
+const box=$("statements");
+box.innerHTML="";
+groups[part][g].forEach((text,i)=>{
+const row=document.createElement("div");
+row.className="statement";
+row.innerHTML='<div class="text">'+text+'</div><div class="controls"><button class="ctrl" aria-label="remove check" data-i="'+i+'" data-d="-1">−</button><span class="count" id="c'+i+'">'+answers[part][g][i]+'</span><button class="ctrl" aria-label="add check" data-i="'+i+'" data-d="1">+</button></div>';
+box.appendChild(row);
+});
+box.querySelectorAll(".ctrl").forEach(b=>b.onclick=()=>change(+b.dataset.i,+b.dataset.d));
+$("back").style.visibility=page===0?"hidden":"visible";
+$("next").textContent=page===11?"Finish":"Next";
+updateStatus();
 }
+
 function change(i,d){
- const part=page<6?0:1,g=page%6,a=answers[part][g];
- const next=a[i]+d,total=a.reduce((x,y)=>x+y,0);
- if(next<0||next>3||total+d>3)return;
- a[i]=next; $("c"+i).textContent=next; updateStatus();
+const part=page<6?0:1,g=page%6,a=answers[part][g];
+const next=a[i]+d,total=a.reduce((x,y)=>x+y,0);
+if(next<0||next>3||total+d>3)return;
+a[i]=next;
+$("c"+i).textContent=next;
+updateStatus();
 }
+
 function updateStatus(){
- const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
- $("status").textContent="Checks used: "+total+" / 3";
- $("error").textContent=total===3?"":"Use exactly 3 checks to continue.";
+const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
+$("status").textContent="Checks used: "+total+" / 3";
+$("error").textContent=total===3?"":"Use exactly 3 checks before continuing.";
 }
+
+function statementType(part,g,i){return typeMap[part][g][i]}
+
+function calculateProfile(part){
+const totals=[0,0,0,0];
+for(let g=0;g<6;g++){
+for(let i=0;i<4;i++){
+totals[["D","O","E","Y"].indexOf(statementType(part,g,i))]+=answers[part][g][i];
+}}
+return totals;
+}
+
+function profileHTML(title,totals){
+const names=["D","O","E","Y"];
+const labels=["Doer","Organizer","Explorer","Unifier"];
+const max=Math.max(...totals);
+let out='<div class="results-block"><p class="results-title">'+title+'</p>';
+for(let i=0;i<4;i++){
+const pct=totals[i]/18*100;
+const top=totals[i]===max&&max>0?" top":"";
+out+='<div class="profile-row'+top+'"><div class="profile-label">'+names[i]+" — "+labels[i]+'</div><div class="profile-track"><div class="profile-fill" style="width:'+pct+'%"></div></div><div class="profile-value">'+Math.round(pct)+'%</div></div>';
+}
+return out+"</div>";
+}
+
+function renderResults(){
+const natural=calculateProfile(1);
+const job=calculateProfile(0);
+$("results").innerHTML=profileHTML("1. HOW I NATURALLY AM",natural);
+$("jobResults").innerHTML=profileHTML("",job);
+const naturalMax=Math.max(...natural);
+if(naturalMax>=9){
+$("results").innerHTML+='<p class="muted"><strong>Worth noticing:</strong> A very high score may also be worth exploring. A strength can sometimes become a pitfall when we use it too much.</p>';
+}
+}
+
 function next(){
- const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
- if(total!==3){updateStatus();return}
- if(page<11){page++;render();window.scrollTo({top:0,behavior:"smooth"});}
- else{$("test").classList.add("hidden");$("done").classList.remove("hidden");}
+const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
+if(total!==3){updateStatus();return}
+if(page===5){
+$("test").classList.add("hidden");
+$("transition").classList.remove("hidden");
+window.scrollTo({top:0,behavior:"smooth"});
+return;
 }
-function back(){if(page>0){page--;render();window.scrollTo({top:0,behavior:"smooth"});}}
-function restart(){answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));start();}
-$("start").onclick=start;$("next").onclick=next;$("back").onclick=back;$("restart").onclick=restart;
+if(page<11){
+page++;
+render();
+window.scrollTo({top:0,behavior:"smooth"});
+}else{
+$("test").classList.add("hidden");
+$("done").classList.remove("hidden");
+renderResults();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+}
+
+function transitionContinue(){
+$("transition").classList.add("hidden");
+page=6;
+$("test").classList.remove("hidden");
+render();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function transitionBack(){
+$("transition").classList.add("hidden");
+page=5;
+$("test").classList.remove("hidden");
+render();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function back(){
+if(page===6){
+$("test").classList.add("hidden");
+$("transition").classList.remove("hidden");
+window.scrollTo({top:0,behavior:"smooth"});
+return;
+}
+if(page>0){
+page--;
+render();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+}
+
+function restart(){
+answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));
+start();
+}
+
+$("start").onclick=start;
+$("next").onclick=next;
+$("back").onclick=back;
+$("restart").onclick=restart;
+$("transitionBack").onclick=transitionBack;
+$("transitionContinue").onclick=transitionContinue;
 </script>
 </body>
 </html>
