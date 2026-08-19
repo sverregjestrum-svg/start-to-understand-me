@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>START TO UNDERSTAND ME</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f5f5;color:#222}
+.wrap{max-width:850px;margin:auto;padding:22px 16px 40px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 3px 14px rgba(0,0,0,.08)}
+h1,h2{margin-top:0}.muted{color:#666;line-height:1.5}.progress{height:8px;background:#ddd;border-radius:8px;overflow:hidden;margin:18px 0 24px}.bar{height:100%;background:#222;width:0}
+.statement{display:grid;grid-template-columns:1fr 160px;gap:14px;align-items:center;border-bottom:1px solid #eee;padding:18px 0}
+.statement:last-child{border-bottom:0}.text{line-height:1.45}.controls{display:flex;justify-content:center;align-items:center;gap:12px}
+.ctrl{width:40px;height:40px;border:1px solid #ccc;border-radius:9px;background:#f3f3f3;font-size:22px;cursor:pointer}.count{min-width:24px;text-align:center;font-weight:700;font-size:20px}
+button.main{background:#222;color:#fff;border:0;border-radius:10px;padding:13px 22px;font-size:16px;cursor:pointer}
+button.secondary{background:#eee;color:#222;border:0;border-radius:10px;padding:13px 22px;font-size:16px;cursor:pointer}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}.status{text-align:center;color:#666;margin-top:12px;font-size:14px}.error{color:#a40020;text-align:center;margin-top:10px;min-height:20px}
+.hidden{display:none}.intro p{line-height:1.6}.badge{display:inline-block;background:#eee;border-radius:999px;padding:6px 10px;font-size:13px}
+@media(max-width:600px){.statement{grid-template-columns:1fr 145px}.wrap{padding:14px 10px 30px}.card{padding:18px}.text{font-size:15px}}
+
+.results-block{margin-top:22px}.results-title{font-size:18px;font-weight:700;margin:0 0 14px}
+.profile-row{display:grid;grid-template-columns:125px 1fr 62px;gap:12px;align-items:center;margin:11px 0}
+.profile-label{font-weight:600}.profile-track{height:12px;background:#e5e5e5;border-radius:8px;overflow:hidden}
+.profile-fill{height:100%;background:#222;border-radius:8px}.profile-value{text-align:right;font-weight:700}
+.compare{margin-top:26px;padding-top:18px;border-top:1px solid #eee}
+@media(max-width:600px){.profile-row{grid-template-columns:90px 1fr 52px}}
+
+.reflection{margin-top:30px;padding-top:24px;border-top:1px solid #eee}
+.reflection h2{margin-bottom:16px}
+.reflection h3{margin-top:20px;font-size:18px}
+.results-block{margin-top:22px}
+.results-title{font-size:18px;font-weight:700;margin:0 0 14px}
+.profile-row{display:grid;grid-template-columns:125px 1fr 62px;gap:12px;align-items:center;margin:11px 0}
+.profile-label{font-weight:600}
+.profile-track{height:12px;background:#e5e5e5;border-radius:8px;overflow:hidden}
+.profile-fill{height:100%;background:#222;border-radius:8px}
+.profile-value{text-align:right;font-weight:700}
+.profile-row.top .profile-label{font-weight:800}
+.profile-row.top .profile-fill{background:#111}
+@media(max-width:600px){.profile-row{grid-template-columns:115px 1fr 58px}}
+
+
+
+
+
+
+
+.main-result-title{font-size:22px!important}
+@media(max-width:700px){}
+
+.wavelength-item{padding:16px 0;border-top:1px solid #eee}
+.wavelength-item:first-of-type{border-top:0}
+.wavelength-item h3{margin:0 0 8px;font-size:18px}
+.wavelength-item p{margin:0;color:#666;line-height:1.5}
+.rank-section{margin-top:24px;padding-top:20px;border-top:1px solid #eee}.rank-title{font-size:18px;font-weight:800;margin:0 0 10px}.rank-name{font-size:22px;font-weight:800;margin:0}.rank-score{color:#666;margin-top:5px}.no-worry{color:#666;line-height:1.5}
+
+
+
+
+
+
+
+
+
+/* V23 clean report layout */
+.report{max-width:900px;margin:0 auto;padding:34px 28px 48px;background:#fff}
+.report h2{font-size:30px;line-height:1.15;margin:0 0 16px}
+.report h3{font-size:22px;line-height:1.2;margin:0 0 12px}
+.report .muted{color:#666;line-height:1.55}
+.report-divider{border:0;border-top:1px solid #e5e5e5;margin:32px 0}
+.report-page{display:none}
+.report-page.active{display:block}
+.report-nav{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:34px;padding-top:18px;border-top:1px solid #e5e5e5}
+.page-count{color:#666;font-size:14px}
+.report-actions{display:flex;gap:10px}
+.report-actions button:disabled{opacity:.42;cursor:default}
+.report 
+.report 
+.report .profile-row{grid-template-columns:145px 1fr 58px;margin:15px 0}
+.report .profile-value{font-weight:800}
+.report .rank-list{margin-top:22px}
+.report .rank-item{padding:20px 0;border-top:1px solid #e5e5e5}
+.report .rank-item:first-child{border-top:0}
+.report .rank-title{font-size:15px;font-weight:800;letter-spacing:.01em;margin:0 0 6px}
+.report .rank-name{font-size:26px;font-weight:800;margin:0}
+.report .rank-score{color:#666;margin-top:4px}
+.report 
+.report 
+.report 
+.report .strength-section{padding:26px 0;border-top:1px solid #e5e5e5}
+.report .strength-section:first-child{border-top:0}
+.report .strength-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
+.report .strength-block{padding:0 24px;border-left:1px solid #e5e5e5}
+.report .strength-block:first-child{padding-left:0;border-left:0}
+.report .strength-block h4{margin:0 0 8px;font-size:15px;letter-spacing:.02em}
+.report .strength-block p{margin:0;color:#666;line-height:1.55}
+.report .strength-note{font-size:14px;color:#666;margin-top:14px}
+.report .wavelength-item{padding:20px 0;border-top:1px solid #e5e5e5}
+.report .wavelength-item:first-of-type{border-top:0}
+.report .wavelength-item h3{margin:0 0 8px;font-size:20px}
+.report .wavelength-item p{margin:0;color:#666;line-height:1.55}
+@media(max-width:800px){.report .strength-grid{grid-template-columns:1fr}.report .strength-block{padding:18px 0;border-left:0;border-top:1px solid #e5e5e5}.report .strength-block:first-child{padding-top:0;border-top:0}.report .profile-row{grid-template-columns:120px 1fr 58px}}
+@media(max-width:600px){.report{padding:24px 16px 36px}.report h2{font-size:26px}.report h3{font-size:20px}.report .profile-row{grid-template-columns:105px 1fr 50px}}
+
+
+
+
+
+.strength-pct{font-weight:700}
+
+.strength-note{margin:12px 0 0;color:#666;font-size:15px;line-height:1.45}
+
+@media(max-width:600px){}
+
+.intro-note{color:#666;line-height:1.5}.strength-pct{float:right;font-size:20px;font-weight:700;color:#666}@media(max-width:600px){.strength-pct{float:none;margin-left:8px}}
+
+.report-subtitle{font-size:22px;font-weight:700;margin:-4px 0 18px}
+.natural-profile{margin-top:20px}
+.natural-section{padding:28px 0;border-top:1px solid #e5e5e5}
+.natural-section:first-child{border-top:0;padding-top:8px}
+.natural-section h3{font-size:26px;line-height:1.2;margin:0 0 7px}
+.natural-section .descriptor{font-weight:700;color:#555;margin:0 0 14px}
+.natural-section .story{font-size:18px;line-height:1.6;color:#444;margin:0}
+.natural-evidence{margin-top:16px;padding-top:12px;border-top:1px solid #eee}
+.natural-evidence-title{font-weight:800;font-size:15px;margin-bottom:7px}
+.natural-evidence div{margin:8px 0;color:#555;line-height:1.45}
+.natural-evidence strong{color:#222}
+@media(max-width:600px){.report-subtitle{font-size:20px}.natural-section h3{font-size:23px}.natural-section .story{font-size:16px}}
+
+.report-subtitle{font-size:20px;font-weight:700;margin:0 0 14px}
+.start-understand{margin-top:24px}
+.start-understand .lead{font-size:20px;line-height:1.5;margin:0 0 26px}
+.start-understand-section{padding:22px 0;border-top:1px solid #e5e5e5}
+.start-understand-section:first-child{border-top:0;padding-top:4px}
+.start-understand-section h3{margin:0 0 10px;font-size:21px}
+.start-understand-section p{margin:0;color:#555;line-height:1.55}
+.personal-signal{margin-top:14px;padding-top:14px;border-top:1px solid #eee;color:#666;font-size:14px;line-height:1.5}
+
+.strategy-list{margin:10px 0 0;padding:0;list-style:none}
+.strategy-list li{padding:7px 0 0 20px;position:relative;line-height:1.5}
+.strategy-list li:before{content:"•";position:absolute;left:4px;top:7px;font-weight:800}
+.start-understand-section h4{font-size:14px;letter-spacing:.05em;margin:18px 0 8px}
+
+.comparison-summary{margin-top:28px;padding-top:24px;border-top:1px solid #e5e5e5}
+.comparison-summary h3{margin:0 0 10px;font-size:21px}
+.comparison-summary p{margin:0 0 12px;color:#555;line-height:1.55}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.compare-col{padding:0}
+.compare-col h3{margin:0 0 14px;font-size:19px}
+.compare-col .profile-row{margin:14px 0}
+@media(max-width:700px){.compare-grid{grid-template-columns:1fr}}
+
+.verbal-profile-clean h2{margin-top:0}
+.verbal-section-clean{padding:22px 0;border-top:1px solid #e5e5e5}
+.verbal-section-clean:first-of-type{border-top:0}
+.verbal-section-clean h3{font-size:24px;margin:0 0 8px}
+.verbal-section-clean .descriptor{font-weight:700;color:#555;margin:0 0 12px}
+.verbal-section-clean p{color:#444;line-height:1.55}
+.strength-pct{float:right;font-size:20px;color:#666}
+.start-understand-clean{margin-top:24px}
+.start-understand-section-clean{padding:22px 0;border-top:1px solid #e5e5e5}
+.start-understand-section-clean:first-of-type{border-top:0}
+.start-understand-section-clean h3{font-size:22px;margin:0 0 12px}
+.let-list p{margin:10px 0;font-size:18px;line-height:1.45}
+.personal-signal{margin-top:14px;padding-top:14px;border-top:1px solid #eee;color:#666;font-size:14px;line-height:1.5}
+@media(max-width:600px){.strength-pct{float:none;margin-left:8px}.let-list p{font-size:17px}}
+
+.verbal-profile-clean h2{margin-top:0}
+.verbal-section-clean{padding:22px 0;border-top:1px solid #e5e5e5}
+.verbal-section-clean:first-of-type{border-top:0}
+.verbal-section-clean h3{font-size:24px;margin:0 0 8px}
+.verbal-section-clean .descriptor{font-weight:700;color:#555;margin:0 0 12px}
+.verbal-section-clean p{color:#444;line-height:1.58}
+.strength-pct{float:right;font-size:20px;color:#666}
+.start-understand-clean{margin-top:24px}
+.start-understand-section-clean{padding:22px 0;border-top:1px solid #e5e5e5}
+.start-understand-section-clean:first-of-type{border-top:0}
+.start-understand-section-clean h3{font-size:22px;margin:0 0 12px}
+.let-list p{margin:10px 0;font-size:18px;line-height:1.45}
+.personal-signal{margin-top:14px;padding-top:14px;border-top:1px solid #eee;color:#666;font-size:14px;line-height:1.5}
+@media(max-width:600px){.strength-pct{float:none;margin-left:8px}.let-list p{font-size:17px}}
+
+.fit-assessment{margin-top:28px;padding:24px 0;border-top:1px solid #e5e5e5}
+.fit-badge{font-weight:800;font-size:18px;letter-spacing:.04em;margin-bottom:10px}
+.fit-assessment p{margin:0 0 12px;color:#555;line-height:1.55}
+.fit-reflection{margin-top:18px;padding-top:16px;border-top:1px solid #eee}
+.team-reflection{margin-top:28px;padding:24px 0;border-top:1px solid #e5e5e5}
+.team-reflection h3{margin:0 0 14px;font-size:20px}
+.team-reflection p{margin:8px 0;line-height:1.45}
+}
+
+.overlap-labels span{white-space:nowrap}
+.expectations-bars{margin-top:26px}
+.expectation-row{padding:20px 0;border-top:1px solid #e5e5e5}
+.expectation-row:first-child{border-top:0}
+.expectation-title{font-size:20px;font-weight:700;margin-bottom:12px}
+.bar-group{margin:8px 0 14px}
+.bar-label{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px;color:#666;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.bar-row{display:flex;align-items:center;gap:10px}
+.single-bar-track{flex:1;height:18px;border-radius:9px;background:#eee;overflow:hidden}
+.single-bar-fill{height:100%;border-radius:9px;background:#777}
+.single-bar-value{min-width:45px;text-align:right;font-weight:700}
+.fit-assessment{margin-top:28px;padding:24px 0;border-top:1px solid #e5e5e5}
+.fit-badge{font-weight:800;font-size:18px;letter-spacing:.04em;margin-bottom:10px}
+.fit-assessment p{margin:0 0 12px;color:#555;line-height:1.55}
+.fit-reflection{margin-top:18px;padding-top:16px;border-top:1px solid #eee}
+.team-reflection{margin-top:28px;padding:24px 0;border-top:1px solid #e5e5e5}
+.team-reflection h3{margin:0 0 14px;font-size:20px}
+.team-reflection p{margin:8px 0;line-height:1.45}
+.expectation-title{align-items:flex-start;flex-direction:column}}
+
+.overlap-marker{position:absolute;top:-3px;width:3px;height:28px;border-radius:2px;background:#666;z-index:3}
+.overlap-labels{display:flex;justify-content:space-between;margin-top:5px;font-size:13px;color:#666}
+.overlap-labels span{white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="card intro" id="intro">
+
+<h1>START TO UNDERSTAND ME</h1>
+<p class="muted" style="font-size:18px;margin-top:-6px;"><strong>Icebreaker</strong></p>
+
+<div class="reflection" style="margin-top:22px;padding-top:22px;">
+<h2>WHY ARE WE DOING THIS?</h2>
+<p class="muted">This is a short icebreaker designed to help us understand ourselves and each other better.</p>
+<p class="muted">We will explore what we feel our job expects from us, and how we are when we can be ourselves.</p>
+<p class="muted">This exercise is not a final answer about who you are. It is a starting point for reflection, awareness and conversation.</p>
+</div>
+
+<div class="reflection" style="margin-top:22px;padding-top:22px;">
+<h2>HOW TO ANSWER</h2>
+<p class="muted">In each group of four statements, you have <strong>seven checks</strong> to distribute freely.</p>
+<p class="muted">You can put all seven checks on one statement, or split them across several statements. Use exactly seven checks in each group.</p>
+<p class="muted">Each group is a fresh choice. When you start a new group, look at the four statements with fresh eyes.</p>
+
+<div style="background:#f7f7f7;border-radius:12px;padding:16px;margin-top:14px;">
+<p style="margin:0 0 8px;font-weight:700;">EXAMPLE</p>
+<p class="muted" style="margin:0;">7 checks can be distributed in many ways:</p>
+<p class="muted" style="margin:6px 0 0;">7 on one statement or 4 + 3 or 3 + 2 + 2 or 2 + 2 + 2 + 1.</p>
+</div>
+</div>
+
+<button class="main" id="start" style="margin-top:22px;">Start</button>
+<p class="muted" style="margin-top:18px;font-size:14px;">For more information: <a href="mailto:sverre.gjestrum@bedriftspartner.com">sverre.gjestrum@bedriftspartner.com</a></p>
+<p class="muted" style="margin-top:10px;font-size:13px;">© Bedriftspartner AS – Org nr 977 060 346 – START TO UNDERSTAND ME<br>Commercial use requires permission.</p>
+</section>
+
+<section class="card hidden" id="test">
+<div id="part"></div><div id="group" class="badge"></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div id="statements"></div>
+<div class="status" id="status"></div><div class="error" id="error"></div>
+<div class="nav"><button class="secondary" id="back">Back</button><button class="main" id="next">Next</button></div>
+</section>
+
+
+<section class="card hidden" id="transition">
+<h2>HOW I AM WHEN I CAN BE MYSELF</h2>
+<p class="muted"><strong>How am I when I can be myself?</strong></p>
+<p class="muted">So far, you have looked at what your job requires from you.<br>
+Now we will look at how you are when you can be yourself.</p>
+<p class="muted">There are no right or wrong answers.</p>
+<div class="nav">
+  <button class="secondary" id="transitionBack">Back</button>
+  <button class="main" id="transitionContinue">Continue</button>
+</div>
+</section>
+
+<section class="report hidden" id="done">
+<div class="report-page active" data-report-page="1">
+  <h2>Your natural strengths</h2>
+  <p class="report-subtitle">HOW I AM WHEN I CAN BE MYSELF</p>
+
+  <div id="results"></div>
+  <div class="report-nav">
+    <div class="page-count">Page 1 of 3</div>
+    <div class="report-actions">
+      <button class="secondary" disabled>Back</button>
+      <button class="main" id="reportNext1">Next</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="report-page" data-report-page="2">
+  <h2>START TO UNDERSTAND ME</h2>
+  <p class="report-subtitle">How to communicate and work well with me</p>
+  
+  <div id="startToUnderstandMe"></div>
+  <div class="report-nav">
+    <div class="page-count">Page 2 of 3</div>
+    <div class="report-actions">
+      <button class="secondary" id="reportPrev2">Back</button>
+      <button class="main" id="reportNext2">Next</button>
+      <button class="secondary" id="restart">Start again</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="report-page" data-report-page="3">
+  <h2>EXPECTATIONS vs. BEING MYSELF</h2>
+  <p class="report-subtitle">What do I think others expect from me at work — and how does that compare with who I am when I can be myself?</p>
+
+  <div id="expectationsBars"></div>
+  <div id="fitAssessment" class="fit-assessment"></div>
+
+  <div class="team-reflection">
+    <h3>FROM ME TO US</h3>
+    <p><strong>What comes naturally to me?</strong></p>
+    <p><strong>What do I think my job expects from me?</strong></p>
+    <p><strong>Are those expectations actually real?</strong></p>
+    <p><strong>Where do I need to stretch?</strong></p>
+    <p><strong>How can we make the most of our different strengths?</strong></p>
+  </div>
+
+  <p style="margin-top:18px;"><strong>TEAM = Together Everyone Achieves More.</strong></p>
+<p>The profile is not a conclusion. It is a starting point for reflection and development.</p>
+<div class="report-nav">
+    <div class="page-count">Page 3 of 3</div>
+    <div class="report-actions">
+      <button class="secondary" id="reportPrev3">Back</button>
+      <button class="secondary" id="restart3">Start again</button>
+    </div>
+  </div>
+</div>
+</section><script>
+const groups=[
+[
+["Bring in new ideas.","Contribute to getting things done.","Make sure things are done properly.","Make sure everyone can contribute."],
+["Move discussions towards a decision.","Focus on facts and details.","Make sure different views are heard.","Change the focus when a new direction is needed."],
+["Keep things well organized.","Bring different strengths together.","Challenge old ways of doing things.","Drive things forward."],
+["Help people learn and grow.","Suggest new ways of doing things.","Get things done and move on.","Make sure nothing is overlooked."],
+["Look for opportunities.","Follow procedures.","Act quickly.","Make sure everyone is heard."],
+["Get through the workload.","Support people and be flexible.","Get things right the first time.","Work smarter, not harder."]
+],
+[
+["I enjoy bringing new ideas to the team.","I feel good when the team gets things done.","I am satisfied when the team does things properly.","I am at my best when everyone in the team can contribute."],
+["When people disagree, I focus on moving the discussion towards a decision.","When people disagree, I focus on the facts and details.","When people disagree, I help keep the discussion constructive.","When people disagree, I like to bring new perspectives to the table."],
+["I enjoy keeping things well organized.","I enjoy bringing different strengths together.","I enjoy challenging old ways of doing things.","I enjoy driving things forward."],
+["I enjoy helping people develop.","I like being the one who initiates new ideas.","I like to get things done and move on.","I like delivering high-quality work."],
+["I get frustrated when we get stuck in old ways of working.","I get frustrated when we change something that we know works well.","I get frustrated when we spend too much time thinking and not enough time doing.","I get frustrated when people are left out and not seen or heard."],
+["I struggle when people don't take action.","I struggle when people aren’t willing to learn from each other.","I struggle when people start doing before thinking.","I struggle when new ideas are not explored."]
+]
+];
+
+let page=0;
+let answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));
+
+const $=id=>document.getElementById(id);
+
+function start(){
+ $("intro").classList.add("hidden"); $("done").classList.add("hidden"); $("test").classList.remove("hidden"); page=0; render();
+}
+function render(){
+ const part=page<6?0:1, g=page%6;
+ $("part").innerHTML="<h2>"+(part===0?"HOW OTHERS EXPECT ME TO BE AT WORK":"HOW I AM WHEN I CAN BE MYSELF")+"</h2>";
+ $("group").textContent="Group "+(g+1)+" of 6";
+ $("bar").style.width=((page+1)/12*100)+"%";
+ const box=$("statements"); box.innerHTML="";
+ groups[part][g].forEach((text,i)=>{
+   const row=document.createElement("div"); row.className="statement";
+   row.innerHTML='<div class="text">'+text+'</div><div class="controls">'+
+   '<button class="ctrl" aria-label="remove check" data-i="'+i+'" data-d="-1">−</button>'+
+   '<span class="count" id="c'+i+'">'+answers[part][g][i]+'</span>'+
+   '<button class="ctrl" aria-label="add check" data-i="'+i+'" data-d="1">+</button></div>';
+   box.appendChild(row);
+ });
+ box.querySelectorAll(".ctrl").forEach(b=>b.onclick=()=>change(+b.dataset.i,+b.dataset.d));
+ $("back").style.visibility=page===0?"hidden":"visible";
+ $("next").textContent=page===11?"Finish":"Next";
+ updateStatus();
+}
+function change(i,d){
+ const part=page<6?0:1,g=page%6,a=answers[part][g];
+ const next=a[i]+d,total=a.reduce((x,y)=>x+y,0);
+ if(next<0||next>7||total+d>7)return;
+ a[i]=next; $("c"+i).textContent=next; updateStatus();
+}
+function updateStatus(){
+  const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
+  $("status").textContent="Checks used: "+total+" / 7";
+  if(total===0){
+    $("error").textContent="Use exactly 7 checks before continuing.";
+  } else if(total<7){
+    $("error").textContent="You have used "+total+" of 7 checks. Add "+(7-total)+" more.";
+  } else {
+    $("error").textContent="";
+  }
+}
+
+
+const typeMap=[
+  [["E","D","O","Y"],["D","O","Y","E"],["O","Y","E","D"],["Y","E","D","O"],["E","O","D","Y"],["D","Y","O","E"]],
+  [["E","D","O","Y"],["D","O","Y","E"],["O","Y","E","D"],["Y","E","D","O"],["E","O","D","Y"],["D","Y","O","E"]]
+];
+
+function statementType(part,g,i){
+  return typeMap[part][g][i];
+}
+
+function calculateProfile(part){
+  const totals=[0,0,0,0];
+  for(let g=0;g<6;g++){
+    for(let i=0;i<4;i++){
+      totals[["D","O","E","Y"].indexOf(statementType(part,g,i))]+=answers[part][g][i];
+    }
+  }
+  return totals;
+}
+
+function sortedProfile(totals){
+  const names=["D","O","E","Y"];
+  const labels=["Doer","Organizer","Explorer","Unifier"];
+  const tieOrder={"D":0,"O":1,"E":2,"Y":3};
+  return totals.map((score,i)=>({score,name:names[i],label:labels[i]}))
+    .sort((a,b)=>b.score-a.score || tieOrder[a.name]-tieOrder[b.name]);
+}
+
+function profileHTML(title, totals){
+  const ranked=sortedProfile(totals);
+  let out='<div class="results-block"><p class="results-title">'+title+'</p>';
+  ranked.forEach(item=>{
+    const pct=item.score/42*100;
+    out+='<div class="profile-row"><div class="profile-label">'+item.name+' — '+item.label+'</div><div class="profile-track"><div class="profile-fill" style="width:'+pct+'%"></div></div><div class="profile-value">'+Math.round(pct)+'%</div></div>';
+  });
+  out+='</div>';
+  return out;
+}
+
+
+function sortedNaturalScores(totals){
+  const items=[
+    {key:"D",label:"Doer",score:totals[0],pct:Math.round(totals[0]/42*100)},
+    {key:"O",label:"Organizer",score:totals[1],pct:Math.round(totals[1]/42*100)},
+    {key:"E",label:"Explorer",score:totals[2],pct:Math.round(totals[2]/42*100)},
+    {key:"Y",label:"Unifier",score:totals[3],pct:Math.round(totals[3]/42*100)}
+  ];
+  // Classification uses the same rounded percentages shown to the candidate.
+  items.sort((a,b)=>b.pct-a.pct || b.score-a.score || a.label.localeCompare(b.label));
+  return items;
+}
+
+function classifyNaturalProfile(totals){
+  const s=sortedNaturalScores(totals);
+  const top=s[0].pct;
+  const second=s[1].pct;
+  const lowest=s[3].pct;
+  const range=top-lowest;
+  const topGap=top-second;
+
+  if(range<=7 && topGap<=3) return {type:"balanced",scores:s};
+  if(topGap<=3) return {type:"shared-strongest",scores:s};
+  if(top>0 && second/top>=0.60) return {type:"strong-leader-secondary",scores:s};
+  return {type:"clear-leader",scores:s};
+}
+
+function naturalVerbalProfileHTML(totals){
+  const data=[
+    {key:"D",label:"Doer",color:"🟢",descriptor:"Creates progress and gets things done."},
+    {key:"O",label:"Organizer",color:"🔴",descriptor:"Creates structure and ensures quality."},
+    {key:"E",label:"Explorer",color:"🔵",descriptor:"Sees possibilities and thinks differently."},
+    {key:"Y",label:"Unifier",color:"🟡",descriptor:"Brings people together and strengthens the team."}
+  ];
+  const idx={D:0,O:1,E:2,Y:3};
+  const sentenceMap={
+    "I am at my best when everyone in the team can contribute.":"You are at your best when everyone in the team can contribute.",
+    "When people disagree, I help keep the discussion constructive.":"You help keep discussions constructive when people disagree.",
+    "I enjoy bringing different strengths together.":"You enjoy bringing different strengths together.",
+    "I enjoy helping people develop.":"You enjoy helping people develop.",
+    "I get frustrated when people are left out and not seen or heard.":"You may become frustrated when people are left out or not heard.",
+    "I feel good when the team gets things done.":"You feel good when the team gets things done.",
+    "I struggle when people don't take action.":"You may become frustrated when people do not take action.",
+    "I enjoy driving things forward.":"You enjoy driving things forward.",
+    "I get frustrated when we spend too much time thinking and not enough time doing.":"You may become frustrated when too much time is spent thinking without enough action.",
+    "I like to get things done and move on.":"You like to get things done and move on.",
+    "I am satisfied when the team does things properly.":"You are satisfied when the team does things properly.",
+    "I like delivering high-quality work.":"You like delivering high-quality work.",
+    "When people disagree, I focus on the facts and details.":"You focus on facts and details when people disagree.",
+    "I enjoy keeping things well organized.":"You enjoy keeping things well organized.",
+    "I get frustrated when we get stuck in old ways of working.":"You may become frustrated when the team gets stuck in old ways of working.",
+    "I like being the one who initiates new ideas.":"You like to be the one who initiates new ideas.",
+    "I enjoy bringing new ideas to the team.":"You enjoy bringing new ideas to the team.",
+    "When people disagree, I like to bring new perspectives to the table.":"You like to bring new perspectives to the table when people disagree.",
+    "I enjoy challenging old ways of doing things.":"You enjoy challenging old ways of doing things.",
+    "I struggle when new ideas are not explored.":"You may find it difficult when new ideas are not explored.",
+    "I struggle when people start doing before thinking.":"You may find it difficult when people start doing before thinking.",
+    "I get frustrated when we change something that we know works well.":"You may become frustrated when something that works well is changed without a clear reason.",
+    "When people disagree, I focus on moving the discussion towards a decision.":"You focus on moving the discussion towards a decision when people disagree.",
+    "I struggle when people aren’t willing to learn from each other.":"You may find it difficult when people are not willing to learn from each other."
+  };
+
+  data.forEach(item=>{
+    item.score=totals[idx[item.key]];
+    item.pct=Math.round(item.score/42*100);
+    item.items=[];
+    for(let g=0;g<6;g++){
+      for(let i=0;i<4;i++){
+        if(statementType(1,g,i)===item.key && answers[1][g][i]>0){
+          item.items.push({weight:answers[1][g][i],text:groups[1][g][i],group:g+1});
+        }
+      }
+    }
+    item.items.sort((a,b)=>b.weight-a.weight || a.group-b.group);
+  });
+
+  const classification=classifyNaturalProfile(totals);
+  const ranked=classification.scores;
+  data.sort((a,b)=>{
+    const ra=ranked.findIndex(x=>x.key===a.key);
+    const rb=ranked.findIndex(x=>x.key===b.key);
+    return ra-rb;
+  });
+
+  let out='<div class="verbal-profile-clean">';
+
+  if(classification.type==="balanced"){
+    out+='<p class="profile-intro"><strong>Your profile appears relatively balanced, with all four strengths contributing in similar proportions.</strong></p>';
+  }
+
+  data.forEach((item, position)=>{
+    if(item.score<=0) return;
+
+    const count=item.pct>=50?4:item.pct>=30?3:item.pct>=15?2:1;
+    const top=item.items.slice(0,count);
+    const sentences=top.map(sig=>sentenceMap[sig.text]).filter(Boolean);
+
+    let lead="";
+
+    if(classification.type==="balanced"){
+      lead="This is an important part of your natural profile.";
+    }else if(classification.type==="shared-strongest"){
+      if(position<2){
+        lead="This is one of your strongest natural strengths.";
+      }else{
+        lead="This appears less prominent than your strongest strengths.";
+      }
+    }else if(classification.type==="strong-leader-secondary"){
+      if(position===0){
+        lead="Your strongest natural strength is "+item.label+".";
+      }else if(item.pct===classification.scores[1].pct){
+        lead=item.label+" is also an important part of your natural profile.";
+      }else{
+        lead="This appears less prominent in your natural profile.";
+      }
+    }else{
+      if(position===0){
+        lead="Your strongest natural strength is "+item.label+".";
+      }else{
+        lead="This appears less prominent in your natural profile.";
+      }
+    }
+
+    out+='<section class="verbal-section-clean">';
+    out+='<h3>'+item.color+' '+item.label+' <span class="strength-pct">'+item.pct+'%</span></h3>';
+    out+='<p class="descriptor">'+item.descriptor+'</p>';
+    out+='<p>'+lead;
+    sentences.forEach(sentence=>{out+=' '+sentence;});
+    if(position===0 && classification.type!=="balanced"){
+      out+=' Taken together, these answers help explain how you naturally contribute.';
+    }
+    out+='</p>';
+    out+='<div class="personal-signal"><strong>My own words</strong>';
+    top.forEach(sig=>out+='<br>“'+sig.text+'”');
+    out+='</div></section>';
+  });
+
+  out+='</div>';
+  return out;
+}
+
+function startToUnderstandMeHTML(totals){
+  const data=[
+    {key:"D",label:"Doer",color:"🟢",phrases:["Let me make it happen.","Let me take the lead and get started.","Let me do it my way.","Let me achieve the goal.","Judge me by what I achieve."]},
+    {key:"O",label:"Organizer",color:"🔴",phrases:["Let me get the details right.","Let me do it the right way.","Let me present the facts.","Let me make sure the rules are followed.","Let me check that the work is done right."]},
+    {key:"E",label:"Explorer",color:"🔵",phrases:["Let me think differently.","Let me challenge the way we do things.","Ask me about upsides and downsides.","Help me turn my new ideas into action.","Support my dreams."]},
+    {key:"Y",label:"Unifier",color:"🟡",phrases:["Let us strengthen teamwork.","Let’s stay focused on what matters.","Let’s face reality and keep moving forward.","Let’s celebrate our small wins.","Let’s bring out the best from each colour."]}
+  ];
+  const idx={D:0,O:1,E:2,Y:3};
+  const tie={E:0,D:1,O:2,Y:3};
+
+  const meaning={
+    D:"creating progress and getting things done",
+    O:"creating structure and ensuring quality",
+    E:"seeing possibilities and thinking differently",
+    Y:"bringing people together and strengthening the team"
+  };
+
+  data.forEach(item=>{
+    item.score=totals[idx[item.key]];
+    item.pct=Math.round(item.score/42*100);
+    item.items=[];
+    for(let g=0;g<6;g++){
+      for(let i=0;i<4;i++){
+        if(statementType(1,g,i)===item.key && answers[1][g][i]>0){
+          item.items.push({weight:answers[1][g][i],text:groups[1][g][i],group:g+1});
+        }
+      }
+    }
+    item.items.sort((a,b)=>b.weight-a.weight || a.group-b.group);
+  });
+  data.sort((a,b)=>b.score-a.score || tie[a.key]-tie[b.key]);
+
+  let out='<div class="start-understand-clean">';
+  out+='<p class="muted">When working with me, I appreciate it when you remember:</p>';
+
+  data.forEach(item=>{
+    if(item.score<=0) return;
+    const phraseCount=item.pct>=50?4:item.pct>=30?3:2;
+    const top=item.items.slice(0,phraseCount);
+
+    out+='<section class="start-understand-section-clean">';
+    out+='<h3>'+item.color+' '+item.label+' '+item.pct+'%</h3>';
+    out+='<div class="let-list">';
+    item.phrases.slice(0,phraseCount).forEach(p=>out+='<p>'+p+'</p>');
+    out+='</div>';
+
+    out+='<div class="personal-signal"><strong>My own words</strong>';
+    top.forEach(sig=>out+='<br>“'+sig.text+'”');
+    out+='</div></section>';
+  });
+
+  const low=data.filter(x=>x.pct<15);
+  if(low.length){
+    out+='<section class="start-understand-section-clean">';
+    out+='<h3>BE AWARE OF</h3>';
+    out+='<p>Some ways of contributing may feel less natural to me.</p>';
+    out+='<p><strong>You may want to be aware that:</strong></p>';
+    low.forEach(x=>{
+      out+='<p>'+x.color+' <strong>'+x.label+' — '+meaning[x.key]+' — may be a less natural way for me to contribute.</strong></p>';
+    });
+    out+='<p style="margin-top:10px;"><strong>Choose what you would like others to know about you.</strong></p>';
+    out+='</section>';
+  }
+
+  out+='</div>';
+  return out;
+}
+
+function expectationsBarsHTML(natural, job){
+  const data=[
+    {key:"D",label:"Doer",color:"🟢"},
+    {key:"O",label:"Organizer",color:"🔴"},
+    {key:"E",label:"Explorer",color:"🔵"},
+    {key:"Y",label:"Unifier",color:"🟡"}
+  ];
+  const idx={D:0,O:1,E:2,Y:3};
+
+  let out='<div class="expectations-bars">';
+  data.forEach(item=>{
+    const n=Math.round(natural[idx[item.key]]/42*100);
+    const j=Math.round(job[idx[item.key]]/42*100);
+
+    out+='<section class="expectation-row">';
+    out+='<div class="expectation-title">'+item.color+' '+item.label+'</div>';
+
+    out+='<div class="bar-group">';
+    out+='<div class="bar-label"><span>Natural</span><span>'+n+'%</span></div>';
+    out+='<div class="bar-row"><div class="single-bar-track"><div class="single-bar-fill" style="width:'+n+'%"></div></div></div>';
+    out+='</div>';
+
+    out+='<div class="bar-group">';
+    out+='<div class="bar-label"><span>Job expectation</span><span>'+j+'%</span></div>';
+    out+='<div class="bar-row"><div class="single-bar-track"><div class="single-bar-fill" style="width:'+j+'%"></div></div></div>';
+    out+='</div>';
+
+    out+='</section>';
+  });
+  out+='</div>';
+  return out;
+}
+
+function fitAssessmentHTML(natural, job){
+  let maxDiff=0;
+  for(let i=0;i<4;i++){
+    const n=Math.round(natural[i]/42*100);
+    const j=Math.round(job[i]/42*100);
+    maxDiff=Math.max(maxDiff,Math.abs(j-n));
+  }
+
+  let title, body;
+  if(maxDiff<=10){
+    title="CLOSE ALIGNMENT";
+    body="Your natural strengths and what you think others expect from you at work are closely aligned. It looks like you are being yourself at work.";
+  }else{
+    title="A DIFFERENCE TO EXPLORE";
+    body="Parts of your job may require you to work in ways that are less natural to you. A difference in the profiles can be a useful starting point for clarifying expectations with your team or manager.";
+  }
+
+  let out='<div class="fit-assessment">';
+  out+='<div class="fit-badge">'+title+'</div>';
+  out+='<p>'+body+'</p>';
+
+  if(maxDiff>10){
+    out+='<div class="fit-reflection">';
+    out+='<p><strong>Two things to consider:</strong></p>';
+    out+='<p>Do others actually expect me to be this way, or is this how I think they expect me to be?</p>';
+    out+='<p>Could the wording of the statements have influenced how I answered?</p>';
+    out+='</div>';
+  }else{
+    out+='<div class="fit-reflection">';
+    out+='<p><strong>What do you notice?</strong></p>';
+    out+='<p>Where does your natural way of contributing fit especially well with what others expect from you at work?</p>';
+    out+='</div>';
+  }
+
+  out+='<p class="test-note"><strong>Remember:</strong> this is a simple reflection tool — not a definitive answer.</p>';
+  out+='</div>';
+  return out;
+}
+
+function renderResults(){
+  const natural=calculateProfile(1);
+  const job=calculateProfile(0);
+  $("results").innerHTML=naturalVerbalProfileHTML(natural);
+  $("startToUnderstandMe").innerHTML=startToUnderstandMeHTML(natural);
+  $("expectationsBars").innerHTML=expectationsBarsHTML(natural,job);
+  $("fitAssessment").innerHTML=fitAssessmentHTML(natural,job);
+}
+
+function next(){
+ const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
+ if(total!==7){updateStatus();return}
+ if(page===5){
+  $("test").classList.add("hidden");
+  $("transition").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+  return;
+ }
+ if(page<11){page++;render();window.scrollTo({top:0,behavior:"smooth"});}
+ else{$("test").classList.add("hidden");$("done").classList.remove("hidden");renderResults();}
+}
+function transitionContinue(){
+ $("transition").classList.add("hidden");
+ page=6;
+ $("test").classList.remove("hidden");
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function transitionBack(){
+ $("transition").classList.add("hidden");
+ page=5;
+ $("test").classList.remove("hidden");
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function back(){
+ if(page===6){
+  $("test").classList.add("hidden");
+  $("transition").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+  return;
+ }
+ if(page>0){page--;render();window.scrollTo({top:0,behavior:"smooth"});}
+}
+function restart(){answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));start();}
+$("start").onclick=start;
+$("next").onclick=next;
+$("back").onclick=back;
+$("restart").onclick=restart;
+$("transitionBack").onclick=transitionBack;
+$("transitionContinue").onclick=transitionContinue;
+
+let reportPage=1;
+function showReportPage(n){
+  reportPage=n;
+  document.querySelectorAll(".report-page").forEach(p=>p.classList.toggle("active",Number(p.dataset.reportPage)===n));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+$("reportNext1").onclick=()=>showReportPage(2);
+$("reportPrev2").onclick=()=>showReportPage(1);
+$("reportNext2").onclick=()=>showReportPage(3);
+$("reportPrev3").onclick=()=>showReportPage(2);
+$("restart3").onclick=()=>restart();
+</script>
+</body>
+</html>
