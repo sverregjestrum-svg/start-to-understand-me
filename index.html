@@ -211,6 +211,99 @@ button.secondary{background:#eee;color:#222;border:0;border-radius:10px;padding:
 .overlap-marker{position:absolute;top:-3px;width:3px;height:28px;border-radius:2px;background:#666;z-index:3}
 .overlap-labels{display:flex;justify-content:space-between;margin-top:5px;font-size:13px;color:#666}
 .overlap-labels span{white-space:nowrap}
+
+/* LEGO profile – final report page test */
+.lego-page{max-width:900px;margin:0 auto}
+.lego-page h2{font-size:32px;line-height:1.15;margin:0 0 22px}
+.lego-page .lego-intro{font-size:20px;color:#666;line-height:1.5;margin:0 0 26px}
+.lego-name{font-size:29px;font-weight:800;line-height:1.2;margin:0 0 6px}
+.lego-secondary-profile{margin-top:8px;margin-bottom:22px}.lego-secondary-name{font-size:24px;margin-bottom:4px}
+.lego-type{font-size:17px;color:#666;margin:0 0 22px}
+.lego-row{display:grid;grid-template-columns:118px 1fr 58px;gap:14px;align-items:center;margin:18px 0 20px}
+.lego-row-brick{width:96px;height:68px;border-radius:7px;position:relative;box-shadow:inset 0 -6px 0 rgba(0,0,0,.12),0 3px 5px rgba(0,0,0,.10);display:flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:4px}
+.lego-row-brick:before{content:"";position:absolute;left:9px;top:-9px;width:15px;height:15px;border-radius:50%;background:inherit;box-shadow:24px 0 0 inherit,48px 0 0 inherit,72px 0 0 inherit,0 22px 0 inherit,24px 22px 0 inherit,48px 22px 0 inherit,72px 22px 0 inherit}
+.lego-row-brick:after{content:"";position:absolute;left:4px;right:4px;top:-6px;height:46px;border-radius:8px 8px 5px 5px;transform:skewY(-5deg);opacity:.16;pointer-events:none}
+.lego-row-brick span{position:relative;z-index:2;color:#fff;font-size:15px;font-weight:800;line-height:1;white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,.18)}
+.lego-track{height:15px;background:#eee;border-radius:9px;overflow:hidden}
+.lego-fill{height:100%;border-radius:9px}
+.lego-value{text-align:right;font-size:19px;font-weight:800}
+.lego-blue{background:#4a90e2}.lego-green{background:#65b84a}.lego-red{background:#d9534f}.lego-yellow{background:#f2c94c}
+.lego-note{background:#f7f7f7;border-radius:14px;padding:20px 22px;line-height:1.55;margin-top:24px}
+.lego-rule{margin-top:28px;padding-top:22px;border-top:1px solid #e5e5e5;color:#666;line-height:1.55}
+.lego-rule strong{color:#222}
+@media(max-width:600px){.lego-page h2{font-size:26px}.lego-name{font-size:25px}.lego-secondary-name{font-size:23px}.lego-row{grid-template-columns:105px 1fr 52px;gap:10px}.lego-row-brick{width:82px;height:56px}.lego-row-brick:before{left:8px;top:-7px;width:12px;height:12px;box-shadow:21px 0 0 inherit,42px 0 0 inherit,63px 0 0 inherit,0 21px 0 inherit,21px 21px 0 inherit,42px 21px 0 inherit,63px 21px 0 inherit}.lego-row-brick span{font-size:13px}.lego-value{font-size:16px}}
+
+.restart-notice{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px}
+.restart-notice.hidden{display:none}
+.restart-notice-box{max-width:520px;width:100%;background:#fff;border-radius:12px;padding:28px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.restart-notice-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+
+/* EMAIL MY REPORT — UI test only */
+.email-report-box{
+  margin-top:30px;
+  padding:22px;
+  background:#f7f7f7;
+  border:1px solid #e5e5e5;
+  border-radius:14px;
+}
+.email-report-box h3{
+  margin:0 0 8px;
+  font-size:21px;
+}
+.email-report-box p{
+  margin:0 0 14px;
+  color:#666;
+  line-height:1.5;
+}
+.email-report-fields{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.email-report-label{
+  font-size:14px;
+  font-weight:700;
+  color:#444;
+  margin-top:4px;
+}
+.email-report-label span{
+  font-weight:400;
+  color:#777;
+}
+.email-report-fields input{
+  width:100%;
+  padding:13px 14px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  font-size:16px;
+  background:#fff;
+  color:#222;
+}
+.email-report-fields button{
+  justify-self:start;
+  margin-top:6px;
+  white-space:nowrap;
+}
+.email-report-privacy{
+  margin-top:10px!important;
+  font-size:13px;
+  color:#777!important;
+}
+.email-report-status{
+  min-height:20px;
+  margin-top:10px;
+  font-size:14px;
+  color:#555;
+}
+@media(max-width:600px){
+  .email-report-fields button{width:100%;justify-self:stretch}
+}
+
+
+#sendReportEmail[disabled]{opacity:.55;cursor:wait}
+.email-report-status.success{color:#1f6b35;font-weight:700}
+.email-report-status.error{color:#a40020;font-weight:700}
+
 </style>
 </head>
 <body>
@@ -268,64 +361,104 @@ Now we will look at what comes naturally to you.</p>
 
 <section class="report hidden" id="done">
 <div class="report-page active" data-report-page="1">
-  <h2>Your natural strengths</h2>
-  <p class="report-subtitle">WHAT COMES NATURALLY TO ME?</p>
-
-  <div id="results"></div>
+  <div class="lego-page">
+    
+    <div id="legoProfile"></div>
+  </div>
   <div class="report-nav">
-    <div class="page-count">Page 1 of 3</div>
+    <div class="page-count">Page 1 of 4</div>
     <div class="report-actions">
       <button class="secondary" disabled>Back</button>
       <button class="main" id="reportNext1">Next</button>
     </div>
   </div>
-</div>
+</div><div class="report-page" data-report-page="2">
+  <h2>Your natural strengths</h2>
+  <p class="report-subtitle">WHAT COMES NATURALLY TO ME?</p>
 
-
-<div class="report-page" data-report-page="2">
+  <div id="results"></div>
+  <div class="report-nav">
+    <div class="page-count">Page 2 of 4</div>
+    <div class="report-actions">
+      <button class="secondary" id="reportPrev1">Back</button>
+      <button class="main" id="reportNext2">Next</button>
+    </div>
+  </div>
+</div><div class="report-page" data-report-page="3">
   <h2>START TO UNDERSTAND ME</h2>
   <p class="report-subtitle">How to communicate and work well with me</p>
   
   <div id="startToUnderstandMe"></div>
   <div class="report-nav">
-    <div class="page-count">Page 2 of 3</div>
+    <div class="page-count">Page 3 of 4</div>
     <div class="report-actions">
       <button class="secondary" id="reportPrev2">Back</button>
-      <button class="main" id="reportNext2">Next</button>
-      <button class="secondary" id="restart">Start again</button>
+      <button class="main" id="reportNext3">Next</button>
     </div>
   </div>
-</div>
-
-
-<div class="report-page" data-report-page="3">
+</div><div class="report-page" data-report-page="4">
   <h2>EXPECTATIONS vs. BEING MYSELF</h2>
   <p class="report-subtitle">What does my job require from me — and how does that compare with what comes naturally to me?</p>
 
   <div id="expectationsBars"></div>
 
   <div class="team-reflection">
-    <h3>How to read the two profiles</h3>
+    <h3></h3>
     <p><strong>Natural</strong><br>This shows how you tend to be when you can be yourself — the ways of working that feel most natural to you.</p>
     <p><strong>Job expectation</strong><br>This shows how you feel your job requires you to be — the ways of working you believe are expected from you.</p>
 
     <h3 style="margin-top:24px;">What can you learn?</h3>
-    <p>The two profiles do not need to be the same. A difference may simply reflect the demands of your role. It can also be a useful starting point for asking whether these expectations are clear and realistic.</p>
-    <p>A close match may indicate that your natural strengths fit well with your role. It can also be worth asking whether you are being challenged enough to grow.</p>
-    <p style="margin-top:18px;"><strong>These two profiles can be a useful starting point for reflection and clarification.</strong></p>
+    <p>The difference between your natural strengths and your job expectations is that your job may require you to use strengths that do not come as naturally to you. Meeting these expectations may sometimes require you to stretch a little further and step outside your comfort zone. A larger difference may mean that you are relying more on strengths that take extra effort and energy.</p>
+    <p>Your natural profile shows how you tend to be when you can be yourself — the ways of working that feel most natural to you. It can therefore give you a clearer picture of your “real you”.</p>
+    <p style="margin-top:18px;"><strong>Use these two for reflection and clarification.</strong></p>
   </div>
 
   <p style="margin-top:18px;"><strong>TEAM = Together Everyone Achieves More.</strong></p>
-  <p>The profile is not a conclusion. It is a starting point for reflection and development.</p>
+
+  <div class="email-report-box" id="emailReportBox">
+    <h3>EMAIL MY REPORT</h3>
+    <p>Add your name or nickname if you wish, then enter one or two email addresses and we will send the four-page report.</p>
+
+    <div class="email-report-fields">
+      <label class="email-report-label" for="reportName">Name or nickname <span>(optional)</span></label>
+      <input type="text" id="reportName" placeholder="Enter your name or nickname" autocomplete="name">
+
+      <label class="email-report-label" for="reportEmail1">Email address 1</label>
+      <input type="email" id="reportEmail1" placeholder="Enter email address" autocomplete="email" inputmode="email">
+
+      <label class="email-report-label" for="reportEmail2">Email address 2 <span>(optional)</span></label>
+      <input type="text" id="reportEmail2" name="secondary_report_email_manual" placeholder="Enter second email address" autocomplete="off" inputmode="email" autocapitalize="none" spellcheck="false" readonly>
+
+      <button class="main" id="sendReportEmail" type="button">Send my report</button>
+    </div>
+
+    <p class="email-report-privacy">The email addresses are only used to send this report.</p>
+    <div class="email-report-status" id="emailReportStatus" aria-live="polite"></div>
+  </div>
+
 <div class="report-nav">
-    <div class="page-count">Page 3 of 3</div>
+    <div class="page-count">Page 4 of 4</div>
     <div class="report-actions">
-      <button class="secondary" id="reportPrev3">Back</button>
-      <button class="secondary" id="restart3">Start again</button>
+      <button class="secondary" id="reportPrev3">Back</button> <button class="secondary" id="startAgainNew" type="button">Start again</button>
     </div>
   </div>
 </div>
-</section><script>
+
+</section><div id="restartNotice" class="restart-notice hidden" role="dialog" aria-modal="true" aria-labelledby="restartNoticeTitle">
+  <div class="restart-notice-box">
+    <h3 id="restartNoticeTitle">Start again?</h3>
+    <p>Before you start again, remember that your current result will be lost. It may be a good idea to take a screenshot of your profile first.</p>
+    <div class="restart-notice-actions">
+      <button type="button" class="secondary" id="restartCancel">Cancel</button>
+      <button type="button" class="main" id="restartConfirm">Start again</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
 const groups=[
 [
 ["Bring in new ideas.","Contribute to getting things done.","Make sure things are done properly.","Make sure everyone can contribute."],
@@ -369,7 +502,7 @@ function render(){
  });
  box.querySelectorAll(".ctrl").forEach(b=>b.onclick=()=>change(+b.dataset.i,+b.dataset.d));
  $("back").style.visibility=page===0?"hidden":"visible";
- $("next").textContent=page===11?"Finish":"Next";
+ $("next").textContent="Next";
  updateStatus();
 }
 function change(i,d){
@@ -671,12 +804,192 @@ function expectationsBarsHTML(natural, job){
   return out;
 }
 
+
+function legoPercentages(totals){
+  const keys=["D","O","E","Y"];
+  return Object.fromEntries(keys.map((k,i)=>[k,Math.round(totals[i]/42*100)]));
+}
+
+const legoTwoColorNames={
+  "DO":{D:"THE DOER WITH DETAILS IN MIND",O:"THE ORGANIZER WITH ACTION IN MIND"},
+  "DE":{D:"THE DOER WITH NEW POSSIBILITIES IN MIND",E:"THE EXPLORER WITH ACTION IN MIND"},
+  "DY":{D:"THE DOER WITH PEOPLE IN MIND",Y:"THE UNIFIER WITH ACTION IN MIND"},
+  "EO":{O:"THE ORGANIZER WITH NEW POSSIBILITIES IN MIND",E:"THE EXPLORER WITH STRUCTURE IN MIND"},
+  "OY":{O:"THE ORGANIZER WITH PEOPLE IN MIND",Y:"THE UNIFIER WITH STRUCTURE IN MIND"},
+  "EY":{E:"THE EXPLORER WITH PEOPLE IN MIND",Y:"THE UNIFIER WITH NEW POSSIBILITIES IN MIND"}
+};
+const legoThreeColorNames={
+  "DEO":{D:"THE DOER WITH DETAILS AND NEW POSSIBILITIES IN MIND",O:"THE ORGANIZER WITH ACTION AND NEW POSSIBILITIES IN MIND",E:"THE EXPLORER WITH ACTION AND STRUCTURE IN MIND"},
+  "DOY":{D:"THE DOER WITH DETAILS AND PEOPLE IN MIND",O:"THE ORGANIZER WITH ACTION AND PEOPLE IN MIND",Y:"THE UNIFIER WITH ACTION AND STRUCTURE IN MIND"},
+  "DEY":{D:"THE DOER WITH NEW POSSIBILITIES AND PEOPLE IN MIND",E:"THE EXPLORER WITH ACTION AND PEOPLE IN MIND",Y:"THE UNIFIER WITH ACTION AND NEW POSSIBILITIES IN MIND"},
+  "EOY":{O:"THE ORGANIZER WITH NEW POSSIBILITIES AND PEOPLE IN MIND",E:"THE EXPLORER WITH STRUCTURE AND PEOPLE IN MIND",Y:"THE UNIFIER WITH STRUCTURE AND NEW POSSIBILITIES IN MIND"}
+};
+
+const legoLabels={D:"Doer",O:"Organizer",E:"Explorer",Y:"Unifier"};
+const legoClass={D:"lego-green",O:"lego-red",E:"lego-blue",Y:"lego-yellow"};
+
+function legoProfileDecision(p){
+  // A colour joins the profile when it is within 7 percentage points
+  // of the strongest colour. This rule is intentionally the only
+  // classification rule used here.
+  const tiePriority={D:0,O:1,E:2,Y:3};
+  const s=Object.entries(p).sort((a,b)=>b[1]-a[1] || tiePriority[a[0]]-tiePriority[b[0]]);
+  const max=s[0][1];
+  const included=s.filter(x=>max-x[1]<=7).map(x=>x[0]);
+  const primary=included[0];
+
+  if(included.length===4){
+    return {kind:"balanced",name:"THE ALL ROUNDER",keys:included};
+  }
+
+  if(included.length===3){
+    const key=included.slice().sort().join('');
+    const name=legoThreeColorNames[key]?.[primary];
+    if(!name) throw new Error("LEGO profile name missing for three-colour combination "+key+" / "+primary);
+    return {kind:"three",name,keys:included};
+  }
+
+  if(included.length===2){
+    const key=included.slice().sort().join('');
+    const name=legoTwoColorNames[key]?.[primary];
+    if(!name) throw new Error("LEGO profile name missing for two-colour combination "+key+" / "+primary);
+    return {kind:"two",name,keys:included};
+  }
+
+  return {kind:"one",name:"THE "+legoLabels[primary].toUpperCase(),keys:[primary]};
+}
+
+function legoProfileSelfCheck(){
+  const priority={D:0,O:1,E:2,Y:3};
+  const keys=["D","O","E","Y"];
+
+  // Check that the name tables are complete and have no unexpected keys.
+  const expectedPairs=["DE","DO","DY","EO","EY","OY"];
+  const expectedTriples=["DEO","DEY","DOY","EOY"];
+
+  if(Object.keys(legoTwoColorNames).sort().join(",")!==expectedPairs.slice().sort().join(",")){
+    throw new Error("LEGO self-check: incomplete two-colour name table.");
+  }
+  if(Object.keys(legoThreeColorNames).sort().join(",")!==expectedTriples.slice().sort().join(",")){
+    throw new Error("LEGO self-check: incomplete three-colour name table.");
+  }
+
+  expectedPairs.forEach(key=>{
+    const expectedKeys=key.split("");
+    if(expectedKeys.some(k=>!legoTwoColorNames[key][k])){
+      throw new Error("LEGO self-check: missing two-colour name for "+key);
+    }
+  });
+  expectedTriples.forEach(key=>{
+    const expectedKeys=key.split("");
+    if(expectedKeys.some(k=>!legoThreeColorNames[key][k])){
+      throw new Error("LEGO self-check: missing three-colour name for "+key);
+    }
+  });
+
+  // Exhaustively test every possible integer score profile whose four
+  // scores total 42 (the questionnaire's full natural-score total).
+  let tested=0;
+  for(let d=0;d<=42;d++){
+    for(let o=0;o<=42-d;o++){
+      for(let e=0;e<=42-d-o;e++){
+        const y=42-d-o-e;
+        const totals=[d,o,e,y];
+        const p=legoPercentages(totals);
+        const ranked=keys.map(k=>({k,v:p[k]}))
+          .sort((a,b)=>b.v-a.v || priority[a.k]-priority[b.k]);
+        const max=ranked[0].v;
+        const expectedIncluded=ranked.filter(x=>max-x.v<=7).map(x=>x.k);
+        const actual=legoProfileDecision(p);
+
+        if(actual.keys.join("")!==expectedIncluded.join("")){
+          throw new Error("LEGO self-check: inclusion mismatch at "+totals.join("/"));
+        }
+
+        const expectedKind=expectedIncluded.length===4?"balanced":
+          expectedIncluded.length===3?"three":
+          expectedIncluded.length===2?"two":"one";
+
+        if(actual.kind!==expectedKind){
+          throw new Error("LEGO self-check: kind mismatch at "+totals.join("/"));
+        }
+
+        if(actual.name.includes("(") || actual.name.includes(")")){
+          throw new Error("LEGO self-check: unexpected parentheses at "+totals.join("/"));
+        }
+
+        if(expectedKind==="two"){
+          const key=expectedIncluded.slice().sort().join("");
+          if(actual.name!==legoTwoColorNames[key][actual.keys[0]]){
+            throw new Error("LEGO self-check: two-colour name mismatch at "+totals.join("/"));
+          }
+        }
+        if(expectedKind==="three"){
+          const key=expectedIncluded.slice().sort().join("");
+          if(actual.name!==legoThreeColorNames[key][actual.keys[0]]){
+            throw new Error("LEGO self-check: three-colour name mismatch at "+totals.join("/"));
+          }
+        }
+        if(expectedKind==="one" && actual.name!=="THE "+legoLabels[actual.keys[0]].toUpperCase()){
+          throw new Error("LEGO self-check: one-colour name mismatch at "+totals.join("/"));
+        }
+        if(expectedKind==="balanced" && actual.name!=="THE ALL ROUNDER"){
+          throw new Error("LEGO self-check: balanced name mismatch at "+totals.join("/"));
+        }
+
+        tested++;
+      }
+    }
+  }
+
+  console.info("LEGO profile self-check passed:",tested,"score profiles tested.");
+  return true;
+}
+
+legoProfileSelfCheck();
+
+function renderLegoProfile(totals){
+  const p=legoPercentages(totals);
+  const decision=legoProfileDecision(p);
+  const order=Object.entries(p).sort((a,b)=>b[1]-a[1] || ({D:0,O:1,E:2,Y:3}[a[0]]-({D:0,O:1,E:2,Y:3}[b[0]])));
+
+  let out='';
+
+  // The displayed profile depends on how many colours are included.
+  // One colour: show the single-colour profile.
+  // Two or three colours: show the combined profile as the main result.
+  // Four colours: show THE ALL ROUNDER.
+  if(decision.kind==="balanced"){
+    out+='<div class="lego-name">THE ALL ROUNDER</div>';
+    out+='<p class="lego-type">Four-colour profile</p>';
+  } else {
+    out+='<div class="lego-name">'+decision.name+'</div>';
+    out+='<p class="lego-type">'+(decision.kind==="one"?"One-colour profile":decision.kind==="two"?"Two-colour profile":"Three-colour profile")+'</p>';
+  }
+
+  order.forEach(([k,v])=>{
+    out+='<div class="lego-row">';
+    out+='<div class="lego-row-brick '+legoClass[k]+'"><span>'+legoLabels[k]+'</span></div>';
+    out+='<div class="lego-track"><div class="lego-fill '+legoClass[k]+'" style="width:'+v+'%"></div></div>';
+    out+='<div class="lego-value">'+v+'%</div></div>';
+  });
+
+  const quotedName=(decision.kind==="balanced"?"The all rounder":decision.name.charAt(0)+decision.name.slice(1).toLowerCase());
+  let note='<div class="lego-note"><strong>How to read your profile</strong><br>';
+  note+='The name "'+quotedName+'" is a positive shorthand for the combination of your natural strengths shown by this analysis.<br>';
+  note+='The percentages show the strength of the different colours in your profile.';
+  note+='</div>';
+  out+=note;
+  return out;
+}
+
 function renderResults(){
   const natural=calculateProfile(1);
   const job=calculateProfile(0);
   $("results").innerHTML=naturalVerbalProfileHTML(natural);
   $("startToUnderstandMe").innerHTML=startToUnderstandMeHTML(natural);
   $("expectationsBars").innerHTML=expectationsBarsHTML(natural,job);
+  $("legoProfile").innerHTML=renderLegoProfile(natural);
 }
 
 function next(){
@@ -714,11 +1027,20 @@ function back(){
  }
  if(page>0){page--;render();window.scrollTo({top:0,behavior:"smooth"});}
 }
-function restart(){answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));start();}
+function restartTest(){
+  answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));
+  page=0;
+  reportPage=1;
+  $("done").classList.add("hidden");
+  $("transition").classList.add("hidden");
+  $("test").classList.add("hidden");
+  $("intro").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 $("start").onclick=start;
 $("next").onclick=next;
 $("back").onclick=back;
-$("restart").onclick=restart;
+
 $("transitionBack").onclick=transitionBack;
 $("transitionContinue").onclick=transitionContinue;
 
@@ -728,11 +1050,171 @@ function showReportPage(n){
   document.querySelectorAll(".report-page").forEach(p=>p.classList.toggle("active",Number(p.dataset.reportPage)===n));
   window.scrollTo({top:0,behavior:"smooth"});
 }
+document.addEventListener("click",function(e){
+  if(e.target.closest("#startAgainNew")){
+    e.preventDefault();
+    $("restartNotice").classList.remove("hidden");
+  }
+});
+$("restartCancel").onclick=()=>$("restartNotice").classList.add("hidden");
+$("restartConfirm").onclick=()=>restartTest();
 $("reportNext1").onclick=()=>showReportPage(2);
-$("reportPrev2").onclick=()=>showReportPage(1);
+$("reportPrev1").onclick=()=>showReportPage(1);
 $("reportNext2").onclick=()=>showReportPage(3);
-$("reportPrev3").onclick=()=>showReportPage(2);
-$("restart3").onclick=()=>restart();
+$("reportPrev2").onclick=()=>showReportPage(2);
+$("reportNext3").onclick=()=>showReportPage(4);
+$("reportPrev3").onclick=()=>showReportPage(3);
+
+
+
+const simpleEmailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+$("reportEmail2").addEventListener("focus",function(){
+  this.removeAttribute("readonly");
+});
+$("reportEmail2").addEventListener("pointerdown",function(){
+  this.removeAttribute("readonly");
+});
+
+
+
+
+// EMAIL MY REPORT — server send test
+async function buildReportPdfBlob(){
+  if(typeof html2canvas==="undefined" || !window.jspdf || !window.jspdf.jsPDF){
+    throw new Error("PDF tools could not be loaded.");
+  }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});
+  const staging=document.createElement("div");
+  staging.style.position="fixed";
+  staging.style.left="-10000px";
+  staging.style.top="0";
+  staging.style.width="900px";
+  staging.style.background="#fff";
+  staging.style.zIndex="-1";
+  document.body.appendChild(staging);
+
+  try{
+    for(let pageNo=1; pageNo<=4; pageNo++){
+      const source=document.querySelector('.report-page[data-report-page="'+pageNo+'"]');
+      if(!source) throw new Error("Missing report page "+pageNo);
+
+      const clone=source.cloneNode(true);
+      clone.classList.add("active");
+      clone.style.display="block";
+      clone.style.width="900px";
+      clone.style.maxWidth="900px";
+      clone.style.background="#fff";
+      clone.querySelectorAll(".report-nav,.email-report-box").forEach(el=>el.remove());
+
+      staging.innerHTML="";
+      staging.appendChild(clone);
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+      const canvas=await html2canvas(clone,{
+        scale:2,
+        backgroundColor:"#ffffff",
+        useCORS:true,
+        logging:false,
+        windowWidth:900
+      });
+
+      const imgData=canvas.toDataURL("image/jpeg",0.94);
+      const pageW=210, pageH=297, margin=10;
+      const maxW=pageW-margin*2, maxH=pageH-margin*2;
+      const ratio=Math.min(maxW/canvas.width,maxH/canvas.height);
+      const imgW=canvas.width*ratio, imgH=canvas.height*ratio;
+      const x=(pageW-imgW)/2, y=margin;
+
+      if(pageNo>1) pdf.addPage();
+      pdf.addImage(imgData,"JPEG",x,y,imgW,imgH,undefined,"FAST");
+    }
+    return pdf.output("blob");
+  } finally {
+    staging.remove();
+  }
+}
+
+async function sendReportByEmail(){
+  const name=$("reportName").value.trim();
+  const email1=$("reportEmail1").value.trim();
+  const email2=$("reportEmail2").value.trim();
+  const status=$("emailReportStatus");
+  const button=$("sendReportEmail");
+
+  status.className="email-report-status";
+  status.textContent="";
+
+  if(!email1 && !email2){
+    status.classList.add("error");
+    status.textContent="Enter at least one email address.";
+    return;
+  }
+  if(email1 && !$("reportEmail1").checkValidity()){
+    status.classList.add("error");
+    status.textContent="Check email address 1.";
+    return;
+  }
+  if(email2 && !simpleEmailPattern.test(email2)){
+    status.classList.add("error");
+    status.textContent="Check email address 2.";
+    return;
+  }
+
+  const recipients=[email1,email2].filter(Boolean);
+  const uniqueRecipients=[...new Set(recipients.map(x=>x.toLowerCase()))];
+  if(uniqueRecipients.length!==recipients.length){
+    status.classList.add("error");
+    status.textContent="The two email addresses are the same. Use a different second address or leave it empty.";
+    return;
+  }
+
+  try{
+    button.disabled=true;
+    button.textContent="Preparing report...";
+    status.textContent="Creating your report...";
+
+    const pdfBlob=await buildReportPdfBlob();
+
+    button.textContent="Sending...";
+    status.textContent="Sending your report...";
+
+    const formData=new FormData();
+    formData.append("name",name);
+    formData.append("email1",email1);
+    formData.append("email2",email2);
+    formData.append("report",pdfBlob,"START_TO_UNDERSTAND_ME_report.pdf");
+
+    const response=await fetch("send-report.php",{
+      method:"POST",
+      body:formData,
+      credentials:"same-origin"
+    });
+
+    let payload={};
+    try{ payload=await response.json(); }catch(_){}
+
+    if(!response.ok || !payload.ok){
+      const detail = payload.detail ? " " + payload.detail : "";
+      throw new Error((payload.message || "The report could not be sent.") + detail);
+    }
+
+    status.className="email-report-status success";
+    status.textContent="Your report has been sent.";
+  }catch(err){
+    console.error(err);
+    status.className="email-report-status error";
+    status.textContent=err.message || "We could not send the report. Please try again.";
+  }finally{
+    button.disabled=false;
+    button.textContent="Send my report";
+  }
+}
+
+$("sendReportEmail").onclick=sendReportByEmail;
+
 </script>
 </body>
 </html>
