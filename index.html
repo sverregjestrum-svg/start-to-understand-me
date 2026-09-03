@@ -1187,7 +1187,7 @@ async function sendReportByEmail(){
     formData.append("email2",email2);
     formData.append("report",pdfBlob,"START_TO_UNDERSTAND_ME_report.pdf");
 
-    const response=await fetch("send-report.php",{
+    const response=await fetch("https://starttounderstandme.com/send-report.php",{
       method:"POST",
       body:formData,
       credentials:"same-origin"
