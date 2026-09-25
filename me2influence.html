@@ -1,0 +1,3016 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>me2influence – Kommunikasjon og påvirkning</title>
+<style>
+:root {
+ --bg:#f4f5f7; --card:#fff; --text:#1f252b; --muted:#6d7680; --line:#d9dfe4;
+ --dark:#23292f; --soft:#eef1f4;
+ --sell:#f1c6aa; --mark:#efb47f; --inv:#eadf9b; --insp:#e3d16d;
+ --low:#e5f2ea; --mid:#f7efd8; --high:#f8e5e2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin:16px 0}
+h1{font-size:32px;margin:0 0 4px} h2{font-size:23px;margin:0 0 8px} h3{margin:0 0 8px}
+p{line-height:1.5} .muted{color:var(--muted)} .hidden{display:none!important}
+.progress{height:8px;background:#e6eaed;border-radius:99px;overflow:hidden;margin:0 0 16px}
+.progress>div{height:100%;background:var(--dark);width:0;transition:.2s}
+.context-grid{display:grid;grid-template-columns:1.6fr 1.7fr 1fr;gap:12px}
+input[type=text],select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:15px}
+.statement-list{margin-top:14px;border-top:1px solid var(--line)}
+.statement{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:15px 2px;border-bottom:1px solid var(--line)}
+.toggle{width:50px;height:29px;background:#c7cdd2;border-radius:99px;position:relative;cursor:pointer}
+.toggle:after{content:"";position:absolute;width:21px;height:21px;top:4px;left:4px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.22);transition:.18s}
+.toggle.on{background:var(--dark)} .toggle.on:after{left:25px}
+.toggle:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}
+button{border:0;border-radius:11px;padding:12px 18px;font-size:15px;font-weight:700;cursor:pointer}
+.primary{background:var(--dark);color:#fff} .secondary{background:#e8ebee} .ghost{background:#fff;border:1px solid var(--line)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.weight-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:20px 2px;border-bottom:1px solid var(--line)}
+.weight-text{font-size:18px;line-height:1.35}
+.weight-control{display:grid;grid-template-columns:56px 48px 56px;align-items:center;gap:8px}
+.weight-btn{
+  width:56px;height:56px;padding:0;border:1px solid #cfd4d8;border-radius:14px;
+  background:#f7f8f9;color:#111;font-size:30px;font-weight:700;line-height:1;
+}
+.weight-btn:hover{background:#eef1f3}
+.weight-btn:disabled{opacity:.35}
+.weight-value{
+  width:48px;padding:0!important;border:0!important;background:transparent!important;
+  text-align:center;font-size:26px!important;font-weight:800;color:#1f252b;
+  -moz-appearance:textfield;
+}
+.weight-value::-webkit-outer-spin-button,.weight-value::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+.sumline{margin-top:18px;padding:16px 18px;background:#fff;border:0;border-radius:10px;text-align:center}
+.weight-sumline{padding:18px}
+.weight-status{display:block}
+.weight-status-text strong{display:block;font-size:18px}
+.weight-status-text .muted{margin-top:6px;display:block;font-size:16px}
+.weight-validation{margin-top:8px;font-size:17px;font-weight:700;color:#b30f20}
+.weight-validation.done{color:#2e7153}
+@media(max-width:700px){
+  .weight-row{grid-template-columns:1fr;gap:12px}
+  .weight-control{justify-content:end}
+}
+
+.area-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.area{padding:18px;border:1px solid var(--line);border-radius:15px;background:#fff}
+.area.sell{border-top:6px solid var(--sell)} .area.mark{border-top:6px solid var(--mark)} .area.inv{border-top:6px solid var(--inv)} .area.insp{border-top:6px solid var(--insp)}
+.area .kw{font-weight:700;font-size:13px}
+.pp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ppbox{background:#fafbfc;border:1px solid var(--line);border-radius:14px;padding:18px}
+.big{font-size:30px;font-weight:800}
+.chart{overflow-x:auto}
+.chart-shell{min-width:940px}
+.chart-stage{position:relative;padding-top:12px}
+.chart-wrap{display:grid;grid-template-columns:46px 1fr;gap:10px}
+.scale{height:340px;position:relative;color:var(--muted);font-size:11px}
+.scale span{position:absolute;right:6px;transform:translateY(50%)}
+.bars{position:relative;height:340px;display:grid;grid-template-columns:repeat(11,1fr);gap:14px;align-items:end;padding:0 8px;border-bottom:1px solid #cfd5da;background:linear-gradient(to top,rgba(238,241,243,.85) 1px,transparent 1px);background-size:100% 20%}
+.vcol{height:100%;display:flex;align-items:flex-end;justify-content:center;position:relative;z-index:2}
+.vbar{width:72%;border-radius:10px 10px 0 0;position:relative;box-shadow:0 2px 5px rgba(31,37,43,.08);transition:.2s}
+.score-label{position:absolute;top:-28px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:800;color:#1f252b;white-space:nowrap}
+.chart-labels{display:grid;grid-template-columns:repeat(11,1fr);margin-left:56px;gap:14px;padding:10px 8px 0}
+.chart-label{font-size:11px;line-height:1.15;text-align:center;min-height:48px;display:flex;align-items:flex-start;justify-content:center;font-weight:700;color:#3e454b}
+.area-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+.area-mini{border:1px solid var(--line);border-radius:14px;padding:14px 15px;background:#fff;min-height:105px}
+.area-mini h3{margin:0 0 6px;font-size:16px}
+.area-mini p{margin:0;color:#535d66;font-size:13px;line-height:1.35}
+.area-mini.sell{border-top:5px solid #c98455}
+.area-mini.mark{border-top:5px solid #d2a23f}
+.area-mini.inv{border-top:5px solid #6f9f88}
+.area-mini.insp{border-top:5px solid #7d83b3}
+.direction-line{display:grid;grid-template-columns:6fr 5fr;gap:10px;margin-top:12px}
+.direction-pill{border-radius:999px;padding:10px 14px;text-align:center;font-weight:800;background:#f3f5f6;border:1px solid var(--line);font-size:13px}
+@media(max-width:900px){.area-cards{grid-template-columns:1fr 1fr}.direction-line{grid-template-columns:1fr}.chart-shell{min-width:900px}}
+
+.level-card{border:1px solid var(--line);border-radius:14px;padding:17px 18px;margin:10px 0;background:#fff}
+.tag{display:inline-block;padding:5px 9px;border-radius:99px;font-size:12px;font-weight:800;margin-bottom:8px}
+.tag.vlow,.tag.low{background:var(--low);color:#2e7153}
+.tag.mid{background:var(--mid);color:#7a5a15}
+.tag.high,.tag.vhigh{background:var(--high);color:#8b2a22}
+.level-card{position:relative}
+.detail-score-badge{float:right;margin:0 0 8px 12px}
+.principle{background:#fafbfc;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:12px}
+@media(max-width:800px){.context-grid,.area-grid,.pp{grid-template-columns:1fr}}
+@media print{body{background:#fff} .print-hide,.analysis-ui{display:none!important} .wrap{max-width:none;padding:0} .card{break-inside:avoid}}
+
+.profile-bars{display:grid;gap:18px;margin-top:18px}
+.profile-line{display:grid;grid-template-columns:180px 1fr 70px;gap:16px;align-items:center}
+.profile-name{font-size:20px;font-weight:800}
+.profile-sub{font-size:12px;color:var(--muted);font-weight:600}
+.track{height:22px;background:#e8eaec;border-radius:999px;overflow:hidden}
+.fill{height:100%;background:#343a40;border-radius:999px}
+.profile-pct{font-size:24px;font-weight:800;text-align:right}
+.area-detail{padding:22px 0;border-bottom:1px solid var(--line)}
+.area-detail:last-child{border-bottom:0}
+.area-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+.area-head .pct{font-size:28px;font-weight:800}
+.area-kicker{font-size:15px;font-weight:700;color:var(--muted);margin:4px 0 12px}
+.ownwords{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.ownwords strong{display:block;margin-bottom:6px}
+.ownwords div{color:#4f5962;margin:4px 0}
+.signal{margin-top:12px;padding:12px 14px;border-radius:12px;background:#fafbfc;border:1px solid var(--line)}
+
+
+.hero-summary{padding:24px;border-radius:18px;background:#fafbfc;border:1px solid var(--line);margin-top:18px}
+.hero-summary h3{font-size:26px;margin-bottom:8px}
+.praise-box{background:#f7faf8;border:1px solid #dfe9e2;border-radius:14px;padding:16px 18px;margin-top:14px}
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.report-panel{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fff}
+.report-panel h3{font-size:19px}
+.next-step{background:#fff8e8;border:1px solid #ead8a1;border-radius:14px;padding:18px;margin-top:14px}
+.natural-list{margin:8px 0 0 18px}
+.natural-list li{margin:6px 0}
+@media(max-width:800px){.report-grid{grid-template-columns:1fr}}
+
+
+.profile-fit{font-size:12px;line-height:1.25;color:#69737c;margin-top:3px}
+.area-fitline{font-size:14px;line-height:1.35;color:#535d66;margin:2px 0 12px;font-weight:600}
+
+
+.section-eyebrow{
+  font-size:11px;font-weight:800;letter-spacing:.9px;color:#7a838c;
+  margin-bottom:6px
+}
+.insight-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px
+}
+.insight-card{
+  border:1px solid var(--line);border-radius:15px;padding:18px;background:#fff
+}
+.insight-card h3{font-size:17px;margin-bottom:10px}
+.insight-card.positive{border-top:5px solid #6f9f88}
+.insight-card.low-development{border-top:5px solid #6f8f9f;background:#fffaf0}
+.insight-card.low-reflection{border-top:5px solid #89939c;background:#fffaf0}
+.insight-card.caution{border-top:5px solid #d69a39}
+.insight-card.neutral{border-top:5px solid #89939c}
+.focus-card{
+  border:2px solid #d69a39;background:#fff8e6;border-radius:16px;
+  padding:20px;margin:14px 0 16px
+}
+.focus-card strong:first-child{font-size:18px}
+.compact-pp{margin-top:18px}
+.quick-guide{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px
+}
+.quick-guide-card{
+  border:1px solid var(--line);border-radius:14px;padding:16px;background:#fafbfc
+}
+.quick-guide-card h3{font-size:16px;margin-bottom:6px}
+.quick-guide-card p{margin:0}
+.key-message{margin-top:14px}
+.deep-dive-intro{margin-bottom:8px}
+.deep-dive{padding:0;overflow:hidden}
+.deep-dive summary{
+  list-style:none;cursor:pointer;padding:20px 24px;font-size:18px;font-weight:800;
+  display:flex;align-items:center;justify-content:space-between
+}
+.deep-dive summary::-webkit-details-marker{display:none}
+.deep-dive summary:after{
+  content:"+";width:28px;height:28px;border-radius:50%;background:#f0f2f4;
+  display:flex;align-items:center;justify-content:center;font-size:20px;color:#535d66
+}
+.deep-dive[open] summary:after{content:"–"}
+.deep-dive[open] summary{border-bottom:1px solid var(--line)}
+.deep-content{padding:20px 24px 24px}
+@media(max-width:850px){
+  .insight-grid{grid-template-columns:1fr}
+  .quick-guide{grid-template-columns:1fr}
+}
+@media print{
+  details.deep-dive{display:block!important}
+  details.deep-dive summary{border-bottom:1px solid var(--line)}
+  details.deep-dive:not([open]) > .deep-content{display:block!important}
+}
+
+
+.first-impression{
+  padding-top:28px;padding-bottom:24px
+}
+.hero-first{
+  margin-top:8px;background:#fff;border:none;padding:0
+}
+.hero-first h3{
+  font-size:32px;line-height:1.15;margin:0 0 12px;max-width:850px
+}
+.hero-first .praise-box{
+  background:#f7faf8;border:1px solid #dfe9e2;border-radius:16px;
+  padding:16px 18px;margin-top:12px;max-width:900px
+}
+.hero-first .ownwords{display:none}
+.compact-principle{margin-top:18px}
+
+.profile-scale-legend{
+  margin:14px 78px 4px 196px;
+  position:relative;height:18px;font-size:10px;color:#8a939b
+}
+.profile-scale-legend span{
+  position:absolute;transform:translateX(-50%);font-weight:700
+}
+.profile-scale-legend span:nth-child(1){left:15%}
+.profile-scale-legend span:nth-child(2){left:25%}
+.profile-scale-legend span:nth-child(3){left:35%}
+.profile-scale-legend span:nth-child(4){left:45%}
+
+.profile-bars{display:grid;gap:16px;margin-top:4px}
+.profile-line{
+  display:grid;grid-template-columns:180px 1fr 155px;gap:16px;align-items:center
+}
+.profile-name{font-size:20px;font-weight:800}
+.profile-sub{
+  font-size:13px;color:#5f6972;font-weight:650;line-height:1.28;margin-top:3px
+}
+.profile-fit{display:none}
+.profile-track-wrap{position:relative}
+.track{
+  height:28px;background:#eef1f3;border-radius:999px;overflow:hidden;position:relative
+}
+.track-zone{
+  position:absolute;top:0;bottom:0;border-right:1px solid rgba(77,86,94,.18);z-index:1
+}
+.track-zone.z15{left:15%}
+.track-zone.z25{left:25%;border-right:2px dashed #78828a}
+.track-zone.z35{left:35%}
+.track-zone.z45{left:45%}
+.fill{
+  height:100%;background:#343a40;border-radius:999px;position:relative;z-index:2;
+  min-width:2px
+}
+.profile-result{
+  display:flex;align-items:center;justify-content:flex-end;gap:8px;white-space:nowrap
+}
+.profile-pct{font-size:24px;font-weight:800;text-align:right}
+.area-status{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:999px;padding:6px 9px;font-size:10px;font-weight:850;
+  letter-spacing:.35px;text-transform:uppercase
+}
+.area-status.low{background:#eef2f4;color:#5f6972}
+.area-status.avg{background:#f4eedc;color:#735c22}
+.area-status.high{background:#f7e6d5;color:#8a4a1d}
+.area-status.veryhigh{background:#f6dfdc;color:#8b2a22}
+
+@media(max-width:850px){
+  .profile-line{grid-template-columns:1fr;gap:8px}
+  .profile-result{justify-content:flex-start}
+  .profile-scale-legend{display:none}
+}
+
+
+/* Main profile: only signal meaningful low/high results */
+.profile-line .fill{background:#343a40}
+.profile-line.level-low .fill{background:#6f8f9f}
+.profile-line.level-high .fill{background:#d59735}
+.profile-line.level-veryhigh .fill{background:#b9554d}
+.profile-line.level-low .track{background:#eef3f5}
+.profile-line.level-high .track,
+.profile-line.level-veryhigh .track{background:#f3f0eb}
+.profile-scale-legend{display:none!important}
+.track-zone{display:none!important}
+
+
+
+
+.insight-card.neutral{border-top-color:#7b86a8}
+
+
+/* 11-form chart: signal only meaningful high/low results */
+.vbar.form-low{background:#6f8f9f!important}
+.vbar.form-verylow{background:#557483!important}
+.vbar.form-high{background:#d59735!important}
+.vbar.form-veryhigh{background:#b9554d!important}
+.form-signal{
+  position:absolute;top:-50px;left:50%;transform:translateX(-50%);
+  padding:4px 7px;border-radius:999px;font-size:8px;font-weight:850;
+  letter-spacing:.3px;text-transform:uppercase;white-space:nowrap;
+  background:#fff;border:1px solid #d8dde1;color:#535d66
+}
+.form-signal.low,.form-signal.verylow{border-color:#aebec6;color:#496472}
+.form-signal.high{border-color:#dfbd88;color:#8a571c}
+.form-signal.veryhigh{border-color:#d9a09a;color:#8b2a22}
+
+
+.form-signal.slightlylow{border-color:#c6d2d8;color:#647783}
+.vbar.form-slightlylow{background:#9fb2bc!important}
+.area-form-name,.detail-form-name{font-size:13px;font-weight:800;color:#69737d;margin:2px 0 8px}
+
+
+.low-form-section{
+  margin-top:22px;
+  padding-top:4px;
+}
+.low-form-section + .low-form-section{
+  margin-top:34px;
+  padding-top:28px;
+  border-top:1px solid #d9dfe3;
+}
+.low-form-title{
+  margin:0 0 14px 2px;
+  font-size:24px;
+  font-weight:800;
+  color:#20262d;
+}
+
+
+/* Stronger hierarchy for key interpretation headings */
+#strongestHeading,
+#lowInsightBlock > .section-eyebrow{
+  font-size:24px;
+  line-height:1.2;
+  font-weight:850;
+  letter-spacing:0;
+  color:#20262d;
+  text-transform:none;
+  margin:8px 0 20px;
+}
+.low-form-title{
+  font-size:21px;
+  line-height:1.2;
+  font-weight:800;
+  color:#20262d;
+  margin:0 0 16px 2px;
+}
+.low-form-section{
+  margin-top:18px;
+}
+.low-form-section + .low-form-section{
+  margin-top:38px;
+  padding-top:30px;
+  border-top:1px solid #d9dfe3;
+}
+
+.start-footer{margin-top:28px;padding-top:20px;border-top:1px solid #d9dfe3}
+.start-footer p{margin:0 0 10px 0;font-size:16px;line-height:1.5;color:#646f78}
+.start-footer p:last-child{margin-bottom:0}
+.start-footer a{color:#2563eb;text-decoration:underline}
+
+
+.selection-challenge{margin-top:14px}
+.selection-challenge p{margin:0 0 10px}
+.selection-challenge .actions{justify-content:flex-start;margin-top:12px}
+
+
+/* Reflection prompt: centered and visually distinct without feeling like an error */
+.selection-challenge{
+  max-width:760px;
+  margin:34px auto 8px;
+  padding:24px 26px;
+  background:#fff8e8;
+  border:2px solid #d9a12e;
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.05);
+}
+.selection-challenge p{
+  margin:0 0 12px;
+  text-align:left;
+}
+.selection-challenge p:first-child{
+  font-size:20px;
+  font-weight:800;
+}
+.selection-challenge .actions{
+  justify-content:center;
+  margin-top:18px;
+}
+
+
+.strong-form-section{
+  margin-top:18px;
+}
+.strong-form-section + .strong-form-section{
+  margin-top:38px;
+  padding-top:30px;
+  border-top:1px solid #d9dfe3;
+}
+.strong-form-title{
+  font-size:21px;
+  line-height:1.2;
+  font-weight:800;
+  color:#20262d;
+  margin:0 0 16px 2px;
+}
+
+
+.brand-card{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:24px;
+}
+.brand-copy h1{margin-bottom:8px}
+.brand-copy .muted{margin:0}
+.brand-actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-left:auto;
+}
+@media(max-width:700px){
+  .brand-card{flex-direction:column}
+  .brand-actions{margin-left:0;width:100%;justify-content:flex-end}
+}
+
+
+.insight-grid.two{
+  grid-template-columns:repeat(2,1fr)
+}
+.insight-grid.low-two{
+  grid-template-columns:minmax(0,2fr) minmax(240px,1fr)
+}
+@media(max-width:850px){
+  .insight-grid.two,.insight-grid.low-two{grid-template-columns:1fr}
+}
+
+
+.score-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:54px;
+  padding:5px 10px;
+  border:1px solid #d6dce3;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:800;
+  color:#59636f;
+  background:#f7f9fb;
+  white-space:nowrap;
+}
+.insight-card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+.insight-card-head h3{
+  margin:0;
+}
+
+.score-meter{
+  margin:0 0 16px;
+  height:10px;
+  background:#edf1f4;
+  border-radius:999px;
+  overflow:hidden;
+}
+.score-meter-fill{
+  height:100%;
+  border-radius:999px;
+  background:#5f889f;
+}
+.score-meter-fill.strength{
+  background:#6f9f88;
+}
+.score-meter-fill.low{
+  background:#9eb1bf;
+}
+
+
+/* PDF + e-post */
+.pdf-email-dialog{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(31,37,43,.48);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.pdf-email-dialog.hidden{display:none}
+.pdf-email-panel{
+  width:min(560px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:18px;
+  padding:26px;
+  box-shadow:0 18px 55px rgba(0,0,0,.22);
+}
+.pdf-email-panel h2{margin:0 0 8px}
+.pdf-email-panel p{margin:0 0 16px;line-height:1.5}
+.pdf-email-fields{display:grid;gap:10px}
+.pdf-email-fields label{font-size:14px;font-weight:800;color:#39424b}
+.pdf-email-fields label span{font-weight:400;color:#6b747c}
+.pdf-email-fields input{
+  width:100%;
+  border:1px solid #cfd5da;
+  border-radius:10px;
+  padding:12px 13px;
+  font-size:16px;
+  background:#fff;
+  color:#20262d;
+}
+.pdf-email-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+.pdf-email-status{
+  min-height:22px;
+  margin-top:12px;
+  font-size:14px;
+  color:#535d66;
+}
+.pdf-email-status.success{color:#2e7153;font-weight:800}
+.pdf-email-status.error{color:#9f1d2d;font-weight:800}
+.pdf-email-privacy{
+  margin-top:12px!important;
+  font-size:13px;
+  color:#717b84;
+}
+.pdf-busy{opacity:.6;pointer-events:none}
+.pdf-render-root{
+  position:fixed;
+  left:-12000px;
+  top:0;
+  width:1000px;
+  z-index:-1000;
+  background:#fff;
+  padding:0;
+}
+.pdf-render-root .card{
+  box-shadow:none!important;
+  margin:0!important;
+  border:1px solid #e1e5e8!important;
+}
+.pdf-render-root details > summary{display:none!important}
+.pdf-render-root details[open] > .deep-content{display:block!important}
+.pdf-render-root .chart-shell{
+  min-width:0!important;
+  width:100%!important;
+}
+.pdf-render-root .chart{overflow:visible!important}
+.pdf-render-root .print-hide{display:none!important}
+.pdf-render-root,
+.pdf-render-root *{
+  font-family:Arial,Helvetica,sans-serif!important;
+  word-spacing:normal!important;
+  letter-spacing:normal!important;
+  font-kerning:none!important;
+  text-rendering:geometricPrecision;
+}
+.pdf-render-root .hero-first h3{
+  font-size:30px!important;
+  line-height:1.2!important;
+  max-width:900px!important;
+}
+@media(max-width:650px){
+  .pdf-email-actions{flex-direction:column-reverse}
+  .pdf-email-actions button{width:100%}
+}
+
+
+
+.influence-overview-card{padding:28px}
+.influence-overview-intro{margin:4px 0 22px}
+.influence-overview-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.influence-family{
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:18px;
+  background:#fff;
+  break-inside:avoid;
+}
+.influence-family h3{margin:0 0 2px;font-size:20px}
+.family-sub{margin:0 0 12px;color:var(--muted);font-size:13px;font-weight:700}
+.influence-form{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:12px;
+  padding:9px 0;
+  border-top:1px solid #edf0f2;
+  align-items:start;
+}
+.influence-form:first-of-type{border-top:0}
+.influence-form strong{font-size:14px}
+.influence-form span{font-size:14px;line-height:1.4;color:#4f5962}
+.influence-overview-note{margin-top:18px}
+.pdf-render-root .influence-overview-card{padding:24px!important}
+.pdf-render-root .influence-overview-grid{gap:12px!important}
+.pdf-render-root .influence-family{padding:14px!important}
+.pdf-render-root .influence-form{padding:7px 0!important}
+@media(max-width:800px){
+  .influence-overview-grid{grid-template-columns:1fr}
+  .influence-form{grid-template-columns:1fr;gap:3px}
+}
+
+
+.compact-reflection .deep-content{padding-top:8px}
+.compact-reflection .principle{padding:12px 14px;margin-top:8px}
+.pdf-render-root .compact-reflection{margin-top:10px!important}
+.pdf-render-root .compact-reflection summary{padding:14px 18px!important}
+.pdf-render-root .compact-reflection .deep-content{padding:8px 18px 14px!important}
+.pdf-render-root .compact-reflection .principle{
+  padding:9px 12px!important;
+  margin-top:6px!important;
+  font-size:13px!important;
+  line-height:1.35!important;
+}
+
+.report-legal{
+  margin-top:22px;
+  padding-top:14px;
+  border-top:1px solid #e1e5e8;
+  font-size:12px;
+  line-height:1.5;
+  color:#6b747c;
+}
+.report-legal strong{color:#3d464e}
+.report-cover{
+  min-height:920px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:#fff;
+  padding:58px 58px 34px;
+}
+.report-cover-main{
+  padding-top:64px;
+}
+.report-cover-brand{
+  font-size:46px;
+  font-weight:850;
+  letter-spacing:-1px;
+  line-height:1.05;
+  margin:0 0 10px;
+}
+.report-cover-subtitle{
+  font-size:19px;
+  font-weight:650;
+  color:#535d66;
+  margin:0 0 46px;
+}
+.report-cover-subtitle::after{
+  content:"";
+  display:block;
+  width:72px;
+  height:2px;
+  margin-top:26px;
+  background:#d59735;
+}
+.report-cover-label{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.05px;
+  color:#7a838c;
+  text-transform:uppercase;
+  margin-bottom:9px;
+}
+.report-cover-name{
+  font-size:37px;
+  font-weight:850;
+  line-height:1.12;
+  letter-spacing:-.35px;
+  margin-bottom:12px;
+  overflow-wrap:anywhere;
+}
+.report-cover-date{
+  font-size:15px;
+  color:#69737c;
+}
+.report-cover .report-legal{
+  margin-top:0;
+  padding-top:12px;
+  border-top:1px solid #e7ebee;
+  font-size:10.5px;
+  line-height:1.45;
+  color:#7a838c;
+}
+.report-cover .report-legal strong{
+  color:#535d66;
+}
+.pdf-render-root .report-cover{
+  min-height:1260px!important;
+  box-shadow:none!important;
+  border:none!important;
+  page-break-after:always;
+}
+
+
+/* STEP 2 — all 11 forms after the original strength boxes */
+.forms-overview{display:grid;gap:10px;margin-top:18px}
+.form-overview-row{
+  display:grid;
+  grid-template-columns:minmax(180px,220px) 110px 1fr;
+  gap:16px;
+  align-items:start;
+  padding:14px 0;
+  border-top:1px solid #e7ebee;
+}
+.form-overview-row:first-child{border-top:0}
+.form-overview-name{font-size:17px;font-weight:800;line-height:1.25}
+.form-overview-score{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.form-overview-score strong{font-size:18px}
+.form-overview-level{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:999px;padding:5px 8px;font-size:10px;font-weight:850;
+  letter-spacing:.3px;white-space:nowrap
+}
+.form-overview-level.low{background:#eef2f4;color:#496472}
+.form-overview-level.slightlylow{background:#f0f3f5;color:#647783}
+.form-overview-level.high{background:#f7e9d5;color:#8a571c}
+.form-overview-level.veryhigh{background:#f6dfdc;color:#8b2a22}
+.form-overview-text{font-size:14px;line-height:1.45;color:#4f5962}
+.form-overview-note{margin-top:5px;font-size:12px;font-weight:700;color:#647783}
+@media(max-width:760px){
+  .form-overview-row{grid-template-columns:1fr;gap:6px}
+}
+
+
+/* CHANGE 2 — "Når passer den best?" + Bruk/Strekk/Demp in model section */
+.model-fit{
+  margin-top:12px;
+  padding-top:11px;
+  border-top:1px solid #edf0f2;
+  font-size:13px;
+  line-height:1.45;
+  color:#4f5962;
+}
+.model-fit strong{color:#20262d}
+.model-choice{
+  margin-top:20px;
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fafbfc;
+}
+.model-choice h3{margin:0 0 6px;font-size:18px}
+.model-choice > p{margin:0;color:#535d66}
+.model-choice-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:14px;
+}
+.model-choice-item{
+  background:#fff;
+  border:1px solid #e1e5e8;
+  border-radius:12px;
+  padding:14px;
+  text-align:center;
+}
+.model-choice-icon{
+  width:42px;
+  height:42px;
+  margin:0 auto 8px;
+  border-radius:50%;
+  background:#eef1f4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  font-weight:800;
+  color:#39424b;
+}
+.model-choice-item strong{
+  display:block;
+  font-size:16px;
+  margin-bottom:4px;
+}
+.model-choice-item span{
+  display:block;
+  font-size:12px;
+  line-height:1.35;
+  color:#69737c;
+}
+@media(max-width:700px){
+  .model-choice-grid{grid-template-columns:1fr}
+}
+
+
+/* CHANGE 3 — three presentation cues for each main style */
+.family-style-tip{
+  margin:10px 0 12px;
+  font-size:13px;
+  line-height:1.35;
+  color:#535d66;
+}
+.family-style-tip strong{color:#20262d}
+
+
+/* Keep samspill together with the main strength profile */
+.profile-samspill{
+  margin-top:26px;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+}
+.profile-samspill h2{margin-bottom:10px}
+.profile-samspill p{margin:8px 0}
+.profile-samspill .principle{margin-top:14px}
+.pdf-render-root .profile-samspill{
+  margin-top:20px!important;
+  padding-top:18px!important;
+}
+.pdf-render-root .profile-samspill p{
+  margin:6px 0!important;
+  line-height:1.4!important;
+}
+
+.profile-alt-tid{margin-top:26px;padding-top:22px;border-top:1px solid #e5e7eb}
+.profile-alt-tid-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.profile-alt-tid .principle{margin:0}
+.profile-alt-tid .muted{grid-column:1/-1;margin:0 0 2px!important}
+@media(max-width:800px){.profile-alt-tid-grid{grid-template-columns:1fr}}
+.profile-quick-guide{margin-top:28px;padding-top:22px;border-top:1px solid #e5e7eb}
+.profile-quick-guide .influence-overview-grid{margin-top:18px}
+
+
+.alt-time-card .section-eyebrow{margin-bottom:8px}
+.alt-time-intro{margin:0 0 18px;line-height:1.5;color:#535d66}
+.alt-time-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.alt-time-grid .principle{margin:0;height:100%}
+.alt-time-conclusion{margin-top:16px}
+@media(max-width:800px){.alt-time-grid{grid-template-columns:1fr}}
+
+
+.final-leader-reflection h2{margin-bottom:14px}
+.final-leader-reflection .principle{margin:16px 0}
+
+
+.insight-card p,
+.low-form-section p,
+.strong-form-section p,
+.alt-time-card p{
+  font-size:15px;
+  line-height:1.5;
+}
+
+/* Quick guide readability */
+.influence-form strong{font-size:15px}
+.influence-form span{font-size:15px;line-height:1.45;color:#46515a}
+.model-fit{font-size:14px;line-height:1.45}
+.family-style-tip{font-size:14px;line-height:1.45;color:#46515a}
+
+/* Bruk – Strekk – Demp */
+.model-choice-item span{font-size:14px;line-height:1.4}
+
+/* Legal text readability */
+.report-legal{font-size:12px;line-height:1.5;color:#59636c}
+.report-cover .report-legal{font-size:11.5px}
+
+
+.profile-shorthand-note{
+  margin-top:18px;
+  padding:12px 14px;
+  border:1px solid #e1e5e8;
+  border-radius:12px;
+  background:#fafbfc;
+  color:#535d66;
+  font-size:14px;
+  line-height:1.45;
+}
+.profile-shorthand-note strong{color:#1f252b}
+
+
+.report-version{font-size:11px;color:#8a939c;letter-spacing:.02em}
+
+/* v6 — compact and cleaner "Modellen bak analysen" */
+.profile-quick-guide{
+  margin-top:18px;
+  padding-top:14px;
+}
+.profile-quick-guide .section-kicker{margin-bottom:2px}
+.profile-quick-guide > h2{margin:0 0 2px}
+.profile-quick-guide .influence-overview-intro{
+  margin:2px 0 12px;
+}
+.profile-quick-guide .influence-overview-grid{
+  margin-top:10px;
+  gap:10px;
+  align-items:start;
+}
+.profile-quick-guide .influence-family{
+  padding:12px 13px;
+  border-radius:12px;
+}
+.profile-quick-guide .influence-family h3{
+  margin:0 0 1px;
+  font-size:17px;
+  line-height:1.15;
+}
+.profile-quick-guide .family-sub{
+  margin:0 0 7px;
+  font-size:11.5px;
+  line-height:1.25;
+}
+.profile-quick-guide .influence-form{
+  grid-template-columns:122px 1fr;
+  gap:8px;
+  padding:5px 0;
+}
+.profile-quick-guide .influence-form strong{
+  font-size:12.5px;
+  line-height:1.25;
+}
+.profile-quick-guide .influence-form span{
+  font-size:12.5px;
+  line-height:1.28;
+}
+.profile-quick-guide .model-fit{
+  margin-top:6px;
+  padding-top:6px;
+  font-size:11.8px;
+  line-height:1.3;
+}
+.profile-quick-guide .family-style-tip{
+  margin:5px 0 0;
+  font-size:11.8px;
+  line-height:1.3;
+}
+
+/* Keep the compactness in the generated PDF as well. */
+.pdf-render-root .profile-quick-guide{
+  margin-top:14px!important;
+  padding-top:11px!important;
+}
+.pdf-render-root .profile-quick-guide .influence-overview-intro{
+  margin:1px 0 9px!important;
+}
+.pdf-render-root .profile-quick-guide .influence-overview-grid{
+  gap:8px!important;
+  margin-top:8px!important;
+}
+.pdf-render-root .profile-quick-guide .influence-family{
+  padding:10px 11px!important;
+}
+.pdf-render-root .profile-quick-guide .influence-form{
+  grid-template-columns:116px 1fr!important;
+  gap:7px!important;
+  padding:4px 0!important;
+}
+.pdf-render-root .profile-quick-guide .influence-form strong,
+.pdf-render-root .profile-quick-guide .influence-form span{
+  font-size:12px!important;
+  line-height:1.24!important;
+}
+.pdf-render-root .profile-quick-guide .model-fit,
+.pdf-render-root .profile-quick-guide .family-style-tip{
+  font-size:11.3px!important;
+  line-height:1.25!important;
+}
+
+.pdf-email-note{
+  margin:12px 0 0;
+  font-size:13px;
+  line-height:1.4;
+  color:#69737c;
+}
+.pdf-email-note strong{color:#3d464e}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card brand-card">
+    <div class="brand-copy">
+      <h1>me2influence</h1>
+      <p class="muted">Kommunikasjon og påvirkning</p>
+    </div>
+    <div id="brandReportActions" class="brand-actions print-hide hidden">
+      <button class="ghost" id="emailReportButton" type="button" onclick="openEmailReportDialog()">Send på e-post</button>
+    </div>
+  </div>
+
+  <section id="analysis" class="analysis-ui">
+    <div class="progress"><div id="prog"></div></div>
+
+    <div id="context" class="card">
+      <h2>Før du starter</h2>
+      <p>Denne analysen viser hva du legger vekt på når du kommuniserer og påvirker andre.</p>
+      <p>Tenk på noe konkret du skal få til sammen med andre og ha både oppgaven og menneskene i tankene når du svarer.</p>
+      <p>Vi er på jakt etter dine første tanker – det som er «top of mind».</p>
+      <p>Svar så ærlig som mulig – slik du faktisk er, ikke slik du skulle ønske du var.</p>
+      <p>Analysen er din. Du trenger ikke dele den med andre, med mindre dette er avtalt på forhånd.</p>
+      <p>Hver omgang er en ny start – ikke tenk på hva du svarte tidligere.</p>
+      <p><strong>Svar raskt og intuitivt. Ikke overtenk.</strong></p>
+      <div class="actions"><button class="primary" onclick="startAnalysis()">Start</button></div>
+      <div class="start-footer">
+        <p>For mer informasjon: <a href="mailto:sverre.gjestrum@bedriftspartner.com"
+onclick="window.location.href='mailto:sverre.gjestrum@bedriftspartner.com'; return false;"
+title="Send e-post til sverre.gjestrum@bedriftspartner.com">sverre.gjestrum@bedriftspartner.com</a></p>
+        <p>© Bedriftspartner AS – Org nr 977 060 346</p>
+        <p>Utviklet av fagpersoner med støtte fra AI. Kan inneholde feil. Brukes som grunnlag for refleksjon, ikke som fasit.<br>Kommersiell bruk krever tillatelse.</p>
+      </div>
+    </div>
+
+    <div id="roundCard" class="card hidden">
+      <div id="roundTitle"></div>
+      <div id="step1">
+        <h2>1. Hva er typisk deg?</h2>
+        <p>Velg de utsagnene som passer deg best.</p>
+        <div id="selectCounter" class="sumline">Valgt: <strong>0</strong></div>
+        <div id="selectMessage" class="principle hidden"></div>
+        <div id="statementList" class="statement-list"></div>
+        <div class="actions"><button class="primary" onclick="toWeight()">Gå videre</button></div>
+      </div>
+
+      <div id="step2" class="hidden">
+        <h2>2. Hva kjennetegner deg mest?</h2>
+        <p><strong>Nå skal du vekte valgene dine.</strong></p>
+        <div id="weightIntro" class="principle"></div>
+        <div id="weightList"></div>
+        
+        <div class="sumline weight-sumline">
+          <div class="weight-status">
+            <div class="weight-status-text">
+              <strong id="weightCounter">Markeringer brukt: 0 / 0</strong>
+              <span class="muted">Bruk + og − for å vise hva som kjennetegner deg mest.</span>
+              <div id="weightValidation" class="weight-validation">Bruk alle markeringene før du går videre.</div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="secondary" onclick="backToSelect()">Tilbake</button>
+          <button id="nextRound" class="primary" disabled onclick="saveRound()">Neste</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="report" class="hidden" data-report-version="8.56">
+
+    <!-- 1. FØRSTEINNTRYKK -->
+    <div class="card first-impression">
+      <div class="section-eyebrow">DETTE FANT ANALYSEN</div>
+      <div id="heroSummary" class="hero-summary hero-first"></div>
+      <div class="profile-shorthand-note">
+        <strong>Kort forklart:</strong> Kortbeskrivelsen trekker frem de påvirkningsformene som skiller seg tydeligst ut i profilen din. Hele profilen vises i søylene under.
+      </div>
+
+    </div>
+
+
+
+<!-- 5. FORDYPNING -->
+
+    <!-- 2. DETALJERT STYRKEPROFIL -->
+    <div class="card chart">
+      <h2>Detaljert styrkeprofil</h2>
+        <div class="chart-shell">
+          <div class="chart-stage">
+            <div class="chart-wrap">
+              <div id="scale" class="scale"></div>
+              <div id="bars" class="bars"></div>
+            </div>
+            <div id="labels" class="chart-labels"></div>
+          </div>
+        </div>
+    </div>
+
+    <!-- 3. STERKESTE OG SKJULTE STYRKER -->
+    <div id="strengthSummaryCard" class="card">
+      <div id="strongestHeading" class="section-eyebrow">DINE STERKESTE STYRKER</div>
+      <div id="strongestSections"></div>
+      <div id="lowInsightBlock" style="display:none">
+        <div class="section-eyebrow">STYRKER DU KAN HA NYTTE AV Å BRUKE MER I GITTE SITUASJONER</div>
+        <p id="lowIntro" class="muted" style="margin:8px 0 4px"></p>
+        <div id="lowSections"></div>
+      </div>
+    </div>
+
+
+    <div class="card">
+<div class="model-choice">
+<h3>Hva kreves av deg?</h3>
+        <p>Situasjonen kan kreve at du bruker styrkene dine forskjellig.</p>
+        <div class="model-choice-grid">
+          <div class="model-choice-item">
+            <div class="model-choice-icon">✓</div>
+            <strong>Bruk</strong>
+            <span>Bruk en styrke som allerede kommer naturlig.</span>
+          </div>
+          <div class="model-choice-item">
+            <div class="model-choice-icon">↗</div>
+            <strong>Strekk</strong>
+            <span>Bruk mer av en påvirkningsform enn du vanligvis gjør.</span>
+          </div>
+          <div class="model-choice-item">
+            <div class="model-choice-icon">↓</div>
+            <strong>Demp</strong>
+            <span>Bruk mindre av en styrke når situasjonen krever det.</span>
+          </div>
+        </div>
+    </div>
+
+    <!-- 4. STYRKEPROFIL – FIRE HOVEDSTILER -->
+    <div class="card">
+      <div class="section-eyebrow">DET STORE BILDET</div>
+      <h2>Styrkeprofil</h2>
+      <div id="mainProfileBars" class="profile-bars"></div>
+
+      <div class="profile-quick-guide">
+        <div class="section-kicker">MODELLEN BAK ANALYSEN</div>
+        <h2>De 11 påvirkningsformene</h2>
+        <p class="muted influence-overview-intro">En kort oversikt over påvirkningsformene som inngår i analysen.</p>
+
+        <div class="influence-overview-grid">
+<section class="influence-family selling">
+          <h3>Selgende</h3>
+          <p class="family-sub">Foreslå · Argumentere</p>
+          <div class="influence-form"><strong>Foreslå</strong><span>Komme med ideer og konkrete veier videre.</span></div>
+          <div class="influence-form"><strong>Argumentere</strong><span>Begrunne standpunkter med fakta og logikk.</span></div>
+          <div class="model-fit"><strong>Passer best:</strong> Når situasjonen krever saklighet, troverdighet og tydelige begrunnelser.</div>
+          <p class="family-style-tip"><strong>Fremstå som:</strong> Troverdig · Kompetent · Respektert</p>
+        </section>
+
+        <section class="influence-family marking">
+          <h3>Markerende</h3>
+          <p class="family-sub">Uttrykke forventninger · Anerkjenne · Utfordre · Sette rammer</p>
+          <div class="influence-form"><strong>Uttrykke forventninger</strong><span>Gjøre krav, ansvar og prioriteringer tydelige.</span></div>
+          <div class="influence-form"><strong>Anerkjenne</strong><span>Gjøre gode bidrag synlige.</span></div>
+          <div class="influence-form"><strong>Utfordre</strong><span>Ta opp det som bør forbedres.</span></div>
+          <div class="influence-form"><strong>Sette rammer</strong><span>Avklare grenser, mandat og handlingsrom.</span></div>
+          <div class="model-fit"><strong>Passer best:</strong> Når situasjonen krever tydelighet, mot og respekt.</div>
+          <p class="family-style-tip"><strong>Fremstå som:</strong> Tydelig · Modig · Bestemt</p>
+        </section>
+
+        <section class="influence-family involving">
+          <h3>Involverende</h3>
+          <p class="family-sub">Involvere · Lytte · Vise åpenhet</p>
+          <div class="influence-form"><strong>Involvere</strong><span>Få frem andres kunnskap og perspektiver.</span></div>
+          <div class="influence-form"><strong>Lytte</strong><span>Forstå hva andre ser, vet og opplever.</span></div>
+          <div class="influence-form"><strong>Vise åpenhet</strong><span>Dele relevante tanker, vurderinger og usikkerhet.</span></div>
+          <div class="model-fit"><strong>Passer best:</strong> Når situasjonen krever åpenhet, nysgjerrighet og mottakelighet.</div>
+          <p class="family-style-tip"><strong>Fremstå som:</strong> Åpen · Nysgjerrig · Fleksibel</p>
+        </section>
+
+        <section class="influence-family inspiring">
+          <h3>Inspirerende</h3>
+          <p class="family-sub">Felles ståsted · Felles mål</p>
+          <div class="influence-form"><strong>Felles ståsted</strong><span>Bygge felles forståelse og samspill.</span></div>
+          <div class="influence-form"><strong>Felles mål</strong><span>Skape retning gjennom tydelige mål.</span></div>
+          <div class="model-fit"><strong>Passer best:</strong> Når situasjonen krever engasjement, retning og samling.</div>
+          <p class="family-style-tip"><strong>Fremstå som:</strong> Optimistisk · Samlende · Engasjerende</p>
+        </section>
+        </div>
+</div>
+
+      </div>
+
+
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 22px;">Slik kommer styrkene dine til uttrykk</h2>
+      <div id="areaDetails"></div>
+    </div>
+
+
+
+
+    <div class="card alt-time-card">
+      <div class="section-eyebrow">ALT TIL SIN TID</div>
+      <p class="alt-time-intro"><strong>Noen ganger kan det bli for mye av en styrke. Da kan effekten bli mindre enn ønsket eller negativ. Her er noe det kan være smart for oss alle å tenke på.</strong></p>
+
+      <div class="alt-time-grid">
+        <div class="principle">
+          <h3>Selgende</h3>
+          <p class="family-sub">Foreslå · Argumentere</p>
+          <p>Forslag og argumenter treffer ikke mottakeren, for eksempel fordi mottakeren har mer kunnskap, andre preferanser eller vurderer situasjonen annerledes.</p>
+        </div>
+
+        <div class="principle">
+          <h3>Markerende</h3>
+          <p class="family-sub">Uttrykke forventninger · Anerkjenne · Utfordre · Sette rammer</p>
+          <p>Tydelighet og styring gjør at mottakeren føler seg detaljstyrt, går i forsvar eller opplever lite rom for egne vurderinger.</p>
+        </div>
+
+        <div class="principle">
+          <h3>Involverende</h3>
+          <p class="family-sub">Involvere · Lytte · Vise åpenhet</p>
+          <p>Beslutningen er allerede tatt, tiden er knapp, noe er ikke til forhandling eller en tydelig ekspertløsning er et bedre alternativ. Da kan involvering skape falske forventninger, unødvendig treghet eller i noen situasjoner føre til dårligere beslutninger.</p>
+        </div>
+
+        <div class="principle">
+          <h3>Inspirerende</h3>
+          <p class="family-sub">Felles ståsted · Felles mål</p>
+          <p>Optimisme, fellesskap og engasjement står i kontrast til det folk opplever som virkeligheten. Dersom mottakeren mener at retningen er feil, at risikoen er for stor eller at det dere prøver å få til er dømt til å mislykkes, kan inspirasjon oppleves som lite troverdig eller virkelighetsfjern.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="card final-leader-reflection">
+      <div class="section-eyebrow">AVSLUTTENDE REFLEKSJON</div>
+      <h2>Tenk før du handler</h2>
+      <p>Før du går inn i en situasjon, stopp opp og tenk. Ikke gå rett på autopilot. Spør deg selv:</p>
+      <div class="principle"><strong>Hva ville verdens beste utgave av deg selv gjort i denne situasjonen?</strong></div>
+      <p>Tenk gjennom oppgaven, menneskene som er involvert og hvilken tilnærming som vil virke best.</p>
+      <p>Gode forberedelser gjør det lettere å velge riktig modus. Da unngår du å bare gjøre slik du pleier. Du kan finne en bedre måte.</p>
+      
+    </div>
+</div>
+
+    <div class="report-legal">
+      <strong>me2influence</strong><br>
+      © Bedriftspartner AS – Org.nr. 977 060 346<br>
+      Analysen er utviklet av fagpersoner med støtte fra AI. Den kan inneholde feil og er ment som inspirasjon til egne vurderinger og refleksjon.<br>
+      Kommersiell bruk krever tillatelse.<br>
+      <strong>For mer informasjon:</strong> sverre.gjestrum@bedriftspartner.com<br><span class="report-version">MASTER 2026-09-25 v8</span>
+    </div>
+
+
+  </section>  </section>
+</div>
+
+
+<div id="emailReportDialog" class="pdf-email-dialog hidden print-hide" role="dialog" aria-modal="true" aria-labelledby="emailReportDialogTitle">
+  <div class="pdf-email-panel">
+    <h2 id="emailReportDialogTitle">Send rapport på e-post</h2>
+    <p>Skriv inn navnet som skal stå på forsiden. Rapporten lages som PDF og sendes til én eller to e-postadresser.</p>
+    <div class="pdf-email-fields">
+      <label for="reportRecipientName">Navn</label>
+      <input id="reportRecipientName" type="text" autocomplete="name" placeholder="Skriv inn navn" required>
+
+      <label for="reportRecipientEmail1">E-postadresse</label>
+      <input id="reportRecipientEmail1" type="email" autocomplete="email" inputmode="email" placeholder="navn@firma.no">
+
+      <label for="reportRecipientEmail2">E-postadresse 2 <span>(valgfritt)</span></label>
+      <input id="reportRecipientEmail2" type="email" autocomplete="off" inputmode="email" placeholder="andre@firma.no">
+    </div>
+
+    <div id="emailReportStatus" class="pdf-email-status" aria-live="polite"></div>
+    <p class="pdf-email-note"><strong>Merk:</strong> I noen tilfeller kan det komme en teknisk feilmelding selv om rapporten er sendt. Sjekk e-posten før du prøver igjen.</p>
+    <p class="pdf-email-privacy">E-postadressene brukes bare til å sende denne rapporten.</p>
+
+    <div class="pdf-email-actions">
+      <button class="ghost" type="button" onclick="closeEmailReportDialog()">Avbryt</button>
+      <button class="primary" id="sendReportEmailButton" type="button" onclick="sendReportByEmail()">Send rapport</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+const ROWS = [[["Foreslå", "Jeg kommer med forslag"], ["Argumentere", "Jeg begrunner det jeg mener"], ["Uttrykke forventninger", "Jeg sier tydelig hva jeg forventer"], ["Anerkjenne", "Jeg sier fra når jeg ser noe som er bra"], ["Utfordre", "Jeg sier fra når noe bør bli bedre"], ["Sette rammer", "Jeg gjør det tydelig hva som gjelder"], ["Involvere", "Jeg spør hva andre tenker og mener"], ["Lytte", "Jeg lar andre snakke"], ["Vise åpenhet", "Jeg deler egne tanker"], ["Felles ståsted", "Jeg spør hva vi har felles"], ["Felles mål", "Jeg spør hva vi skal få til sammen"]], [["Foreslå", "Jeg foreslår en konkret løsning når vi står fast"], ["Argumentere", "Jeg forklarer hvorfor jeg mener en løsning er god"], ["Uttrykke forventninger", "Jeg sier tydelig hva jeg forventer skal skje videre"], ["Anerkjenne", "Jeg sier tydelig fra når noen gjør noe bra"], ["Utfordre", "Jeg sier tydelig fra når noe bør bli bedre"], ["Sette rammer", "Jeg gjør det tydelig hva som gjelder"], ["Involvere", "Jeg spør andre hvordan de ser på saken"], ["Lytte", "Jeg lytter til hva andre sier"], ["Vise åpenhet", "Jeg deler hvordan jeg selv ser på saken"], ["Felles ståsted", "Jeg finner sammen med andre ut hva vi har felles"], ["Felles mål", "Jeg snakker med andre om hva vi skal få til sammen"]], [["Foreslå", "Jeg legger frem forslag tidlig i en diskusjon"], ["Argumentere", "Jeg har saklige og konkrete argumenter"], ["Uttrykke forventninger", "Jeg sørger for at folk vet hva jeg forventer"], ["Anerkjenne", "Jeg ser og sier fra om det som er bra"], ["Utfordre", "Jeg ser og sier fra om det som ikke er bra"], ["Sette rammer", "Jeg sier tydelig hva som ikke kan endres"], ["Involvere", "Jeg lar ofte andre komme til orde før jeg sier hva jeg mener"], ["Lytte", "Jeg bruker tid på å lytte"], ["Vise åpenhet", "Jeg forteller åpent hva jeg tenker"], ["Felles ståsted", "Jeg spør hva vi mener bør gjelde for oss alle"], ["Felles mål", "Jeg undersøker om vi er enige om hva vi skal oppnå"]], [["Foreslå", "Jeg er ofte den som kommer med forslag"], ["Argumentere", "Jeg velger noen få og sterke argumenter"], ["Uttrykke forventninger", "Jeg avklarer hva som bør prioriteres"], ["Anerkjenne", "Jeg gir konkret tilbakemelding på gode bidrag"], ["Utfordre", "Jeg gir tydelig tilbakemelding når noe bør forbedres"], ["Sette rammer", "Jeg gjør både rammene og handlingsrommet tydelige"], ["Involvere", "Jeg spør de involverte hva de mener før vi konkluderer"], ["Lytte", "Jeg lytter for å forstå hva som er viktig for andre"], ["Vise åpenhet", "Jeg er åpen om hva jeg ønsker å oppnå"], ["Felles ståsted", "Jeg inviterer til samtaler om hva som styrker teamet vårt"], ["Felles mål", "Jeg drøfter mål med andre og sørger for at vi samlet står bak dem"]], [["Foreslå", "Jeg kommer raskt med alternative forslag når jeg er uenig"], ["Argumentere", "Jeg holder fast ved argumentene mine når jeg mener de er gode"], ["Uttrykke forventninger", "Jeg er tydelig på forventningene mine også når de kan være krevende"], ["Anerkjenne", "Jeg ser etter det som fungerer godt, også når situasjonen er krevende"], ["Utfordre", "Jeg følger opp det jeg mener bør forbedres"], ["Sette rammer", "Jeg gjør grensene tydelige når ulike interesser står mot hverandre"], ["Involvere", "Jeg involverer dem som blir berørt før vi tar viktige beslutninger"], ["Lytte", "Jeg sjekker at jeg har forstått den andre før jeg svarer"], ["Vise åpenhet", "Jeg er åpen om egne feil og usikkerhet når det er relevant"], ["Felles ståsted", "Jeg tar initiativ til å avklare hvordan vi skal håndtere uenighet sammen"], ["Felles mål", "Jeg drøfter målkonflikter og prioriteringer sammen med andre"]]];
+function visibleExtraPoints(n){
+  if(n<=1 || n>=11) return 0;
+  return 11-n;
+}
+const FORMS = ["Foreslå", "Argumentere", "Uttrykke forventninger", "Anerkjenne", "Utfordre", "Sette rammer", "Involvere", "Lytte", "Vise åpenhet", "Felles ståsted", "Felles mål"];
+
+const FORM_HEADLINES = {
+  "Foreslå": "Du ser mulige veier videre",
+  "Argumentere": "Du gjør begrunnelsene tydelige",
+  "Uttrykke forventninger": "Du skaper tydelighet om hva som forventes",
+  "Anerkjenne": "Du får andre til å føle seg sett og verdsatt",
+  "Utfordre": "Du tør å ta opp det som bør forbedres",
+  "Sette rammer": "Du skaper tydelige rammer og handlingsrom",
+  "Involvere": "Du får frem andres kunnskap og perspektiver",
+  "Lytte": "Du får frem det andre ser og vet",
+  "Vise åpenhet": "Du skaper tillit gjennom åpenhet",
+  "Felles ståsted": "Du bidrar til at folk står samlet",
+  "Felles mål": "Du skaper retning gjennom tydelige mål"
+};
+const AREA_HEADLINES = {
+  "Selgende": "Du skaper retning med forslag og begrunnelser",
+  "Markerende": "Du skaper tydelighet gjennom forventninger og rammer",
+  "Involverende": "Du får frem andres perspektiver",
+  "Inspirerende": "Du samler rundt et felles ståsted og mål"
+};
+const LOW_REPORT = {
+  "Foreslå": {
+    "hidden": "Har du gode forslag som du ikke deler? Lav skår kan bety at du holder tilbake ideer, venter til du er helt sikker, lar andre komme først, eller har erfart at forslagene dine ikke blir hørt.",
+    "watch": "Andre kan gå glipp av gode ideer og alternative løsninger dersom du holder forslagene dine tilbake. Det kan også føre til at de mest taleføre får for stor innflytelse på hvilke alternativer som blir vurdert.",
+    "practice": "Bli modigere på å dele foreløpige ideer. Du trenger ikke ha fasiten. Prøv: «Et mulig forslag er …» Hvis du er usikker, kan du først teste ideen på noen du har tillit til. Hvis forslagene dine ofte ikke blir hørt, kan du alliere deg med en person som har større gjennomslagskraft og be dem støtte eller løfte ideen sammen med deg."
+  },
+  "Argumentere": {
+    "hidden": "Du kan være en person som trenger litt tid til å tenke før du formulerer hva du egentlig mener. Lav skår kan også bety at du holder tilbake gode begrunnelser, gir deg for raskt eller lar andres argumenter få større plass enn dine egne.",
+    "watch": "Andre kan gå glipp av viktige argumenter og relevant kunnskap dersom du holder tilbake det du mener. Det kan også føre til at beslutninger blir tatt uten at vurderingene dine er kommet tydelig nok frem.",
+    "practice": "Forbered ett eller to gode argumenter før viktige samtaler. Si tydelig hva du mener og hvorfor. Å stå for egne argumenter kan kreve mot og at du går litt utenfor komfortsonen. Hvis du trenger tid til å tenke, be om den."
+  },
+  "Uttrykke forventninger": {
+    "hidden": "Du kan være fleksibel og gi andre stort handlingsrom. Lav skår kan samtidig bety at du er forsiktig med å si tydelig hva du forventer, særlig hvis du er redd for å virke krevende eller kontrollerende.",
+    "watch": "Andre kan bli usikre på hva som faktisk forventes av dem. Det kan skape ulike tolkninger av ansvar, kvalitet og prioriteringer, og gjøre det vanskeligere å følge opp når resultatet ikke blir som ønsket.",
+    "practice": "Gjør forventningene tydelige tidlig. Spør gjerne: «Hva kan jeg forvente av deg?» og si også klart hva den andre kan forvente av deg. Avklar hva som er viktigst, og sjekk at forventningene er forstått og realistiske."
+  },
+  "Anerkjenne": {
+    "hidden": "Du kan være nøktern og forsiktig med ros. Lav skår kan samtidig bety at du legger merke til det som fungerer uten å si det høyt, eller at du tenker at gode prestasjoner «snakker for seg selv».",
+    "watch": "Positive bekreftelser gjør det tydelig hva du verdsetter. Folk er forskjellige. Noen trenger mye bekreftelse, andre mindre. Særlig unge og personer under opplæring kan ha ekstra nytte av tydelig oppmuntring.",
+    "practice": "Let etter verdifulle øyeblikk der du kan gi anerkjennelse. Si høyt hva du setter pris på, og vær konkret og ekte. Tør også å være personlig når det passer: «Jeg liker deg fordi …». Når noen deler en gladnyhet med deg, gled deg sammen med dem. Bestem deg gjerne på forhånd for hvem du vil gi positiv feedback til i dag."
+  },
+  "Utfordre": {
+    "hidden": "Du kan være diplomatisk, varsom og opptatt av å bevare gode relasjoner. Lav skår kan samtidig bety at du holder tilbake kritiske innspill, unngår vanskelige samtaler eller lar ting passere selv om du ser at noe bør forbedres. Du kan også være så opptatt av å bli likt at du unngår å si det den andre egentlig trenger å høre.",
+    "watch": "Hvis du utfordrer for lite, kan viktige problemer, svakheter eller forbedringsmuligheter bli stående uimotsagt. Andre kan tro at du er enig, selv om du egentlig ser at noe bør endres.",
+    "practice": "Velg hva som virkelig er viktig å ta opp, og si det tydelig og respektfullt. Start gjerne med et spørsmål: «Kan jeg utfordre deg litt på dette?» Skill mellom personen og handlingen, og fokuser på hva som kan bli bedre fremover."
+  },
+  "Sette rammer": {
+    "hidden": "Du kan være fleksibel, tillitsfull og lite opptatt av regler for reglenes skyld. Lav skår kan samtidig bety at du lar for mye være uklart, unngår å sette grenser eller forventer at andre selv forstår hva som gjelder. Hvis du ofte tar på deg oppgaver som egentlig tilhører andre, kan det være et tegn på at grensene dine er for uklare.",
+    "watch": "Tydelige grenser og rolleavklaringer gjør det lettere å vite hva du har ansvar for, hva andre har ansvar for, og hvor handlingsrommet går. For lite grensesetting kan føre til rolleuklarhet, overbelastning og at andre forventer mer av deg enn det som er rimelig.",
+    "practice": "Vær tydeligere på hva du kan og ikke kan ta ansvar for. Tren på å si nei når det er riktig, uten å forklare deg mer enn nødvendig. Avklar hvem som eier oppgaven før du tar den på deg, og spør deg selv: «Er dette faktisk mitt ansvar?» Tydelig og respektfull kommunikasjon handler om å ivareta egne grenser samtidig som du respekterer den andre."
+  },
+  "Involvere": {
+    "hidden": "Har du potensial til å være mer nysgjerrig og stole mer på at andre også har noe viktig å bidra med? Lav skår betyr at du involverer andre lite. Da er det en risiko for at du ikke får brukt kunnskapen, erfaringen og perspektivene som finnes rundt deg.",
+    "watch": "Folk liker å bli spurt om meningene sine, særlig når de mener at de har relevant kunnskap eller blir berørt av beslutningen. Blir de ikke involvert, kan du gå glipp av viktig informasjon og samtidig skape mindre eierskap til løsningen.",
+    "practice": "Før viktige beslutninger, spør deg selv: «Hvem vet noe jeg ikke vet?», «Hvem blir berørt?» og «Hvem bør få mulighet til å påvirke?» Involver de riktige personene tidlig nok til at innspillene deres faktisk kan gjøre en forskjell."
+  },
+  "Lytte": {
+    "hidden": "Har du potensial til å være mer nysgjerrig på hvordan andre ser saken? Det kan hende du raskt danner deg en mening, begynner å tenke på svar, eller går videre før den andre er ferdig. Da kan du gå glipp av informasjon, nyanser og perspektiver som kunne gjort både samspillet og vurderingene dine bedre.",
+    "watch": "Det å bli lyttet til gjør noe med oss. Vi føler oss lettere sett og forstått, blir mindre defensive og kan bli mer åpne for å reflektere over egne synspunkter. God lytting kan også styrke tillit og relasjon. Hvis du lytter for lite, kan du derfor gå glipp av både viktig informasjon og muligheten til å få den andre mer åpen og reflektert.",
+    "practice": "La den andre snakke mest. Bruk korte invitasjoner som «Fortell mer», «Si litt mer om det» eller «Hva tenker du om det?» Still åpne oppfølgingsspørsmål. Oppsummer med egne ord: «Har jeg forstått deg riktig når …?» Vent med å vurdere eller svare til du har forstått poenget. Vis også med kroppsspråket at du følger med – øyekontakt, åpen kroppsholdning og små bekreftelser underveis."
+  },
+  "Vise åpenhet": {
+    "hidden": "Du kan være diskret, lojal og forsiktig med hva du deler. Samtidig kan du holde tilbake egne tanker, vurderinger eller usikkerhet i situasjoner der mer åpenhet og transparens kunne gjort det lettere for andre å forstå deg og samarbeide med deg.",
+    "watch": "Når andre vet lite om hva du tenker, kan de lettere misforstå intensjonene dine eller bli usikre på hvor de har deg. Vi blir også fort på vakt når noen veier ordene sine svært nøye eller virker tilbakeholdne med hva de egentlig mener. For lite åpenhet, ærlighet og transparens kan gjøre det vanskeligere å bygge tillit og dele kunnskap begge veier.",
+    "practice": "Vær litt mer åpen, ærlig og transparent. Del mer av hva du tenker, hvorfor du tenker det og hva du er usikker på når det er relevant. Du trenger ikke dele alt. Folk er ofte interessert i den bakenforliggende årsaken: «Jeg kommer for sent fordi …», «Jeg valgte denne løsningen fordi …» eller «Jeg er usikker fordi …». Start gjerne med korte setninger som: «Slik ser jeg det …», «Jeg er litt usikker på …» eller «Dette er det jeg tenker akkurat nå …». Vær åpen, men fortsatt bevisst på hva som er nyttig for den andre å vite."
+  },
+  "Felles ståsted": {
+    "hidden": "Har du brukt for lite tid på å skape en felles virkelighetsoppfatning? Felles ståsted betyr at dere har snakket så mye sammen at dere i stor grad ser den samme situasjonen, forstår hvor dere står i dag, hva som fungerer godt, og hvor de viktigste utviklingsmulighetene ligger. Det handler også om tydelige spilleregler og gode systemer for hvordan dere skal arbeide sammen.",
+    "watch": "Felles ståsted handler om å bidra til at folk står samlet. Hvis den felles forståelsen er for svak, kan det oppstå splittelse, ulike sannheter og løsninger som trekker i forskjellige retninger. Da kan enkeltpersoner eller grupper begynne å finne på egne ting uten at det er tilstrekkelig forståelse eller enighet om retningen.",
+    "practice": "Bidra til at det settes av tid til å skape en felles forståelse. Tenk også gjennom om dere har faste ritualer, møter eller andre arenaer som bygger felles ståsted over tid. Gjør det tydelig: slik gjør vi det hos oss, slik snakker vi sammen, dette tror vi på, og dette forventer vi av hverandre."
+  },
+  "Felles mål": {
+    "hidden": "Har du brukt for lite tid på å gjøre mål tydelige, relevante og samlende? Lav skår kan bety at du i for liten grad løfter blikket fra enkeltsaker og daglig drift til hva dere faktisk skal oppnå sammen, hvorfor det er viktig og hva som bør prioriteres.",
+    "watch": "Når mål er uklare, lite synlige eller konkurrerer med andre mål, kan folk trekke i ulike retninger. Det blir vanskeligere å prioritere, se sammenhengen mellom egen innsats og helheten, og vite hva som faktisk teller mest.",
+    "practice": "Bidra til at mål blir diskutert, forstått og synlige. Spør: «Hva skal vi oppnå?», «Hvorfor er dette viktig?», «Hvordan vet vi at vi lykkes?» og «Hva skal prioriteres når mål kommer i konflikt?» Gi rom for å utfordre mål og ambisjonsnivå før beslutningen tas. Når retningen er valgt, bidra til at den blir tydelig omsatt til handling."
+  }
+};
+const INTERNAL_PER_ROUND = 11;
+
+let roundIndex = 0;
+let selected = new Set();
+let userScores = Array(11).fill(0);
+let answerHistory = [];
+let target = 0;
+let visibleExtraTotal = 0;
+let internalRemaining = 0;
+let currentOrder = [];
+let manySelectionConfirmed = false;
+
+function shuffle(a) {
+  const x=[...a];
+  for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}
+  return x;
+}
+
+function startAnalysis(){
+  document.getElementById('context').classList.add('hidden');
+  document.getElementById('roundCard').classList.remove('hidden');
+  loadRound();
+}
+
+function loadRound(){
+  selected = new Set();
+  manySelectionConfirmed = false;
+  currentOrder = shuffle([...Array(11).keys()]);
+  document.getElementById('step1').classList.remove('hidden');
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('roundTitle').innerHTML = `<p class="muted">Omgang ${roundIndex+1} av 5</p>`;
+  document.getElementById('prog').style.width = `${((roundIndex)/5)*100}%`;
+  renderStatements();
+}
+
+function renderStatements(){
+  const host=document.getElementById('statementList'); host.innerHTML='';
+  currentOrder.forEach(i=>{
+    const row=document.createElement('div'); row.className='statement';
+    const text=document.createElement('div'); text.textContent=ROWS[roundIndex][i][1];
+    const t=document.createElement('div'); t.className='toggle'+(selected.has(i)?' on':'');
+    t.setAttribute('role','switch');
+    t.setAttribute('tabindex','0');
+    t.setAttribute('aria-checked', selected.has(i) ? 'true' : 'false');
+    t.setAttribute('aria-label', ROWS[roundIndex][i][1]);
+
+    const toggleSelection=()=>{
+      const msg=document.getElementById('selectMessage');
+      msg.classList.add('hidden');
+      msg.textContent='';
+      if(selected.has(i)){
+        selected.delete(i);
+      } else {
+        selected.add(i);
+      }
+      manySelectionConfirmed = false;
+      renderStatements();
+    };
+
+    t.onclick=toggleSelection;
+    t.onkeydown=(event)=>{
+      if(event.key==='Enter' || event.key===' '){
+        event.preventDefault();
+        toggleSelection();
+      }
+    };
+    row.append(text,t); host.appendChild(row);
+  });
+
+  const counter=document.getElementById('selectCounter');
+  counter.innerHTML=`Valgt: <strong>${selected.size}</strong>`;
+}
+
+function toWeight(){
+  const msg=document.getElementById('selectMessage');
+  msg.classList.add('hidden');
+  msg.textContent='';
+
+  if(selected.size===0){
+    msg.textContent='Velg minst ett utsagn før du går videre.';
+    msg.classList.remove('hidden');
+    return;
+  }
+
+  if(selected.size===1){
+    saveRound();
+    return;
+  }
+
+  if(selected.size>=8 && !manySelectionConfirmed){
+    const allSelected = selected.size===11;
+    msg.innerHTML = allSelected
+      ? `<div class="selection-challenge">
+           <p><strong>Du har valgt at alle utsagnene er typiske for deg.</strong></p>
+           <p>Det kan stemme, men da blir profilen svært flat. Se gjerne gjennom én gang til og vurder om noen passer mindre enn de andre.</p>
+           <div class="actions">
+             <button type="button" onclick="reviewSelections()">Se gjennom igjen</button>
+             <button type="button" class="primary" onclick="confirmManySelections()">Alle passer – gå videre</button>
+           </div>
+         </div>`
+      : `<div class="selection-challenge">
+           <p><strong>Du har valgt mange utsagn som typiske for deg.</strong></p>
+           <p>Det kan stemme, men profilen blir tydeligere hvis du skiller mellom det som passer godt og det som passer aller best.</p>
+           <div class="actions">
+             <button type="button" onclick="reviewSelections()">Se gjennom igjen</button>
+             <button type="button" class="primary" onclick="confirmManySelections()">Fortsett</button>
+           </div>
+         </div>`;
+    msg.classList.remove('hidden');
+    return;
+  }
+
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.remove('hidden');
+  renderWeights();
+}
+
+function reviewSelections(){
+  const msg=document.getElementById('selectMessage');
+  msg.classList.add('hidden');
+  msg.innerHTML='';
+}
+
+function confirmManySelections(){
+  manySelectionConfirmed = true;
+  const msg=document.getElementById('selectMessage');
+  msg.classList.add('hidden');
+  msg.innerHTML='';
+
+  if(selected.size===11){
+    // All 11 selected means equal base weight for all; no weighting page is needed.
+    saveRound();
+    return;
+  }
+
+  toWeight();
+}
+
+function backToSelect(){
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('step1').classList.remove('hidden');
+}
+
+function renderWeights(){
+  const n=selected.size;
+  internalRemaining = INTERNAL_PER_ROUND - n;
+  visibleExtraTotal = visibleExtraPoints(n);
+  target = n + visibleExtraTotal;
+
+  const host=document.getElementById('weightList');
+  host.innerHTML='';
+
+  if(n===1){
+    document.getElementById('weightIntro').innerHTML=
+      'Du har valgt ett utsagn. Det får full vekt automatisk.';
+  } else if(n===11){
+    document.getElementById('weightIntro').innerHTML=
+      'Du har valgt alle 11 utsagnene. De får lik vekt i denne omgangen.';
+  } else {
+    document.getElementById('weightIntro').innerHTML=
+      `Fordel <strong>${visibleExtraTotal} markeringer</strong> på det som kjennetegner deg mest.`;
+  }
+
+  currentOrder.filter(i=>selected.has(i)).forEach(i=>{
+    const row=document.createElement('div');
+    row.className='weight-row';
+
+    const text=document.createElement('div');
+    text.className='weight-text';
+    text.textContent=ROWS[roundIndex][i][1];
+
+    const control=document.createElement('div');
+    control.className='weight-control';
+
+    const minus=document.createElement('button');
+    minus.type='button';
+    minus.className='weight-btn';
+    minus.textContent='−';
+    minus.setAttribute('aria-label','Trekk fra ett poeng');
+    minus.onclick=()=>adjustWeight(i,-1);
+
+    const inp=document.createElement('input');
+    inp.type='number';
+    inp.className='weight-value';
+    inp.min='0';
+    inp.dataset.i=i;
+    inp.value=0;
+    inp.max=visibleExtraTotal;
+    inp.readOnly=true;
+    inp.tabIndex=-1;
+
+    const plus=document.createElement('button');
+    plus.type='button';
+    plus.className='weight-btn';
+    plus.textContent='+';
+    plus.setAttribute('aria-label','Legg til ett poeng');
+    plus.onclick=()=>adjustWeight(i,1);
+
+    control.append(minus,inp,plus);
+    row.append(text,control);
+    host.appendChild(row);
+  });
+
+  checkSum();
+}
+
+function adjustWeight(i,delta){
+  const inp=document.querySelector(`#weightList input[data-i="${i}"]`);
+  if(!inp || visibleExtraTotal===0) return;
+
+  const vals=[...document.querySelectorAll('#weightList input')];
+  const needed=visibleExtraTotal;
+  const current=parseFloat(inp.value)||0;
+
+  if(delta<0){
+    if(current>0) inp.value=current-1;
+  } else {
+    const sum=vals.reduce((a,b)=>a+(parseFloat(b.value)||0),0);
+    if(sum<needed) inp.value=current+1;
+  }
+  checkSum();
+}
+
+function checkSum(){
+  const vals=[...document.querySelectorAll('#weightList input')];
+  const needed=visibleExtraTotal;
+
+  vals.forEach(inp=>{
+    let v=parseFloat(inp.value);
+    if(!Number.isFinite(v) || v<0) inp.value=0;
+    if(v>needed) inp.value=needed;
+    inp.max=needed;
+  });
+
+  const sumVisible=vals.reduce((a,b)=>a+(parseFloat(b.value)||0),0);
+  const remaining=Math.max(0, needed-sumVisible);
+
+  const counter=document.getElementById('weightCounter');
+  if(counter){
+    counter.textContent=`Markeringer brukt: ${sumVisible} / ${visibleExtraTotal}`;
+  }
+
+  const validation=document.getElementById('weightValidation');
+  if(validation){
+    if(visibleExtraTotal===0){
+      validation.textContent='Ingen markeringer å fordele i denne omgangen.';
+      validation.classList.add('done');
+    } else if(remaining===0){
+      validation.textContent='Ferdig. Du kan gå videre.';
+      validation.classList.add('done');
+    } else {
+      validation.textContent=`Bruk alle ${visibleExtraTotal} markeringene før du går videre. ${remaining} igjen.`;
+      validation.classList.remove('done');
+    }
+  }
+
+  document.querySelectorAll('.weight-row').forEach(row=>{
+    const inp=row.querySelector('.weight-value');
+    const buttons=row.querySelectorAll('.weight-btn');
+    const minus=buttons[0], plus=buttons[1];
+    const current=parseFloat(inp.value)||0;
+    if(minus) minus.disabled=visibleExtraTotal===0 || current<=0;
+    if(plus) plus.disabled=visibleExtraTotal===0 || remaining<=0;
+  });
+
+  document.getElementById('nextRound').disabled =
+    visibleExtraTotal>0 && Math.abs(sumVisible-needed)>1e-9;
+
+  document.getElementById('nextRound').textContent =
+    roundIndex===4 ? 'Vis rapport' : 'Neste omgang';
+}
+
+function saveRound(){
+  const vals=[...document.querySelectorAll('#weightList input')];
+
+  if(selected.size===1){
+    const idx=[...selected][0];
+    userScores[idx]+=INTERNAL_PER_ROUND;
+
+    answerHistory.push({
+      round: roundIndex,
+      formIndex: idx,
+      text: ROWS[roundIndex][idx][1],
+      internal: INTERNAL_PER_ROUND
+    });
+
+  } else if(selected.size===11){
+    [...selected].forEach(i=>{
+      userScores[i]+=1;
+      answerHistory.push({
+        round: roundIndex,
+        formIndex: i,
+        text: ROWS[roundIndex][i][1],
+        internal: 1
+      });
+    });
+
+  } else {
+    const weightPerVisiblePoint = internalRemaining / visibleExtraTotal;
+
+    vals.forEach(inp=>{
+      const i=+inp.dataset.i;
+      const visibleWeight=parseFloat(inp.value)||0;
+      const internal=1 + visibleWeight*weightPerVisiblePoint;
+
+      userScores[i]+=internal;
+
+      answerHistory.push({
+        round: roundIndex,
+        formIndex: i,
+        text: ROWS[roundIndex][i][1],
+        internal: internal
+      });
+    });
+  }
+
+  roundIndex++;
+  if(roundIndex<5) loadRound();
+  else makeReport();
+}
+
+function level(v){
+  if(v<=2) return 'low';
+  if(v<=4) return 'slightlylow';
+  if(v<=7) return 'mid';
+  if(v<=12) return 'high';
+  return 'veryhigh';
+}
+
+function levelLabel(l){
+  return {low:'LAV',slightlylow:'LITT LAV',mid:'',high:'HØY',veryhigh:'SVÆRT HØY'}[l] || '';
+}
+
+
+function roundedLevel(v){
+  const r=Math.round(v);
+  if(r<=2) return 'low';
+  if(r<=4) return 'slightlylow';
+  if(r<=7) return 'mid';
+  if(r<=12) return 'high';
+  return 'veryhigh';
+}
+
+const AREA_META = {
+  'Selgende': {
+    kw:'Foreslå · Argumentere',
+    fitline:'Passer særlig godt når situasjonen krever saklighet, troverdighet og tydelige begrunnelser.',
+    forms:[0,1],
+    desc:'Du påvirker gjennom forslag og argumenter. Du skaper retning ved å vise hva du mener bør gjøres og hvorfor.',
+    over:'Ved svært høy bruk kan du gå for raskt til løsning og argumentasjon før andre har fått tenkt høyt eller blitt hørt.',
+    under:'Ved lav bruk kan du bli for tilbakeholden med egne forslag og begrunnelser når teamet trenger retning.'
+  },
+  'Markerende': {
+    kw:'Uttrykke forventninger · Anerkjenne · Utfordre · Sette rammer',
+    fitline:'Passer særlig godt når situasjonen krever tydelighet, mot og respekt.',
+    forms:[2,3,4,5],
+    desc:'Du påvirker gjennom tydelige forventninger, feedback og rammer. Du gjør det klart hva som gjelder og hva som bør forbedres.',
+    over:'Ved svært høy bruk kan du bli for styrende eller krevende, og andre kan oppleve mindre handlingsrom.',
+    under:'Ved lav bruk kan forventninger, grenser og forbedringsbehov bli for uklare.'
+  },
+  'Involverende': {
+    kw:'Involvere · Lytte · Vise åpenhet',
+    fitline:'Passer særlig godt når situasjonen krever åpenhet, nysgjerrighet og mottakelighet.',
+    forms:[6,7,8],
+    desc:'Du påvirker ved å invitere andre inn, lytte og være åpen om egne vurderinger.',
+    over:'Ved svært høy bruk kan du bruke for lang tid på å involvere og forstå når situasjonen egentlig krever tydelig retning.',
+    under:'Ved lav bruk kan du gå glipp av kunnskap, motforestillinger og eierskap hos andre.'
+  },
+  'Inspirerende': {
+    kw:'Felles ståsted · Felles mål',
+    fitline:'Passer særlig godt når situasjonen krever engasjement, retning og samling.',
+    forms:[9,10],
+    desc:'Du påvirker ved å bygge et felles ståsted og drøfte hva teamet skal få til sammen.',
+    over:'Ved svært høy bruk kan ønsket om enighet og fellesskap gjøre reelle forskjeller eller nødvendige konfrontasjoner mindre synlige.',
+    under:'Ved lav bruk kan teamet få svakere felles retning, forankring og opplevelse av å stå sammen.'
+  }
+};
+
+function areaLevel(pct){
+  if(pct<=15) return 'low';
+  if(pct<=34) return 'normal';
+  if(pct<=44) return 'high';
+  return 'veryhigh';
+}
+
+function areaLevelLabel(level){
+  return {
+    low:'Lav',
+    normal:'',
+    high:'Høy',
+    veryhigh:'Svært høy'
+  }[level] || '';
+}
+
+
+
+const FORM_REPORT = {
+  'Foreslå': {
+    strength:'Du bidrar med ideer og konkrete veier videre.',
+    over:'Du kan komme for raskt med løsningen. Det kan redusere rommet for andres egne forslag, og dine første forslag kan styre hvilke alternativer som senere blir vurdert. Hvis du stadig har et alternativ klart, kan dine ideer få for stor plass. Du kan også komme med forslag på områder der andre har mer relevant kompetanse.',
+    low:'Forslag faller mindre naturlig for deg. Du kan bli for avventende i situasjoner der gruppen trenger et konkret neste steg.',
+    tip:'Lytt og involver før du foreslår når andre sitter på viktig kunnskap eller trenger eierskap.'
+  },
+  'Argumentere': {
+    strength:'Du forklarer hvorfor du mener noe og gjør standpunktene dine lettere å forstå.',
+    over:'Du kan fortsette å argumentere og stå på ditt når du møter motstand. Da kan motstanden øke, og samtalen utvikle seg til en kamp om hvem som har rett. Du kan også oppfattes som en som alltid vet best.',
+    low:'Argumentasjon faller mindre naturlig for deg. Gode forslag kan dermed bli stående uten en tydelig begrunnelse.',
+    tip:'Stopp etter noen få, sterke argumenter. Spør hva den andre tenker og lytt før du argumenterer videre. Øv på å se styrken i andres argumenter. Når det er mulig, la de som skal gjøre jobben være med på å eie løsningen.'
+  },
+  'Uttrykke forventninger': {
+    strength:'Du gjør det tydelig hva du forventer av andre. Det skaper klarhet, retning og gjør det lettere å vite hva som er viktig.',
+    over:'Du kan bli så tydelig på forventningene dine at de oppleves som krav eller press. Hvis du samtidig bestemmer for mye av hvordan oppgaven skal løses, kan du redusere andres handlingsrom, initiativ og eierskap.',
+    low:'Forventninger faller mindre naturlig for deg. Andre kan bli usikre på hva som faktisk er viktig eller hva du trenger fra dem.',
+    tip:'Still spørsmål som: «Hva kan jeg forvente av deg?» Utfordre og forankre forventningene sammen med den andre. Vær tydelig på hva du forventer, men sjekk samtidig hva den andre mener er realistisk og hvordan de selv vil løse oppgaven.'
+  },
+  'Anerkjenne': {
+    strength:'Du ser det som er bra hos andre og bidrar til at de føler seg sett og verdsatt. Konkret og troverdig anerkjennelse kan styrke motivasjon og opplevelsen av mestring.',
+    over:'Overdrevet eller lite troverdig positivitet kan virke mot sin hensikt. Ros kan også oppleves som manipulerende dersom den brukes strategisk, for eksempel rett før du ber om noe.',
+    low:'Anerkjennelse faller mindre naturlig for deg. Andre kan gå glipp av viktig informasjon om hva de gjør riktig og hva du setter pris på.',
+    tip:'Fortsett å anerkjenne, men vurder mottakeren. Noen trenger mye bekreftelse, mens andre kan reagere negativt på for mye ros. Vær konkret og ekte.'
+  },
+  'Utfordre': {
+    strength:'Du tør å si det du mener og ta opp det som bør forbedres. Dette er særlig nyttig i opplæringssituasjoner, og når du blir bedt om å gi tilbakemeldinger eller vurderinger.',
+    over:'Du kan bli så opptatt av å korrigere det du mener bør gjøres annerledes at tilbakemeldingen oppleves som kritikk av personen, ikke bare av handlingen. Du kan også undervurdere at andre måter å løse oppgaven på kan fungere like godt.',
+    low:'Utfordring faller mindre naturlig for deg. Viktige problemer kan dermed bli stående for lenge uten at noen tar dem opp.',
+    tip:'Vurder hvor viktig tilbakemeldingen er, og om den faktisk er nyttig for den andre. La bagatellene ligge. Spør deg selv: «Hvorfor gjøre det på min måte når det finnes flere gode måter å gjøre det på?»'
+  },
+  'Sette rammer': {
+    strength:'Du bidrar til tydelige rammer for hva som er lov, hva som forventes, hvem som kan bestemme hva, og hvilke prioriteringer som gjelder.',
+    over:'Du kan bli oppfattet som rigid dersom regler, grenser og kontroll blir så sterke at andre opplever lite handlingsrom. For tett styring kan redusere initiativ, ansvarsfølelse og kreativitet.',
+    low:'Rammer faller mindre naturlig for deg. Det kan skape uklarhet om grenser, ansvar og hva som faktisk er til forhandling.',
+    tip:'Skill mellom det som virkelig må ligge fast og det som kan være fleksibelt. Vær tydelig på rammen, men gi så stort handlingsrom som oppgaven, kompetansen og risikoen tillater.'
+  },
+  'Involvere': {
+    strength:'Du får andre med ved å spørre hva de tenker, og du gir dem mulighet til å påvirke før beslutninger tas. Det kan gi bedre løsninger og sterkere eierskap.',
+    over:'Involvering tar tid og er ikke alltid den beste løsningen. Du kan involvere for mange, for mye eller for lenge. Da kan beslutninger trekke ut, ansvaret bli uklart, og personer med liten relevans for saken få like stor plass som dem som sitter på viktig kunnskap eller har stor påvirkning på utfallet.',
+    low:'Involvering faller mindre naturlig for deg. Du kan gå glipp av kunnskap, motforestillinger og eierskap hos andre.',
+    tip:'Alle trenger ikke være involvert i alt. Vurder først om du kan ta beslutningen selv, dersom du har et godt nok grunnlag og er forberedt på reaksjonene som kan komme. Hvis andre bør involveres, trekk særlig inn dem som har relevant kunnskap, erfaring, blir direkte berørt eller har stor innflytelse på om beslutningen lykkes. Personer som opplever at de burde vært involvert, kan raskt gå i motstand hvis de holdes utenfor. Vær tydelig på hvor mye påvirkning de faktisk skal ha, og ikke inviter til medvirkning hvis beslutningen allerede er tatt.'
+  },
+  'Lytte': {
+    strength:'Du er opptatt av å høre hva andre tenker og mener. Du er nysgjerrig og interessert. Du får nyttig innsikt, forstår dem du snakker med bedre og oppdager etter hvert hva den enkelte kan bidra med. Aktiv lytting og åpen kommunikasjon kan også bidra til tillit, trygghet og mer åpen kommunikasjon.',
+    over:'Du kan bli så opptatt av å lytte og forstå at du deler for lite av egne vurderinger. Hvis du stiller mange spørsmål på rad, kan samtalen oppleves mer som et intervju enn en dialog. Den andre kan også bli usikker på hvor de har deg dersom du sjelden deler hva du selv tenker.',
+    low:'Lytting faller mindre naturlig for deg. Du kan svare eller konkludere før du har forstått hva den andre faktisk mener.',
+    tip:'Lytt for å forstå, og ta gjerne utgangspunkt i den andres ståsted. Sett en tydelig agenda for samtalen, del egne vurderinger der det er naturlig, og avslutt når videre utforsking ikke lenger gir vesentlig ny innsikt. Vær bevisst på eget kroppsspråk.'
+  },
+  'Vise åpenhet': {
+    strength:'Du deler egne tanker, vurderinger og usikkerhet. Det gjør det lettere for andre å forstå hvor du står, og kan senke terskelen for at de også deler mer åpent. Transparent kommunikasjon kan bidra til tillit, bedre relasjoner og mer deling av kunnskap.',
+    over:'Du kan dele for mye av det du tenker og mener. Vær særlig oppmerksom på «kos med misnøye» – samtaler som bekrefter frustrasjon uten å bringe saken videre. For mye ufiltrert deling, rykter eller antakelser kan svekke tillit og gjøre andre mer tilbakeholdne.',
+    low:'Åpenhet faller mindre naturlig for deg. Andre kan bli usikre på hva du egentlig tenker, ønsker eller er bekymret for.',
+    tip:'Fortsett å være transparent og raus med relevant informasjon. Vær samtidig selektiv. Del det som er nyttig for mottakeren, og sorter informasjonen slik at den bidrar til forståelse og handling.'
+  },
+  'Felles ståsted': {
+    strength:'Du er opptatt av samhold og forpliktelse. Ingen skal stå alene med et stort problem, og ingen skal ta all æren for en suksess. Du bidrar til en felles forståelse av situasjonen, rollene og hvordan dere skal arbeide sammen. Det kan styrke koordinering, ansvarsfølelse og evnen til å stå samlet når det oppstår press eller uenighet. Du ønsker et miljø der viktige synspunkter og ubehagelige sannheter kan komme frem.',
+    over:'Du kan bruke for mye tid på å samle folk, drøfte og skape enighet før dere går videre. Da kan beslutninger bli forsinket, og reelle forskjeller i interesser eller synspunkter bli glattet over. Et godt team trenger ikke være enige om alt – men de bør forstå hva de skal gjøre sammen og hvordan de skal samarbeide.',
+    low:'Felles ståsted faller mindre naturlig for deg. Gruppen kan mangle tydelige felles normer, arbeidsmåter eller en delt forståelse av hvordan dere skal fungere sammen.',
+    tip:'Skill mellom det som faktisk må være felles, og det som kan tilhøre den enkelte eller ulike grupper av interessenter. Søk felles forståelse om oppgaven, rollene og hvordan dere skal arbeide sammen – uten å kreve enighet om alt.'
+  },
+  'Felles mål': {
+    strength:'Du er opptatt av at folk skal få mene noe om målene – om de er egnet, for ambisiøse eller gir feil fokus. Du er opptatt av selve målsettingsprosessen og av at mål skal skape retning og dra organisasjonen fremover. Du vil at folk skal forstå hva dere skal få til sammen, hvorfor det er viktig og hva som bør prioriteres. Du bidrar til å skape tydelighet rundt mål, også når målene er satt av andre. Du er opptatt av at målene skal være forstått, relevante og mulig å forplikte seg til.',
+    over:'Du kan bruke for mye tid på å drøfte mål, ambisjonsnivå og prioriteringer før dere går videre. Målkonflikter kan få uforholdsmessig mye oppmerksomhet. Du kan også holde fast ved et mål selv når ny kunnskap eller endrede forutsetninger tilsier at det bør justeres. Et annet overslag er å vurdere innsats og kvalitet nesten bare ut fra om målet ble nådd.',
+    low:'Felles mål faller mindre naturlig for deg. Gruppen kan miste retning eller bruke energi på ulike prioriteringer uten å avklare dem.',
+    tip:'Gjør målene konkrete og avklar hvordan de henger sammen med andre mål og prioriteringer. Gi rom for å utfordre målene og premissene før beslutningen tas. Når diskusjonen er avsluttet og beslutningen er tatt, stå samlet om gjennomføringen – også dersom du opprinnelig var uenig. Disagree and commit: Det skal være lov å utfordre før beslutningen, men når retningen er valgt, handler det om å bidra til at den lykkes.'
+  }
+
+};
+
+
+const SUMMARY_STRENGTH = {
+  'Foreslå':'Du bidrar med ideer og konkrete veier videre. Du ser muligheter for hvordan noe kan gjøres bedre eller annerledes, og hjelper samtalen fra problem til mulige løsninger. Forslagene dine kan åpne nye alternativer og gjøre det lettere å komme videre når retningen er uklar.',
+  'Argumentere':'Du forklarer hvorfor du mener noe og gjør standpunktene dine lettere å forstå. Du bidrar med fakta, logikk og begrunnelser som kan gjøre det enklere for andre å vurdere et forslag eller en beslutning på et saklig grunnlag. Når du har relevant kunnskap, kan tydelig argumentasjon gi retning og skape troverdighet.',
+  'Uttrykke forventninger':'Du gjør det tydelig hva du forventer av andre. Du bidrar til å avklare ansvar, hvem som gjør hva, kvalitet, prioriteringer og hva som skal leveres. Det kan redusere usikkerhet og gjøre det lettere for andre å forstå hva som er viktig, hva du legger vekt på og hva du setter pris på hos andre.',
+  'Anerkjenne':'Du ser det som er bra hos andre og gjør det synlig. Du bidrar til at mennesker føler seg sett og verdsatt, samtidig som du tydeliggjør hvilken innsats og atferd du setter pris på og ønsker å se mer av. Konkret og troverdig positiv feedback kan også bidra til læring og videre prestasjon.',
+  'Utfordre':'Du tør å si det du mener og ta opp det som bør forbedres. Du gjør problemer, risikoer og svakheter synlige før de får utvikle seg videre, og bidrar til at viktige spørsmål ikke blir oversett eller tiet i hjel. Når du utfordrer konstruktivt, kan du bidra til læring, bedre beslutninger og nødvendig endring.',
+  'Sette rammer':'Du bidrar til tydelige rammer for hva som gjelder, hvem som har ansvar, hvem som kan bestemme hva og hvilket handlingsrom som finnes. Det gjør det lettere for andre å prioritere, ta ansvar og handle selvstendig innenfor avklarte grenser. Tydelige rammer kan redusere usikkerhet uten at du trenger å detaljstyre.',
+  'Involvere':'Du får andre med ved å spørre hva de tenker og gi dem mulighet til å påvirke. Det kan bringe frem kunnskap og perspektiver du selv ikke har, gi bedre beslutningsgrunnlag og skape større eierskap til det som skal gjennomføres. Du signaliserer også at andres bidrag har verdi.',
+  'Lytte':'Du er opptatt av å forstå hva andre tenker, mener og opplever. Ved å lytte aktivt kan du få frem informasjon, nyanser og perspektiver som ellers lett går tapt. God lytting kan også gjøre det lettere for den andre å føle seg hørt, være åpen og bidra mer ærlig i samtalen.',
+  'Vise åpenhet':'Du deler relevante tanker, vurderinger og usikkerhet slik at andre lettere kan forstå hvor du står og hvorfor du handler som du gjør. Åpenhet kan redusere spekulasjoner, gjøre kommunikasjonen mer forutsigbar og bidra til tillit, særlig når situasjonen er uklar eller i endring.',
+  'Felles ståsted':'Du bidrar til at mennesker utvikler en felles forståelse av situasjonen, hva som er viktig og hvordan dere skal arbeide sammen. Du er med på å skape et felles språk og tydeliggjøre hva som aksepteres, verdsettes og forventes. Kultur er ikke alltid synlig, men den kommer til uttrykk gjennom atferd – hvordan dere snakker sammen, samarbeider, tar beslutninger og håndterer uenighet. Når du gjør dette tydelig og lever det i praksis, blir du også en kulturbærer.',
+  'Felles mål':'Du bidrar til å gjøre det tydelig hva dere skal oppnå sammen på kort og lang sikt, hvorfor det er viktig og hva som bør prioriteres. Du hjelper andre til å se sammenhengen mellom egen innsats og den større retningen. Når mål blir forstått og oppleves som relevante, kan det gjøre prioriteringer enklere og styrke forpliktelsen til det dere skal få til.'
+};
+
+
+
+const STRENGTH_LEVEL = {
+  'Foreslå': {
+    low:'Du bidrar med ideer og konkrete veier videre.',
+    mid:'Du er tydelig opptatt av å bidra med ideer og konkrete veier videre.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å se muligheter og bidra med konkrete veier videre.',
+    veryhigh:'Denne styrken preger tydelig måten du arbeider på. Du ser muligheter og bidrar aktivt med ideer og konkrete veier videre.'
+  },
+  'Argumentere': {
+    low:'Du bidrar med begrunnelser som gjør standpunktene dine lettere å forstå.',
+    mid:'Du er tydelig opptatt av å begrunne standpunktene dine og gjøre dem lettere å forstå.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å begrunne standpunktene dine tydelig og saklig.',
+    veryhigh:'Denne styrken preger tydelig måten du kommuniserer på. Du begrunner standpunktene dine tydelig, saklig og med stor vekt på hvorfor.'
+  },
+  'Uttrykke forventninger': {
+    low:'Du bidrar til å gjøre forventninger tydelige.',
+    mid:'Du er tydelig opptatt av å gjøre forventninger klare for andre.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å skape tydelighet om forventninger, ansvar og prioriteringer.',
+    veryhigh:'Denne styrken preger tydelig måten du arbeider med andre på. Du skaper klarhet om forventninger, ansvar, prioriteringer og leveranser.'
+  },
+  'Anerkjenne': {
+    low:'Du bidrar til å gjøre gode bidrag synlige.',
+    mid:'Du er tydelig opptatt av å se og anerkjenne gode bidrag hos andre.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å se det som er bra hos andre og gjøre det synlig.',
+    veryhigh:'Denne styrken preger tydelig måten du møter andre på. Du ser, anerkjenner og løfter frem det som er bra hos andre.'
+  },
+  'Utfordre': {
+    low:'Du bidrar til å ta opp det som bør forbedres.',
+    mid:'Du er tydelig opptatt av å ta opp problemer, risikoer og forbedringsmuligheter.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å si fra om det som bør forbedres.',
+    veryhigh:'Denne styrken preger tydelig måten du arbeider på. Du utfordrer det som ikke fungerer og gjør forbedringsbehov synlige.'
+  },
+  'Sette rammer': {
+    low:'Du bidrar til tydelige rammer og grenser.',
+    mid:'Du er tydelig opptatt av å avklare rammer, ansvar og handlingsrom.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å avklare rammer, ansvar, grenser og handlingsrom.',
+    veryhigh:'Denne styrken preger tydelig måten du arbeider på. Du skaper klare rammer for ansvar, grenser, prioriteringer og handlingsrom.'
+  },
+  'Involvere': {
+    low:'Du bidrar til å få frem andres kunnskap og perspektiver.',
+    mid:'Du er tydelig opptatt av å få andre med og hente frem deres kunnskap og perspektiver.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å involvere andre og få frem deres kunnskap og perspektiver.',
+    veryhigh:'Denne styrken preger tydelig måten du samarbeider på. Du involverer andre aktivt og gir reell plass til deres kunnskap og perspektiver.'
+  },
+  'Lytte': {
+    low:'Du bidrar til å få frem hva andre ser og vet.',
+    mid:'Du er tydelig opptatt av å forstå hva andre tenker, mener og opplever.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å forstå hva andre tenker, mener og opplever.',
+    veryhigh:'Denne styrken preger tydelig måten du møter andre på. Du søker aktivt å forstå hva andre tenker, mener og opplever.'
+  },
+  'Vise åpenhet': {
+    low:'Du bidrar til å skape forståelse gjennom åpenhet.',
+    mid:'Du er tydelig opptatt av å være åpen om relevante tanker, vurderinger og usikkerhet.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å være åpen om relevante tanker, vurderinger og usikkerhet.',
+    veryhigh:'Denne styrken preger tydelig måten du kommuniserer på. Du er åpen og transparent om relevante tanker, vurderinger og usikkerhet.'
+  },
+  'Felles ståsted': {
+    low:'Du bidrar til felles forståelse og samspill.',
+    mid:'Du er tydelig opptatt av å skape felles forståelse av situasjonen og hvordan dere skal arbeide sammen.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å skape felles forståelse, språk og samspill.',
+    veryhigh:'Denne styrken preger tydelig måten du bidrar i fellesskapet på. Du bygger felles forståelse, språk, kultur og samspill.'
+  },
+  'Felles mål': {
+    low:'Du bidrar til tydelig retning og felles mål.',
+    mid:'Du er tydelig opptatt av å gjøre felles mål og prioriteringer forståelige.',
+    high:'Dette er en fremtredende styrke hos deg. Du er opptatt av å skape retning gjennom tydelige felles mål.',
+    veryhigh:'Denne styrken preger tydelig måten du skaper retning på. Du bruker felles mål til å skape mening, prioritering og drivkraft.'
+  }
+};
+
+function strengthLevelKey(score){
+  const s=Math.round(score);
+  if(s<=2) return 'low';
+  if(s<=4) return 'slightlylow';
+  if(s<=7) return 'mid';
+  if(s<=12) return 'high';
+  return 'veryhigh';
+}
+
+
+function strengthHeadline(name, score){
+  const level=strengthLevelKey(score);
+  const base=FORM_HEADLINES[name] || name;
+
+  if(level==='low'){
+    if(name==='Foreslå') return 'Du bidrar med ideer og konkrete veier videre';
+    if(name==='Argumentere') return 'Du bidrar med tydelige begrunnelser';
+    if(name==='Uttrykke forventninger') return 'Du bidrar til tydelige forventninger';
+    if(name==='Anerkjenne') return 'Du bidrar til å gjøre gode bidrag synlige';
+    if(name==='Utfordre') return 'Du bidrar til å ta opp det som bør forbedres';
+    if(name==='Sette rammer') return 'Du bidrar til tydelige rammer og handlingsrom';
+    if(name==='Involvere') return 'Du bidrar til å få frem andres kunnskap og perspektiver';
+    if(name==='Lytte') return 'Du bidrar til å få frem det andre ser og vet';
+    if(name==='Vise åpenhet') return 'Du bidrar til forståelse gjennom åpenhet';
+    if(name==='Felles ståsted') return 'Du bidrar til felles forståelse og samspill';
+    if(name==='Felles mål') return 'Du bidrar til tydelig retning og felles mål';
+  }
+
+  if(level==='mid'){
+    const naturalMid=STRENGTH_LEVEL[name]?.mid || '';
+    return naturalMid.replace(/[.!?]+$/,'') || `Du er tydelig opptatt av ${base.charAt(0).toLowerCase()+base.slice(1)}`;
+  }
+
+  if(level==='high'){
+    return `Dette er en fremtredende styrke hos deg: ${base.charAt(0).toLowerCase()+base.slice(1)}`;
+  }
+
+  return `Denne styrken preger tydelig måten du ${veryHighVerb[name] || 'arbeider på'}`;
+}
+
+const veryHighVerb = {
+  'Foreslå':'ser muligheter og finner veier videre på',
+  'Argumentere':'kommuniserer på',
+  'Uttrykke forventninger':'skaper tydelighet om forventninger på',
+  'Anerkjenne':'ser og løfter frem gode bidrag på',
+  'Utfordre':'tar opp det som bør forbedres på',
+  'Sette rammer':'skaper tydelige rammer og handlingsrom på',
+  'Involvere':'får andre aktivt med på',
+  'Lytte':'møter andre og søker å forstå dem på',
+  'Vise åpenhet':'kommuniserer åpent og transparent på',
+  'Felles ståsted':'bygger felles forståelse og samspill på',
+  'Felles mål':'skaper retning gjennom tydelige mål på'
+};
+
+function strengthText(name, score){
+  const base=SUMMARY_STRENGTH[name] || '';
+  const firstDot=base.indexOf('.');
+  let rest = firstDot===-1 ? base : base.slice(firstDot+1).trim();
+
+  // Low-score strength language should stay modest, but avoid a repetitive opening.
+  if(strengthLevelKey(score)==='low' && name==='Uttrykke forventninger'){
+    rest = 'Du er med på å avklare ansvar, hvem som gjør hva, kvalitet, prioriteringer og hva som skal leveres. Det kan redusere usikkerhet og gjøre det lettere for andre å forstå hva som er viktig, hva du legger vekt på og hva du setter pris på hos andre.';
+  }
+
+  return rest;
+}
+
+
+const SUMMARY_WHEN = {
+  'Foreslå':'Dere står overfor et problem eller behov, trenger å tenke nytt, står fast eller har for få alternativer å velge mellom. Det passer også når dere må vurdere hvilke ideer som skal tas videre og hvilke som bør forkastes. Nye forslag kan bidra til at dere ikke blir værende i gamle spor eller blir akterutseilt når omgivelsene endrer seg.',
+  'Argumentere':'Beslutninger skal fattes, eller andre trenger å forstå hvorfor du mener noe. Gode argumenter gir svar på hvorfor, skaper et bedre grunnlag for vurderinger og kan bygge tillit når de bygger på relevant kunnskap, fakta og logikk.',
+  'Uttrykke forventninger':'Folk trenger å vite hva som forventes, hvem som gjør hva og hva som skal leveres. Når forventningene er avklart, blir det lettere å ta ansvar, følge opp og vite når noe er godt nok. Det er særlig viktig når det er fare for at ikke alt rekker å bli gjort, slik at det blir tydelig hva som skal prioriteres opp og hva som kan prioriteres ned.',
+  'Anerkjenne':'Noen har gjort en viktig innsats, prøvd noe krevende eller trenger å vite hva de bør fortsette med. Anerkjennelse kan øke sannsynligheten for at ønsket atferd gjentas, tydeliggjøre hva vi verdsetter og ønsker mer av, og bidra til at mennesker føler seg sett og verdsatt. Det kan styrke trygghet og mestringsfølelse, og også gjøre det lettere å ta imot mer krevende tilbakemeldinger senere.',
+  'Utfordre':'Noe er ikke akseptabelt, fungerer ikke godt nok, innebærer risiko eller bør utfordres for å finne en bedre løsning. Det er også nyttig når gruppen blir enig for raskt eller etablerte arbeidsmåter bør undersøkes. Utfordre saken eller handlingen, ikke personen.',
+  'Sette rammer':'Det er behov for å avklare mandat, roller, ansvar, ressurser eller handlingsrom. Det er særlig viktig når flere er involvert, når oppgaven krever støtte fra andre, eller når folk trenger tydelige rammer for å kunne arbeide selvstendig og med arbeidsro. Tydelige rammer gjør det også lettere å forstå hva som ligger fast, hva som kan diskuteres, og hvor egne grenser og ansvar går.',
+  'Involvere':'Andres kunnskap, erfaring eller perspektiver kan gjøre løsningen bedre, eller deres eierskap er viktig for gjennomføringen. Tidlig involvering er ofte best, særlig for dem som blir berørt. Personer med stor interesse og innflytelse bør samstemmes tidlig og underveis. Involveringen bør være reell, slik at innspill faktisk kan påvirke resultatet. Det kan gi et bedre beslutningsgrunnlag og gjøre det lettere å få folk med på det som skal skje.',
+  'Lytte':'Du trenger å forstå før du foreslår, vurderer eller bestemmer, og du trenger å forstå din egen og andres rolle i samarbeidet. God lytting gir innsikt i hva som er viktig for andre, hva de selv mener de er gode på, hva de trenger for å bidra best mulig, og hva du selv kan lære av deres erfaringer og perspektiver. Når mennesker opplever å bli lyttet til, kan de også føle seg mer tatt på alvor og tryggere på å si hva de egentlig mener.',
+  'Vise åpenhet':'Dere ser at det er viktig å kjenne hverandre godt for å gjøre en god jobb sammen. Relevant åpenhet gjør det lettere å forstå hvordan andre tenker, hva de er usikre på og hvorfor de handler som de gjør. Det kan bygge tillit, redusere misforståelser og gjøre samarbeidet mer forutsigbart. Det forutsetter også respekt for informasjon som deles i fortrolighet.',
+  'Felles ståsted':'Dere trenger å skape en mest mulig felles virkelighetsoppfatning, finne det dere kan stå sammen om, avklare hva som skal gjelde for dere, eller bli enige om hvordan dere skal håndtere uenighet. Et tydelig felles ståsted kan styrke samspillet, redusere misforståelser og gjøre det lettere å stå sammen selv når dere ikke mener det samme om alt. Det bidrar også til et tydeligere «slik gjør vi det hos oss».',
+  'Felles mål':'Dere skal starte noe nytt, ta fatt på neste milepæl eller få nye personer inn i laget. Tydelige og synlige mål skaper retning, eierskap og engasjement. Det viktigste er at folk forstår målet, hvorfor det betyr noe, hvordan eget bidrag teller og hva som skal prioriteres når mål kommer i konflikt. Små og store måloppnåelser er også gode anledninger til å feire fremgang, anerkjenne innsatsen og styrke samholdet.',
+};
+
+const LOW_REFLECTION = {
+  'Foreslå':'Holder jeg tilbake forslag jeg egentlig burde dele?',
+  'Argumentere':'Lar jeg andres argumenter få større plass enn mine egne, selv når jeg har noe viktig å bidra med?',
+  'Uttrykke forventninger':'Vet jeg selv hva jeg bør forvente av andre – og tør jeg uttrykke det tydelig?',
+  'Anerkjenne':'Vet folk rundt meg at jeg setter pris på innsatsen deres – og gir jeg ekstra oppmerksomhet til dem som er under utvikling?',
+  'Utfordre':'Lar jeg viktige ting passere fordi jeg synes det er ubehagelig å ta dem opp?',
+  'Sette rammer':'Er jeg tydelig nok på hva som ligger fast, hvor grensene går – og hva jeg selv kan og bør ta ansvar for?',
+  'Involvere':'Involverer jeg de riktige personene, i riktig rekkefølge og på riktig tidspunkt?',
+  'Lytte':'Er jeg oppriktig interessert i menneskene rundt meg – og viser jeg det gjennom måten jeg lytter på?',
+  'Vise åpenhet':'Er jeg åpen og transparent der det er klokt å være det?',
+  'Felles ståsted':'Er vi enige om de viktige tingene, og hjelper og støtter vi hverandre?',
+  'Felles mål':'Er vi enige om målene, og bruker vi dem som drivkraft?'
+};
+
+const FORM_SITUATION = {
+  'Foreslå': {
+    adjust:'Demp denne styrken når andre først trenger å utforske problemet, komme med egne ideer eller eie løsningen. Strekk den når samtalen står fast, alternativer mangler eller noen trenger et konkret neste steg.',
+    situation:'Vurder først hva som trengs: flere perspektiver eller en vei videre. Lytt og involver når kunnskapen ligger hos andre. Foreslå tydelig når situasjonen trenger retning.'
+  },
+  'Argumentere': {
+    adjust:'Demp denne styrken når argumentene dine øker motstanden, eller når den andre først trenger å bli lyttet til og forstått. Strekk den når et viktig standpunkt, valg eller forslag trenger en tydelig begrunnelse.',
+    situation:'Vurder om situasjonen trenger begrunnelse, lytting, involvering eller en beslutning. Bruk noen få sterke argumenter, og sjekk deretter hvordan den andre ser saken.'
+  },
+  'Uttrykke forventninger': {
+    adjust:'Demp denne styrken når tydeligheten begynner å oppleves som press eller når den andre trenger større handlingsrom. Strekk den når ansvar, kvalitet, prioriteringer eller leveranser er uklare.',
+    situation:'Gjør forventningene tydelige når det trengs, men avklar samtidig hva som er realistisk og hvilket handlingsrom den andre skal ha.'
+  },
+  'Anerkjenne': {
+    adjust:'Demp denne styrken når anerkjennelsen kan virke overdrevet, lite troverdig eller strategisk. Strekk den når noen trenger å vite hva de gjør bra, hva du verdsetter eller hva som bør fortsette.',
+    situation:'Tilpass mengde og form til personen og situasjonen. Vær konkret og ekte, og si tydelig hva du setter pris på når det er relevant.'
+  },
+  'Utfordre': {
+    adjust:'Demp denne styrken når saken er liten, timingen er dårlig eller tilbakemeldingen først og fremst handler om din egen foretrukne måte å gjøre ting på. Strekk den når viktige problemer, risikoer eller forbedringsmuligheter ikke blir tatt opp.',
+    situation:'Vurder hvor viktig saken er, hvem som trenger å høre den og hvordan den bør tas opp. Skill mellom personen og handlingen, og vær tydelig når noe faktisk bør forbedres.'
+  },
+  'Sette rammer': {
+    adjust:'Demp denne styrken når reglene eller grensene blir strammere enn oppgaven krever. Strekk den når ansvar, mandat, prioriteringer eller det som ikke er til forhandling er uklart.',
+    situation:'Skill mellom det som må ligge fast og det som kan være fleksibelt. Sett tydelige rammer, og gi så stort handlingsrom som kompetanse, oppgave og risiko tillater.'
+  },
+  'Involvere': {
+    adjust:'Demp denne styrken når beslutningen kan tas på et godt grunnlag uten bred involvering, eller når for mange stemmer gjør prosessen uklar og langsom. Strekk den når andre sitter på viktig kunnskap, blir berørt eller trenger eierskap.',
+    situation:'Spør hvem som vet noe du ikke vet, hvem som blir berørt og hvem som bør få reell påvirkning. Involver de riktige personene tidlig nok til at innspillene kan gjøre en forskjell.'
+  },
+  'Lytte': {
+    adjust:'Demp denne styrken når videre utforsking ikke gir ny innsikt, eller når situasjonen nå trenger ditt standpunkt, en beslutning eller tydelig retning. Strekk den når du trenger å forstå den andre bedre eller få frem kunnskap og nyanser.',
+    situation:'Lytt for å forstå før du vurderer eller svarer. La den andre snakke mest når det er nyttig, og del egne vurderinger når situasjonen trenger det.'
+  },
+  'Vise åpenhet': {
+    adjust:'Demp denne styrken når informasjonen er unødvendig, uavklart eller kan skape mer støy enn forståelse. Strekk den når andre trenger å forstå hva du tenker, hvorfor du handler som du gjør eller hva du er usikker på.',
+    situation:'Vær åpen, ærlig og transparent om det som er relevant. Del nok til å skape forståelse og tillit, men sorter bort det mottakeren ikke trenger.'
+  },
+  'Felles ståsted': {
+    adjust:'Demp denne styrken når jakten på enighet forsinker nødvendige beslutninger eller glatter over reelle forskjeller. Strekk den når folk ser situasjonen ulikt, trekker i ulike retninger eller mangler et felles utgangspunkt.',
+    situation:'Skap felles forståelse av hvor dere står, hva som er viktig og hvordan dere skal arbeide sammen. Skill mellom det som må være felles og det det er rom for å mene ulikt om.'
+  },
+  'Felles mål': {
+    adjust:'Demp denne styrken når mål og ambisjoner blir diskutert lenger enn situasjonen krever, eller når gjennomføringen nå trenger mer oppmerksomhet. Strekk den når retningen er uklar, mål konkurrerer eller folk mangler forståelse for hva som skal oppnås og hvorfor.',
+    situation:'Gjør mål tydelige, relevante og synlige. Avklar prioriteringer og målkonflikter før beslutningen tas, og bidra deretter til at valgt retning blir omsatt til handling.'
+  }
+};
+
+const COMBO_TEXT = {
+  'Involverende|Selgende':'Du får andre med og bruker forslag og argumenter for å komme videre.',
+  'Selgende|Involverende':'Du kombinerer tydelige forslag med evnen til å få andre med.',
+  'Selgende|Markerende':'Du skaper retning gjennom forslag, argumenter og tydelighet.',
+  'Markerende|Selgende':'Du kombinerer tydelighet med forslag og saklige begrunnelser.',
+  'Inspirerende|Involverende':'Du bygger fellesskap og får andre aktivt med.',
+  'Involverende|Inspirerende':'Du får andre med og bygger retning gjennom et felles ståsted og felles mål.',
+  'Markerende|Involverende':'Du kombinerer tydelighet med involvering.',
+  'Involverende|Markerende':'Du involverer andre, men kan også være tydelig når det trengs.',
+  'Selgende|Inspirerende':'Du kombinerer gode begrunnelser med retning og fellesskap.',
+  'Inspirerende|Selgende':'Du skaper retning gjennom fellesskap, forslag og argumenter.',
+  'Markerende|Inspirerende':'Du skaper tydelig retning og samler andre rundt det som skal oppnås.',
+  'Inspirerende|Markerende':'Du samler andre og er samtidig tydelig på forventninger og rammer.'
+};
+
+const AREA_REPORT = {
+  'Selgende':{
+    strength:'Du bidrar med ideer, retning og begrunnelser. Når andre trenger å forstå hva du foreslår og hvorfor, har du et naturlig grep.',
+    over:'Du kan gå for raskt til løsning og argumentasjon. Da kan du risikere å argumentere før du har forstått hva andre trenger eller mener.',
+    low:'Forslag og argumentasjon faller mindre naturlig. I situasjoner som trenger retning, kan du måtte være mer bevisst på å si hva du anbefaler og hvorfor.',
+    fit:'Passer særlig godt når du kan saken, har tillit, og mottakeren er åpen for saklige argumenter.'
+  },
+  'Markerende':{
+    strength:'Du bidrar med tydelighet. Du gjør forventninger, forbedringsbehov og rammer synlige, og du våger å si fra.',
+    over:'Du kan bli for styrende eller krevende. Tydelighet som brukes for mye kan redusere handlingsrommet eller gjøre andre mer forsiktige.',
+    low:'Tydelige forventninger, utfordringer og rammer faller mindre naturlig. Det kan være et utviklingspunkt når oppgaven krever klar retning.',
+    fit:'Passer særlig godt når noe må avklares, prioriteres, korrigeres eller ikke er til forhandling.'
+  },
+  'Involverende':{
+    strength:'Du gir andre plass, henter frem perspektiver og bygger eierskap. Du gjør det lettere for andre å bidra med kunnskap og motforestillinger.',
+    over:'Du kan bli for lenge i involvering og utforskning når situasjonen egentlig trenger en beslutning, tydelig retning eller klare rammer.',
+    low:'Involvering, lytting og åpenhet faller mindre naturlig. Du kan gå glipp av kunnskap og eierskap når andre sitter på viktig informasjon.',
+    fit:'Passer særlig godt når kompetansen ligger hos flere, når du trenger eierskap, eller når ulike perspektiver må frem.'
+  },
+  'Inspirerende':{
+    strength:'Du bygger fellesskap, felles forståelse og retning. Du hjelper andre til å se hva dere står for og hva dere skal få til sammen.',
+    over:'Du kan bruke mye energi på å skape enighet og fellesskap når situasjonen egentlig trenger tydelige forskjeller, beslutninger eller konfrontasjon.',
+    low:'Felles ståsted og felles mål faller mindre naturlig. Teamet kan da trenge at du mer bevisst samler folk rundt hva som gjelder og hvor dere skal.',
+    fit:'Passer særlig godt når et team trenger felles retning, forankring, kulturbygging eller et tydelig «vi».'
+  }
+};
+
+function getTopAnswerTexts(formIndexes, maxItems=3){
+  return answerHistory
+    .filter(a=>formIndexes.includes(a.formIndex))
+    .sort((a,b)=>b.internal-a.internal)
+    .slice(0,maxItems)
+    .map(a=>a.text);
+}
+
+function makeReport(){
+  document.getElementById('analysis').classList.add('hidden');
+  document.getElementById('report').classList.remove('hidden');
+  document.getElementById('brandReportActions').classList.remove('hidden');
+
+  const groupScores = {
+    'Selgende': (userScores[0]+userScores[1])/2,
+    'Markerende': (userScores[2]+userScores[3]+userScores[4]+userScores[5])/4,
+    'Involverende': (userScores[6]+userScores[7]+userScores[8])/3,
+    'Inspirerende': (userScores[9]+userScores[10])/2
+  };
+
+  const areaTotal = Object.values(groupScores).reduce((a,b)=>a+b,0) || 1;
+  const areaPct = {};
+  Object.entries(groupScores).forEach(([k,v])=>areaPct[k]=v/areaTotal*100);
+
+  // First report view: four horizontal bars
+  const barsHost=document.getElementById('mainProfileBars');
+  barsHost.innerHTML='';
+  Object.entries(areaPct).sort((a,b)=>b[1]-a[1]).map(x=>x[0]).forEach(name=>{
+    const pct=Math.round(areaPct[name]);
+    const meta=AREA_META[name];
+    const level=areaLevel(pct);
+    const label=Math.round(pct)===0 ? '' : areaLevelLabel(level);
+    const row=document.createElement('div');
+    row.className=`profile-line level-${level}`;
+    row.innerHTML=`
+      <div>
+        <div class="profile-name">${name}</div>
+        <div class="profile-sub">${meta.kw}</div>
+      </div>
+      <div class="profile-track-wrap">
+        <div class="track">
+          <div class="fill" style="width:${Math.min(100,pct)}%"></div>
+        </div>
+      </div>
+      <div class="profile-result">
+        <div class="profile-pct">${pct}%</div>
+        ${label ? `<span class="area-status ${level}">${label}</span>` : ''}
+      </div>`;
+    barsHost.appendChild(row);
+  });
+
+  const sorted=Object.entries(areaPct).sort((a,b)=>b[1]-a[1]);
+  const top1=sorted[0][0], top2=sorted[1][0], low1=sorted[sorted.length-1][0];
+  const top1Pct=Math.round(sorted[0][1]);
+  const top2Pct=Math.round(sorted[1][1]);
+  const topGap=Math.abs(top1Pct-top2Pct);
+  const nearTie=topGap<=3;
+  const topLevel=areaLevel(top1Pct);
+
+
+
+  // Practical interpretation under the main picture
+  const lowAreas=sorted.filter(x=>Math.round(x[1])<=15).map(x=>x[0]);
+  const highAreas=sorted.filter(x=>Math.round(x[1])>=35).map(x=>x[0]);
+  const veryHighAreas=sorted.filter(x=>Math.round(x[1])>=45).map(x=>x[0]);
+
+  const DOMINANT_HERO = {
+    'Selgende': {
+      title:'Du skaper retning gjennom forslag og argumenter.',
+      strength:'Du bidrar med ideer, løsninger og begrunnelser. Det gjør det lettere for andre å forstå hva du foreslår og hvorfor.',
+      watch:'Du kan komme til løsning før andre er tilstrekkelig involvert.',
+      practice:'Trekk inn kunnskap og perspektiver før du foreslår når situasjonen krever det.'
+    },
+    'Markerende': {
+      title:'Du skaper tydelighet gjennom forventninger, rammer og klare tilbakemeldinger.',
+      strength:'Du gjør det tydelig hva som gjelder, hva som bør forbedres og hvor grensene går.',
+      watch:'Du kan bli så tydelig at andre opplever mindre handlingsrom.',
+      practice:'Sjekk hva andre ser og vet før du setter retning når situasjonen krever det.'
+    },
+    'Involverende': {
+      title:'Du får andre med ved å involvere, lytte og hente frem perspektiver.',
+      strength:'Du gir andre plass, henter frem perspektiver og bygger eierskap. Det gjør det lettere for andre å bidra med kunnskap og motforestillinger.',
+      watch:'Du kan involvere for mange, for mye eller for lenge.',
+      practice:'Vurder når du trenger mer innspill, og når det er bedre å beslutte og sette retning.'
+    },
+    'Inspirerende': {
+      title:'Du samler andre rundt et felles ståsted og felles mål.',
+      strength:'Du bygger felles forståelse og retning og gjør det tydelig hva gruppen skal få til sammen.',
+      watch:'Du kan bruke mer tid enn nødvendig på samling og forankring når situasjonen krever rask handling.',
+      practice:'Vær tydeligere på beslutninger, forventninger og neste steg når tiden er knapp.'
+    }
+  };
+
+  // Hero text is driven by the strongest individual influence forms,
+  // so the headline always matches what the candidate actually sees in the detailed profile.
+  const detailedRank=userScores
+    .map((score,i)=>({score,i,name:FORMS[i]}))
+    .sort((a,b)=>b.score-a.score);
+
+  const HERO_PRIMARY = {
+    'Foreslå':'Du kommer med konkrete forslag',
+    'Argumentere':'Du begrunner standpunktene dine',
+    'Uttrykke forventninger':'Du skaper tydelige forventninger',
+    'Anerkjenne':'Du får andre til å føle seg sett og verdsatt',
+    'Utfordre':'Du tør å ta opp det som bør forbedres',
+    'Sette rammer':'Du skaper tydelige rammer og handlingsrom',
+    'Involvere':'Du får frem andres kunnskap og perspektiver',
+    'Lytte':'Du får frem det andre ser og vet',
+    'Vise åpenhet':'Du skaper tillit gjennom åpenhet',
+    'Felles ståsted':'Du bidrar til at folk står samlet',
+    'Felles mål':'Du skaper retning gjennom tydelige mål'
+  };
+
+  const HERO_SECONDARY = {
+    'Foreslå':'kommer med konkrete forslag',
+    'Argumentere':'begrunner standpunktene dine',
+    'Uttrykke forventninger':'gjør forventninger tydelige',
+    'Anerkjenne':'anerkjenner det som fungerer',
+    'Utfordre':'tar opp det som bør forbedres',
+    'Sette rammer':'skaper tydelige rammer',
+    'Involvere':'får andre aktivt med',
+    'Lytte':'lytter til det andre ser og vet',
+    'Vise åpenhet':'viser åpenhet',
+    'Felles ståsted':'bidrar til at folk står samlet',
+    'Felles mål':'samler rundt tydelige mål'
+  };
+
+  // EN FELLES MODELL FOR PROFILEN
+  // 0–2 = LAV | 3–4 = LITT LAV | 5–7 = normal | 8–12 = HØY | 13+ = SVÆRT HØY
+  //
+  // Kortbeskrivelsen følger samme nivålogikk som grafen:
+  // 1) 1–4 HØY/SVÆRT HØY -> alle tas med.
+  // 2) 5+ HØY/SVÆRT HØY -> ingen tilfeldig delmengde; bruk nøytral tekst.
+  // 3) Ingen HØY -> relativ toppgruppe på 1–4 former kan brukes når:
+  //    - de ligger innenfor ett poeng fra høyeste skår, og
+  //    - høyeste skår ligger minst to poeng over beste skår utenfor gruppen.
+  // 4) Ingen toppgruppe + minst én LAV (0–2) -> egen tekst om klart mindre bruk.
+  // 5) Ellers -> jevn profil.
+  const heroTop=detailedRank[0];
+  const topRounded=Math.round(heroTop.score);
+
+  const highOrVeryHighForms = detailedRank
+    .filter(x => Math.round(x.score) >= 8);
+
+  let shorthandForms = [];
+  let heroMode = 'neutral';
+
+  if(highOrVeryHighForms.length >= 1 && highOrVeryHighForms.length <= 4){
+    shorthandForms = highOrVeryHighForms;
+    heroMode = 'high';
+  }else if(highOrVeryHighForms.length >= 5){
+    heroMode = 'many-high';
+  }else{
+    const topClusterAll = detailedRank
+      .filter(x => topRounded - Math.round(x.score) <= 1);
+
+    if(topClusterAll.length >= 1 && topClusterAll.length <= 4){
+      const outsideTopCluster = detailedRank
+        .filter(x => !topClusterAll.includes(x))
+        .map(x => Math.round(x.score));
+
+      const bestOutside = outsideTopCluster.length
+        ? Math.max(...outsideTopCluster)
+        : -Infinity;
+
+      if(topRounded - bestOutside >= 2){
+        shorthandForms = topClusterAll;
+        heroMode = 'relative';
+      }
+    }
+  }
+
+  function joinNorwegian(parts){
+    if(parts.length===0) return '';
+    if(parts.length===1) return parts[0];
+    if(parts.length===2) return `${parts[0]} og ${parts[1]}`;
+    return `${parts.slice(0,-1).join(', ')} og ${parts[parts.length-1]}`;
+  }
+
+
+  function buildThreeStrengthHero(names){
+    const key=[...names].sort().join('|');
+
+    const lockedThree={
+      // Approved wording
+      ['Anerkjenne|Involvere|Uttrykke forventninger'.split('|').sort().join('|')]:
+        'Du får andre til å føle seg sett og verdsatt. Du tydeliggjør forventninger og får andre aktivt med.',
+      ['Anerkjenne|Sette rammer|Uttrykke forventninger'.split('|').sort().join('|')]:
+        'Du skaper tydelige forventninger og rammer, og anerkjenner det som fungerer.',
+      ['Argumentere|Felles ståsted|Sette rammer'.split('|').sort().join('|')]:
+        'Du begrunner standpunktene dine, skaper tydelige rammer og bidrar til at folk står samlet.'
+    };
+
+    if(lockedThree[key]) return lockedThree[key];
+
+    const fragment={
+      'Foreslå':'kommer med konkrete forslag',
+      'Argumentere':'begrunner standpunktene dine',
+      'Uttrykke forventninger':'tydeliggjør forventninger',
+      'Anerkjenne':'anerkjenner det som fungerer',
+      'Utfordre':'tar opp det som bør forbedres',
+      'Sette rammer':'setter klare rammer',
+      'Involvere':'involverer andre aktivt',
+      'Lytte':'lytter til det andre ser og vet',
+      'Vise åpenhet':'viser åpenhet',
+      'Felles ståsted':'bygger felles forståelse',
+      'Felles mål':'skaper retning mot mål'
+    };
+
+    const parts=names.map(n=>fragment[n] || n.toLowerCase());
+    return `Du ${parts[0]}, ${parts[1]} og ${parts[2]}.`;
+  }
+
+  let combo='';
+  if(shorthandForms.length){
+    const names=shorthandForms.map(item=>item.name);
+    let parts;
+
+    if(names.length===3){
+      combo=buildThreeStrengthHero(names);
+    }else if(names[0]==='Uttrykke forventninger' && names[1]==='Sette rammer'){
+      parts=['Du skaper tydelige forventninger og rammer'];
+      shorthandForms.slice(2).forEach(item=>{
+        parts.push(HERO_SECONDARY[item.name] || item.name.toLowerCase());
+      });
+      combo=joinNorwegian(parts)+'.';
+    }else{
+      parts=shorthandForms.map((item,idx)=>{
+        if(idx===0){
+          return HERO_PRIMARY[item.name] || FORM_HEADLINES[item.name] || item.name;
+        }
+        return HERO_SECONDARY[item.name] || item.name.toLowerCase();
+      });
+      combo=joinNorwegian(parts)+'.';
+    }
+
+    document.getElementById('heroSummary').innerHTML=`
+      <h3>${combo}</h3>
+    `;
+  } else {
+    const hasLowForms = detailedRank.some(x => Math.round(x.score) <= 2);
+    let neutralHero='';
+
+    if(heroMode==='many-high'){
+      neutralHero='Du har flere tydelige styrker i profilen din, uten at noen få skiller seg klart ut.';
+    }else if(hasLowForms){
+      neutralHero='Du har ingen tydelige topper. Noen påvirkningsformer bruker du likevel klart mindre enn andre.';
+    }else{
+      neutralHero='Du har en jevn styrkeprofil uten tydelige topper eller spesielt lave skårer.';
+    }
+
+    document.getElementById('heroSummary').innerHTML=`
+      <h3>${neutralHero}</h3>
+    `;
+  }
+
+  // Alle 11 påvirkningsformer skal alltid klassifiseres og vises.
+  // Skår 5 eller høyere vises som styrker. Resten vises i den gule utviklingsdelen.
+  const STRENGTH_SCORE_MIN = 5;
+  const strongestForms=detailedRank.filter(x=>Math.round(x.score)>=STRENGTH_SCORE_MIN);
+
+  const strongestHeading=document.getElementById('strongestHeading');
+  const strongestSections=document.getElementById('strongestSections');
+
+  function scoreMeter(score, type='strength'){
+    const s=Math.round(score);
+    const maxDetailedScore = Math.max(...detailedRank.map(x=>Math.round(x.score)), 0);
+    const meterMax = Math.max(15, Math.ceil(maxDetailedScore/5)*5);
+    const pct=Math.max(0, Math.min(100, (s/meterMax)*100));
+    return `<div class="score-meter" aria-hidden="true"><div class="score-meter-fill ${type}" style="width:${pct}%"></div></div>`;
+  }
+
+  const strengthSummaryCard=document.getElementById('strengthSummaryCard');
+
+  strongestHeading.textContent = 'DINE STYRKER';
+  strongestHeading.style.display = strongestForms.length ? '' : 'none';
+
+  strongestSections.innerHTML='';
+
+  strongestForms.forEach(x=>{
+    const rounded=Math.round(x.score);
+    const section=document.createElement('div');
+    section.className='strong-form-section';
+    section.innerHTML=`
+      <h3 class="strong-form-title">${x.name}</h3>
+      <div class="insight-grid two">
+        <div class="insight-card positive">
+          <div class="insight-card-head">
+            <h3>Styrke</h3>
+            <span class="score-badge">Skår ${rounded}</span>
+          </div>
+          ${scoreMeter(rounded, 'strength')}
+          <div>
+            <p><strong>${strengthHeadline(x.name, rounded)}</strong></p>
+            <p>${strengthText(x.name, rounded)}</p>
+          </div>
+        </div>
+        <div class="insight-card neutral">
+          <h3>Passer særlig godt når</h3>
+          <div><p>${SUMMARY_WHEN[x.name]}</p></div>
+        </div>
+      </div>`;
+    strongestSections.appendChild(section);
+  });
+
+
+  function lowUsageLabel(score){
+    const s=Math.round(score);
+    if(s===0) return 'Ikke kommet til uttrykk i analysen';
+    if(s<=2) return 'Lite brukt styrke';
+    if(s===3) return 'Enda mindre brukt styrke';
+    return 'Ikke så mye brukt styrke';
+  }
+
+  const strongestNames = new Set(strongestForms.map(x=>x.name));
+  const lowCandidates=detailedRank
+    .filter(x=>!strongestNames.has(x.name))
+    .sort((a,b)=>b.score-a.score || a.i-b.i);
+
+  // Defensive invariant: every one of the 11 forms must appear in exactly one group.
+  const classifiedNames = new Set([
+    ...strongestForms.map(x=>x.name),
+    ...lowCandidates.map(x=>x.name)
+  ]);
+  if(classifiedNames.size !== detailedRank.length ||
+     strongestForms.length + lowCandidates.length !== detailedRank.length){
+    console.error('me2influence: klassifiseringsfeil – alle 11 påvirkningsformer skal vises.');
+  }
+  const lowBlock=document.getElementById('lowInsightBlock');
+  const lowSections=document.getElementById('lowSections');
+
+  const lowIntro=document.getElementById('lowIntro');
+
+  if(lowCandidates.length){
+    lowBlock.style.display='block';
+    lowSections.innerHTML='';
+    lowIntro.textContent = lowCandidates.length===1
+      ? 'Dette er en styrke du bruker mindre i din nåværende rolle. Vurder om du kan ha nytte av å bruke den mer når situasjonen krever det.'
+      : 'Dette er styrker du bruker mindre i din nåværende rolle. Vurder om du kan ha nytte av å bruke dem mer når situasjonen krever det.';
+
+    lowCandidates.forEach((x,idx)=>{
+      const section=document.createElement('div');
+      section.className='low-form-section';
+      section.innerHTML=`
+        <div class="section-eyebrow" style="margin-bottom:6px">${lowUsageLabel(x.score)}</div>
+        <h3 class="low-form-title">${x.name}</h3>
+        <div class="insight-grid low-two">
+          <div class="insight-card low-development">
+            <div class="insight-card-head">
+              <h3>Kan brukes mer når</h3>
+              <span class="score-badge">Skår ${Math.round(x.score)}</span>
+            </div>
+            <div><p>${SUMMARY_WHEN[x.name]}</p></div>
+          </div>
+          <div class="insight-card low-reflection">
+            <h3>Spør deg selv</h3>
+            <div><p>${LOW_REFLECTION[x.name]}</p></div>
+          </div>
+        </div>`;
+      lowSections.appendChild(section);
+    });
+  } else {
+    lowBlock.style.display='none';
+    lowSections.innerHTML='';
+    lowIntro.textContent='';
+  }
+
+  // Kortet vises så lenge minst én av de to gruppene har innhold.
+  const hasLowInsight = lowCandidates.length > 0;
+  strengthSummaryCard.classList.toggle('hidden', strongestForms.length===0 && !hasLowInsight);
+
+  // Best fit
+
+
+
+  // Page 2 style explanation with own selected statements
+  const detailsHost=document.getElementById('areaDetails');
+  detailsHost.innerHTML='';
+  const areaRanked=['Selgende','Markerende','Involverende','Inspirerende']
+    .sort((a,b)=>areaPct[b]-areaPct[a]);
+
+  const ZERO_AREA_TEXT={
+    'Selgende':{
+      explain:'Det betyr ikke at du aldri foreslår eller argumenterer, men at disse påvirkningsformene ikke var blant det du la mest vekt på i denne gjennomføringen.',
+      use:'Kan være nyttig å bruke mer når situasjonen krever tydelige forslag og begrunnelser.'
+    },
+    'Markerende':{
+      explain:'Det betyr ikke at du aldri uttrykker forventninger, anerkjenner, utfordrer eller setter rammer, men at disse påvirkningsformene ikke var blant det du la mest vekt på i denne gjennomføringen.',
+      use:'Kan være nyttig å bruke mer når situasjonen krever tydelighet, ansvar og klare rammer.'
+    },
+    'Involverende':{
+      explain:'Det betyr ikke at du aldri involverer, lytter eller viser åpenhet, men at disse påvirkningsformene ikke var blant det du la mest vekt på i denne gjennomføringen.',
+      use:'Kan være nyttig å bruke mer når situasjonen krever andres perspektiver, involvering og åpenhet.'
+    },
+    'Inspirerende':{
+      explain:'Det betyr ikke at du aldri bygger felles ståsted eller felles mål, men at disse påvirkningsformene ikke var blant det du la mest vekt på i denne gjennomføringen.',
+      use:'Kan være nyttig å bruke mer når situasjonen krever samling, mening og retning.'
+    }
+  };
+
+  areaRanked.forEach(name=>{
+    const pct=Math.round(areaPct[name]);
+    const meta=AREA_META[name];
+    const lev=areaLevel(pct);
+    const topStatements=getTopAnswerTexts(meta.forms,3);
+
+    let signal='';
+    if(pct>0){
+      if(lev==='veryhigh') signal=`<div class="signal"><strong>Mulig overslag:</strong> ${meta.over}</div>`;
+      else if(lev==='high') signal=`<div class="signal"><strong>Høy bruk:</strong> Dette er en tydelig del av profilen din. ${meta.over}</div>`;
+      else if(lev==='low') signal=`<div class="signal"><strong>Lav bruk:</strong> ${meta.under}</div>`;
+      else if(lev==='verylow') signal=`<div class="signal"><strong>Svært lav bruk:</strong> ${meta.under}</div>`;
+    }
+
+    const zero=ZERO_AREA_TEXT[name];
+    const bodyHtml=pct===0
+      ? `<p><strong>Dette hovedområdet kommer ikke frem i svarene dine i denne analysen.</strong></p>
+         <p>${zero.explain}</p>
+         <div class="signal"><strong>${zero.use}</strong></div>`
+      : `<p>${meta.desc}</p>${signal}`;
+
+    const ownWordsHtml=topStatements.length
+      ? `<div class="ownwords"><strong>To eksempler hentet fra svarene dine</strong>
+         ${topStatements.slice(0,2).map(t=>`<div>«${t}»</div>`).join('')}</div>`
+      : '';
+
+    const box=document.createElement('div'); box.className='area-detail';
+    box.innerHTML=`
+      <div class="area-head">
+        <div>
+          <h3>${AREA_HEADLINES[name] || name}</h3>
+          <div class="area-form-name">${name}</div>
+          <div class="area-kicker">${meta.kw}</div>
+          <div class="area-fitline">${meta.fitline}</div>
+        </div>
+        <div class="pct">${pct}%</div>
+      </div>
+      ${bodyHtml}
+      ${ownWordsHtml}`;
+    detailsHost.appendChild(box);
+  });
+
+  const pushAvg=userScores.slice(0,6).reduce((a,b)=>a+b,0)/6;
+  const pullAvg=userScores.slice(6,11).reduce((a,b)=>a+b,0)/5;
+  const total=pushAvg+pullAvg||1;
+  const pushPct=Math.round(pushAvg/total*100);
+  const pullPct=100-pushPct;
+
+  // chart - cleaner visual profile
+  const maxScore=Math.max(...userScores,5);
+  const chartMax=Math.max(15, Math.ceil((maxScore+3)/5)*5);
+  const scale=document.getElementById('scale'); scale.innerHTML='';
+  for(let v=0;v<=chartMax;v+=5){
+    const s=document.createElement('span');
+    s.textContent=v;
+    s.style.bottom=(v/chartMax*100)+'%';
+    scale.appendChild(s);
+  }
+
+  const areaColors=['#c98455','#c98455','#d2a23f','#d2a23f','#d2a23f','#d2a23f','#6f9f88','#6f9f88','#6f9f88','#7d83b3','#7d83b3'];
+
+  const bars=document.getElementById('bars'); bars.innerHTML='';
+  const labels=document.getElementById('labels'); labels.innerHTML='';
+
+  userScores.forEach((v,i)=>{
+    const c=document.createElement('div');
+    c.className='vcol';
+
+    const level=roundedLevel(v);
+    const isSignal=['low','slightlylow','high','veryhigh'].includes(level);
+
+    const b=document.createElement('div');
+    b.className='vbar'+(isSignal ? ` form-${level}` : '');
+    b.style.height=Math.min(100,v/chartMax*100)+'%';
+    if(!isSignal) b.style.background=areaColors[i];
+
+    const score=document.createElement('div');
+    score.className='score-label';
+    score.textContent=Math.round(v);
+    b.appendChild(score);
+
+    if(isSignal && Math.round(v)>0){
+      const badge=document.createElement('div');
+      badge.className=`form-signal ${level}`;
+      badge.textContent=levelLabel(level);
+      b.appendChild(badge);
+    }
+
+    c.appendChild(b);
+    bars.appendChild(c);
+
+    const l=document.createElement('div');
+    l.className='chart-label';
+    l.textContent=(i+1)+'. '+FORMS[i];
+    labels.appendChild(l);
+  });
+
+  renderDetailedReportCanonical();
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+
+const REPORT_PDF_ENDPOINT='https://starttounderstandme.com/send-report.php';
+const REPORT_PDF_FILENAME='me2influence_rapport.pdf';
+const simpleReportEmailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function setReportActionBusy(isBusy){
+  ['emailReportButton','sendReportEmailButton'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.disabled=!!isBusy;
+    el.classList.toggle('pdf-busy',!!isBusy);
+  });
+}
+
+function waitForPdfTools(timeoutMs=10000){
+  return new Promise((resolve,reject)=>{
+    const started=Date.now();
+    const check=()=>{
+      if(typeof html2canvas!=='undefined' && window.jspdf && window.jspdf.jsPDF){
+        resolve();
+        return;
+      }
+      if(Date.now()-started>=timeoutMs){
+        reject(new Error('PDF-verktøyene kunne ikke lastes. Sjekk internettforbindelsen og prøv igjen.'));
+        return;
+      }
+      setTimeout(check,120);
+    };
+    check();
+  });
+}
+
+function openEmailReportDialog(){
+  const dialog=document.getElementById('emailReportDialog');
+  const status=document.getElementById('emailReportStatus');
+  if(status){
+    status.className='pdf-email-status';
+    status.textContent='';
+  }
+  dialog?.classList.remove('hidden');
+  setTimeout(()=>document.getElementById('reportRecipientEmail1')?.focus(),50);
+}
+
+function closeEmailReportDialog(){
+  document.getElementById('emailReportDialog')?.classList.add('hidden');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeEmailReportDialog();
+});
+
+document.getElementById('emailReportDialog')?.addEventListener('click',e=>{
+  if(e.target?.id==='emailReportDialog') closeEmailReportDialog();
+});
+
+
+
+const REPORT_BUILD_VERSION='8.56';
+
+function renderDetailedReportCanonical(){
+  // Den lange dynamiske detaljrapporten er fjernet.
+  // Rapporten bruker nå en statisk oversikt over de 11 påvirkningsformene.
+}
+
+function formatReportDate(date=new Date()){
+  return new Intl.DateTimeFormat('nb-NO',{
+    day:'2-digit',
+    month:'2-digit',
+    year:'numeric'
+  }).format(date);
+}
+
+function makePdfLegalFooter(){
+  const footer=document.createElement('div');
+  footer.className='report-legal';
+  footer.innerHTML=`
+    <strong>me2influence</strong><br>
+    © Bedriftspartner AS – Org.nr. 977 060 346<br>
+    Analysen er utviklet av fagpersoner med støtte fra AI. Den kan inneholde feil og er ment som inspirasjon til egne vurderinger og refleksjon.<br>
+    Kommersiell bruk krever tillatelse.<br>
+    <strong>For mer informasjon:</strong> sverre.gjestrum@bedriftspartner.com
+  `;
+  return footer;
+}
+
+function makePdfCover(name){
+  const cover=document.createElement('section');
+  cover.className='report-cover';
+  cover.innerHTML=`
+    <div class="report-cover-main">
+      <div class="report-cover-brand">me2influence</div>
+      <div class="report-cover-subtitle">Kommunikasjon og påvirkning</div>
+      <div class="report-cover-label">Rapport for</div>
+      <div class="report-cover-name"></div>
+      <div class="report-cover-date">Dato: ${formatReportDate()}</div>
+    </div>
+  `;
+  cover.querySelector('.report-cover-name').textContent=name;
+  cover.appendChild(makePdfLegalFooter());
+  return cover;
+}
+
+function cloneReportForPdf(name){
+  // Rebuild the detailed report immediately before cloning, so PDF/e-mail can never
+  // inherit an older DOM version of the detailed texts or level labels.
+  renderDetailedReportCanonical();
+
+  const source=document.getElementById('report');
+  if(!source) throw new Error('Rapporten ble ikke funnet.');
+
+  const root=document.createElement('div');
+  root.className='pdf-render-root';
+
+  const clone=source.cloneNode(true);
+  clone.id='reportPdfClone';
+  clone.classList.remove('hidden');
+  clone.style.display='block';
+  clone.style.width='1000px';
+  clone.style.maxWidth='1000px';
+  clone.style.background='#fff';
+
+  clone.querySelectorAll('details').forEach(d=>{
+    d.open=true;
+    d.setAttribute('open','');
+  });
+  clone.querySelectorAll('.print-hide,button').forEach(el=>el.remove());
+  clone.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
+
+  // The PDF gets a dedicated cover page. The on-screen report itself is unchanged.
+  root.appendChild(makePdfCover(name));
+  root.appendChild(clone);
+
+  // The cloned report already contains the legal footer at the end, so the same wording
+  // appears on the final PDF page as in the screen report.
+  document.body.appendChild(root);
+  return {root,clone};
+}
+
+async function renderElementToCanvas(el){
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  return await html2canvas(el,{
+    scale:1.55,
+    backgroundColor:'#ffffff',
+    useCORS:true,
+    logging:false,
+    windowWidth:1000,
+    scrollX:0,
+    scrollY:0
+  });
+}
+
+function pdfSafeBreakpoints(el,canvas){
+  const selectors=[
+    '.strong-form-section',
+    '.low-form-section',
+    '.level-card',
+    '.area-detail',
+    '.principle',
+    '.quick-guide-card',
+    '.profile-line',
+    '.influence-family',
+    '.model-choice',
+    '.influence-overview-note'
+  ];
+  const hostRect=el.getBoundingClientRect();
+  if(!hostRect.height) return [];
+
+  const scaleY=canvas.height/hostRect.height;
+  const points=[];
+
+  el.querySelectorAll(selectors.join(',')).forEach(child=>{
+    const r=child.getBoundingClientRect();
+    const top=(r.top-hostRect.top)*scaleY;
+    const bottom=(r.bottom-hostRect.top)*scaleY;
+    if(top>0) points.push(top);
+    if(bottom>0) points.push(bottom);
+  });
+
+  return [...new Set(points.map(v=>Math.max(0,Math.min(canvas.height,Math.round(v)))))]
+    .filter(v=>v>0 && v<canvas.height)
+    .sort((a,b)=>a-b);
+}
+
+function addCanvasSliceToPdf(pdf,canvas,sourceY,sourceH,x,y,imgW,imgH){
+  const part=document.createElement('canvas');
+  part.width=canvas.width;
+  part.height=Math.max(1,Math.round(sourceH));
+  const ctx=part.getContext('2d');
+  ctx.drawImage(canvas,0,sourceY,canvas.width,sourceH,0,0,canvas.width,sourceH);
+  const imgData=part.toDataURL('image/jpeg',0.90);
+  pdf.addImage(imgData,'JPEG',x,y,imgW,imgH,undefined,'FAST');
+}
+
+async function buildMe2InfluencePdf(name){
+  await waitForPdfTools();
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+  if(pdf.setProperties){
+    pdf.setProperties({
+      title:'me2influence report',
+      subject:'MASTER 2026-09-25 v8',
+      author:'Bedriftspartner AS',
+      creator:'me2influence MASTER 2026-09-25 v8'
+    });
+  }
+
+
+  const pageW=210;
+  const pageH=297;
+  const marginX=10;
+  const marginTop=10;
+  const marginBottom=10;
+  const usableW=pageW-marginX*2;
+  const usableH=pageH-marginTop-marginBottom;
+
+  const {root,clone}=cloneReportForPdf(name);
+
+  try{
+    const blocks=[...root.children].flatMap(el=>{
+      if(el.classList.contains('report-cover')) return [el];
+      return [...el.children];
+    }).filter(el=>{
+      const cs=window.getComputedStyle(el);
+      return cs.display!=='none' && cs.visibility!=='hidden';
+    });
+
+    let pageStarted=false;
+    let cursorY=marginTop;
+
+    for(const block of blocks){
+      const canvas=await renderElementToCanvas(block);
+      if(!canvas.width || !canvas.height) continue;
+
+      const mmPerPx=usableW/canvas.width;
+      const fullH=canvas.height*mmPerPx;
+
+      // The cover is always a dedicated first page. Never place report content below it.
+      if(block.classList.contains('report-cover')){
+        const imgData=canvas.toDataURL('image/jpeg',0.90);
+        pdf.addImage(imgData,'JPEG',marginX,marginTop,usableW,fullH,undefined,'FAST');
+        pageStarted=true;
+        pdf.addPage();
+        cursorY=marginTop;
+        continue;
+      }
+
+      // Keep a normal report block together whenever it fits on one page.
+      if(fullH<=usableH){
+        if(!pageStarted){
+          pageStarted=true;
+        }else if(cursorY+fullH>pageH-marginBottom){
+          pdf.addPage();
+          cursorY=marginTop;
+        }
+
+        const imgData=canvas.toDataURL('image/jpeg',0.90);
+        pdf.addImage(imgData,'JPEG',marginX,cursorY,usableW,fullH,undefined,'FAST');
+        cursorY+=fullH+4;
+        continue;
+      }
+
+      // Very tall sections (for example detailed report) are split only when unavoidable.
+      if(pageStarted && cursorY>marginTop+2){
+        pdf.addPage();
+        cursorY=marginTop;
+      }else if(!pageStarted){
+        pageStarted=true;
+      }
+
+      const pxPerPage=usableH/mmPerPx;
+      const safeBreaks=pdfSafeBreakpoints(block,canvas);
+      let sourceY=0;
+      let lastSliceH=usableH;
+
+      while(sourceY<canvas.height){
+        const remaining=canvas.height-sourceY;
+        let sourceH=Math.min(pxPerPage,remaining);
+
+        if(remaining>pxPerPage && safeBreaks.length){
+          const target=sourceY+pxPerPage;
+          const minimumUseful=sourceY+pxPerPage*0.42;
+          const candidates=safeBreaks.filter(v=>v<=target && v>=minimumUseful);
+          if(candidates.length){
+            const chosen=candidates[candidates.length-1];
+            sourceH=chosen-sourceY;
+          }
+        }
+
+        const sliceH=sourceH*mmPerPx;
+        lastSliceH=sliceH;
+        addCanvasSliceToPdf(pdf,canvas,sourceY,sourceH,marginX,marginTop,usableW,sliceH);
+        sourceY+=sourceH;
+
+        if(sourceY<canvas.height) pdf.addPage();
+      }
+
+      // Keep the remainder of the final page available for the next section.
+      cursorY=marginTop+lastSliceH+4;
+      if(cursorY>pageH-marginBottom) cursorY=pageH-marginBottom;
+    }
+
+    if(!pageStarted){
+      throw new Error('Rapporten inneholder ikke noe som kan legges i PDF.');
+    }
+
+    pdf.setProperties({
+      title:`me2influence – rapport – ${name}`,
+      subject:`Kommunikasjon og påvirkning – rapportversjon ${REPORT_BUILD_VERSION}`,
+      author:'Bedriftspartner AS',
+      creator:`me2influence ${REPORT_BUILD_VERSION}`
+    });
+
+    const totalPages=pdf.getNumberOfPages();
+    for(let pageNo=1; pageNo<=totalPages; pageNo++){
+      pdf.setPage(pageNo);
+      pdf.setFont('helvetica','normal');
+      pdf.setFontSize(8);
+      pdf.setTextColor(110,118,128);
+      pdf.text(`Side ${pageNo} av ${totalPages}`, pageW-10, pageH-4, {align:'right'});
+    }
+
+    return pdf;
+  } finally {
+    root.remove();
+  }
+}
+
+
+async function sendReportByEmail(){
+  const name=document.getElementById('reportRecipientName')?.value.trim() || '';
+  const email1=document.getElementById('reportRecipientEmail1')?.value.trim() || '';
+  const email2=document.getElementById('reportRecipientEmail2')?.value.trim() || '';
+  const status=document.getElementById('emailReportStatus');
+  const button=document.getElementById('sendReportEmailButton');
+
+  const setStatus=(message,type='')=>{
+    if(!status) return;
+    status.className='pdf-email-status'+(type?' '+type:'');
+    status.textContent=message;
+  };
+
+  setStatus('');
+
+  if(!name){
+    setStatus('Skriv inn navnet som skal stå på forsiden.','error');
+    document.getElementById('reportRecipientName')?.focus();
+    return;
+  }
+
+  if(!email1 && !email2){
+    setStatus('Skriv inn minst én e-postadresse.','error');
+    return;
+  }
+
+  if(email1 && !simpleReportEmailPattern.test(email1)){
+    setStatus('Kontroller den første e-postadressen.','error');
+    return;
+  }
+
+  if(email2 && !simpleReportEmailPattern.test(email2)){
+    setStatus('Kontroller den andre e-postadressen.','error');
+    return;
+  }
+
+  const recipients=[email1,email2].filter(Boolean);
+  const uniqueRecipients=[...new Set(recipients.map(x=>x.toLowerCase()))];
+  if(uniqueRecipients.length!==recipients.length){
+    setStatus('De to e-postadressene er like. Bruk en annen adresse eller la felt 2 stå tomt.','error');
+    return;
+  }
+
+  const safeName=(name || 'rapport')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-zA-Z0-9_-]+/g,'_')
+    .replace(/^_+|_+$/g,'') || 'rapport';
+
+  try{
+    setReportActionBusy(true);
+    if(button) button.textContent='Lager PDF …';
+    setStatus('Lager rapporten som PDF …');
+
+    const pdf=await buildMe2InfluencePdf(name);
+    const pdfBlob=pdf.output('blob');
+
+    if(button) button.textContent='Sender …';
+    setStatus('Sender rapporten …');
+
+    const formData=new FormData();
+    formData.append('name',name);
+    formData.append('email1',email1);
+    formData.append('email2',email2);
+    formData.append(
+      'report',
+      pdfBlob,
+      `me2influence_${safeName}_MASTER_2026-09-25_v8.pdf`
+    );
+    formData.append('report_title','me2influence – rapport');
+
+    const response=await fetch(REPORT_PDF_ENDPOINT,{
+      method:'POST',
+      body:formData,
+      credentials:'same-origin'
+    });
+
+    let payload={};
+    try{
+      payload=await response.json();
+    }catch(_){}
+
+    if(!response.ok || !payload.ok){
+      const detail=payload.detail ? ' ' + payload.detail : '';
+      throw new Error(
+        (payload.message || 'Rapporten kunne ikke sendes.') + detail
+      );
+    }
+
+    setStatus('Rapporten er sendt.','success');
+  }catch(err){
+    console.error(err);
+    setStatus(
+      err?.message || 'Rapporten kunne ikke sendes. Prøv igjen.',
+      'error'
+    );
+  }finally{
+    setReportActionBusy(false);
+    if(button) button.textContent='Send rapport';
+  }
+}
+
+</script>
+</body>
+</html>
