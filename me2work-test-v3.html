@@ -1,0 +1,1311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>START TO UNDERSTAND ME</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f5f5;color:#222}
+.wrap{max-width:850px;margin:auto;padding:22px 16px 40px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 3px 14px rgba(0,0,0,.08)}
+h1,h2{margin-top:0}.muted{color:#666;line-height:1.5}.progress{height:8px;background:#ddd;border-radius:8px;overflow:hidden;margin:18px 0 24px}.bar{height:100%;background:#222;width:0}
+.statement{display:grid;grid-template-columns:1fr 160px;gap:14px;align-items:center;border-bottom:1px solid #eee;padding:18px 0}
+.statement:last-child{border-bottom:0}.text{line-height:1.45}.controls{display:flex;justify-content:center;align-items:center;gap:12px}
+.ctrl{width:40px;height:40px;border:1px solid #ccc;border-radius:9px;background:#f3f3f3;font-size:22px;cursor:pointer}.count{min-width:24px;text-align:center;font-weight:700;font-size:20px}
+button.main{background:#222;color:#fff;border:0;border-radius:10px;padding:13px 22px;font-size:16px;cursor:pointer}
+button.secondary{background:#eee;color:#222;border:0;border-radius:10px;padding:13px 22px;font-size:16px;cursor:pointer}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}.status{text-align:center;color:#666;margin-top:12px;font-size:14px}.error{color:#a40020;text-align:center;margin-top:10px;min-height:20px}
+.hidden{display:none}.intro p{line-height:1.6}.badge{display:inline-block;background:#eee;border-radius:999px;padding:6px 10px;font-size:13px}
+@media(max-width:600px){.statement{grid-template-columns:1fr 145px}.wrap{padding:14px 10px 30px}.card{padding:18px}.text{font-size:15px}}
+
+.results-block{margin-top:22px}.results-title{font-size:18px;font-weight:700;margin:0 0 14px}
+.profile-row{display:grid;grid-template-columns:125px 1fr 62px;gap:12px;align-items:center;margin:11px 0}
+.profile-label{font-weight:600}.profile-track{height:12px;background:#e5e5e5;border-radius:8px;overflow:hidden}
+.profile-fill{height:100%;background:#222;border-radius:8px}.profile-value{text-align:right;font-weight:700}
+.compare{margin-top:26px;padding-top:18px;border-top:1px solid #eee}
+@media(max-width:600px){.profile-row{grid-template-columns:90px 1fr 52px}}
+
+.reflection{margin-top:30px;padding-top:24px;border-top:1px solid #eee}
+.reflection h2{margin-bottom:16px}
+.reflection h3{margin-top:20px;font-size:18px}
+.results-block{margin-top:22px}
+.results-title{font-size:18px;font-weight:700;margin:0 0 14px}
+.profile-row{display:grid;grid-template-columns:125px 1fr 62px;gap:12px;align-items:center;margin:11px 0}
+.profile-label{font-weight:600}
+.profile-track{height:12px;background:#e5e5e5;border-radius:8px;overflow:hidden}
+.profile-fill{height:100%;background:#222;border-radius:8px}
+.profile-value{text-align:right;font-weight:700}
+.profile-row.top .profile-label{font-weight:800}
+.profile-row.top .profile-fill{background:#111}
+@media(max-width:600px){.profile-row{grid-template-columns:115px 1fr 58px}}
+
+
+
+
+
+
+
+.main-result-title{font-size:22px!important}
+@media(max-width:700px){}
+
+.wavelength-item{padding:16px 0;border-top:1px solid #eee}
+.wavelength-item:first-of-type{border-top:0}
+.wavelength-item h3{margin:0 0 8px;font-size:18px}
+.wavelength-item p{margin:0;color:#666;line-height:1.5}
+.rank-section{margin-top:24px;padding-top:20px;border-top:1px solid #eee}.rank-title{font-size:18px;font-weight:800;margin:0 0 10px}.rank-name{font-size:22px;font-weight:800;margin:0}.rank-score{color:#666;margin-top:5px}.no-worry{color:#666;line-height:1.5}
+
+
+
+
+
+
+
+
+
+/* V23 clean report layout */
+.report{max-width:900px;margin:0 auto;padding:34px 28px 48px;background:#fff}
+.report h2{font-size:30px;line-height:1.15;margin:0 0 16px}
+.report h3{font-size:22px;line-height:1.2;margin:0 0 12px}
+.report .muted{color:#666;line-height:1.55}
+.report-divider{border:0;border-top:1px solid #e5e5e5;margin:32px 0}
+.report-page{display:none}
+.report-page.active{display:block}
+.report-nav{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:34px;padding-top:18px;border-top:1px solid #e5e5e5}
+.page-count{color:#666;font-size:14px}
+.report-actions{display:flex;gap:10px}
+.report-actions button:disabled{opacity:.42;cursor:default}
+.report 
+.report 
+.report .profile-row{grid-template-columns:145px 1fr 58px;margin:15px 0}
+.report .profile-value{font-weight:800}
+.report .rank-list{margin-top:22px}
+.report .rank-item{padding:20px 0;border-top:1px solid #e5e5e5}
+.report .rank-item:first-child{border-top:0}
+.report .rank-title{font-size:15px;font-weight:800;letter-spacing:.01em;margin:0 0 6px}
+.report .rank-name{font-size:26px;font-weight:800;margin:0}
+.report .rank-score{color:#666;margin-top:4px}
+.report 
+.report 
+.report 
+.report .strength-section{padding:26px 0;border-top:1px solid #e5e5e5}
+.report .strength-section:first-child{border-top:0}
+.report .strength-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
+.report .strength-block{padding:0 24px;border-left:1px solid #e5e5e5}
+.report .strength-block:first-child{padding-left:0;border-left:0}
+.report .strength-block h4{margin:0 0 8px;font-size:15px;letter-spacing:.02em}
+.report .strength-block p{margin:0;color:#666;line-height:1.55}
+.report .strength-note{font-size:14px;color:#666;margin-top:14px}
+.report .wavelength-item{padding:20px 0;border-top:1px solid #e5e5e5}
+.report .wavelength-item:first-of-type{border-top:0}
+.report .wavelength-item h3{margin:0 0 8px;font-size:20px}
+.report .wavelength-item p{margin:0;color:#666;line-height:1.55}
+@media(max-width:800px){.report .strength-grid{grid-template-columns:1fr}.report .strength-block{padding:18px 0;border-left:0;border-top:1px solid #e5e5e5}.report .strength-block:first-child{padding-top:0;border-top:0}.report .profile-row{grid-template-columns:120px 1fr 58px}}
+@media(max-width:600px){.report{padding:24px 16px 36px}.report h2{font-size:26px}.report h3{font-size:20px}.report .profile-row{grid-template-columns:105px 1fr 50px}}
+
+
+
+
+
+.strength-pct{font-weight:700}
+
+.strength-note{margin:12px 0 0;color:#666;font-size:15px;line-height:1.45}
+
+@media(max-width:600px){}
+
+.intro-note{color:#666;line-height:1.5}.strength-pct{float:right;font-size:20px;font-weight:700;color:#666}@media(max-width:600px){.strength-pct{float:none;margin-left:8px}}
+
+.report-subtitle{font-size:22px;font-weight:700;margin:-4px 0 18px}
+.natural-profile{margin-top:20px}
+.natural-section{padding:28px 0;border-top:1px solid #e5e5e5}
+.natural-section:first-child{border-top:0;padding-top:8px}
+.natural-section h3{font-size:26px;line-height:1.2;margin:0 0 7px}
+.natural-section .descriptor{font-weight:700;color:#555;margin:0 0 14px}
+.natural-section .story{font-size:18px;line-height:1.6;color:#444;margin:0}
+.natural-evidence{margin-top:16px;padding-top:12px;border-top:1px solid #eee}
+.natural-evidence-title{font-weight:800;font-size:15px;margin-bottom:7px}
+.natural-evidence div{margin:8px 0;color:#555;line-height:1.45}
+.natural-evidence strong{color:#222}
+@media(max-width:600px){.report-subtitle{font-size:20px}.natural-section h3{font-size:23px}.natural-section .story{font-size:16px}}
+
+.report-subtitle{font-size:20px;font-weight:700;margin:0 0 14px}
+.start-understand{margin-top:24px}
+.start-understand .lead{font-size:20px;line-height:1.5;margin:0 0 26px}
+.start-understand-section{padding:22px 0;border-top:1px solid #e5e5e5}
+.start-understand-section:first-child{border-top:0;padding-top:4px}
+.start-understand-section h3{margin:0 0 10px;font-size:21px}
+.start-understand-section p{margin:0;color:#555;line-height:1.55}
+.personal-signal{margin-top:14px;padding-top:14px;border-top:1px solid #eee;color:#666;font-size:14px;line-height:1.5}
+
+.strategy-list{margin:10px 0 0;padding:0;list-style:none}
+.strategy-list li{padding:7px 0 0 20px;position:relative;line-height:1.5}
+.strategy-list li:before{content:"•";position:absolute;left:4px;top:7px;font-weight:800}
+.start-understand-section h4{font-size:14px;letter-spacing:.05em;margin:18px 0 8px}
+
+.comparison-summary{margin-top:28px;padding-top:24px;border-top:1px solid #e5e5e5}
+.comparison-summary h3{margin:0 0 10px;font-size:21px}
+.comparison-summary p{margin:0 0 12px;color:#555;line-height:1.55}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.compare-col{padding:0}
+.compare-col h3{margin:0 0 14px;font-size:19px}
+.compare-col .profile-row{margin:14px 0}
+@media(max-width:700px){.compare-grid{grid-template-columns:1fr}}
+
+.verbal-profile-clean h2{margin-top:0}
+.verbal-section-clean{padding:22px 0;border-top:1px solid #e5e5e5}
+.verbal-section-clean:first-of-type{border-top:0}
+.verbal-section-clean h3{font-size:24px;margin:0 0 8px}
+.verbal-section-clean .descriptor{font-weight:700;color:#555;margin:0 0 12px}
+.verbal-section-clean p{color:#444;line-height:1.55}
+.strength-pct{float:right;font-size:20px;color:#666}
+.start-understand-clean{margin-top:24px}
+.start-understand-section-clean{padding:22px 0;border-top:1px solid #e5e5e5}
+.start-understand-section-clean:first-of-type{border-top:0}
+.start-understand-section-clean h3{font-size:22px;margin:0 0 12px}
+.let-list p{margin:10px 0;font-size:18px;line-height:1.45}
+.personal-signal{margin-top:14px;padding-top:14px;border-top:1px solid #eee;color:#666;font-size:14px;line-height:1.5}
+@media(max-width:600px){.strength-pct{float:none;margin-left:8px}.let-list p{font-size:17px}}
+
+.verbal-profile-clean h2{margin-top:0}
+.verbal-section-clean{padding:22px 0;border-top:1px solid #e5e5e5}
+.verbal-section-clean:first-of-type{border-top:0}
+.verbal-section-clean h3{font-size:24px;margin:0 0 8px}
+.verbal-section-clean .descriptor{font-weight:700;color:#555;margin:0 0 12px}
+.verbal-section-clean p{color:#444;line-height:1.58}
+.strength-pct{float:right;font-size:20px;color:#666}
+.start-understand-clean{margin-top:24px}
+.start-understand-section-clean{padding:22px 0;border-top:1px solid #e5e5e5}
+.start-understand-section-clean:first-of-type{border-top:0}
+.start-understand-section-clean h3{font-size:22px;margin:0 0 12px}
+.let-list p{margin:10px 0;font-size:18px;line-height:1.45}
+.personal-signal{margin-top:14px;padding-top:14px;border-top:1px solid #eee;color:#666;font-size:14px;line-height:1.5}
+@media(max-width:600px){.strength-pct{float:none;margin-left:8px}.let-list p{font-size:17px}}
+
+.fit-assessment{margin-top:28px;padding:24px 0;border-top:1px solid #e5e5e5}
+.fit-badge{font-weight:800;font-size:18px;letter-spacing:.04em;margin-bottom:10px}
+.fit-assessment p{margin:0 0 12px;color:#555;line-height:1.55}
+.fit-reflection{margin-top:18px;padding-top:16px;border-top:1px solid #eee}
+.team-reflection{margin-top:28px;padding:24px 0;border-top:1px solid #e5e5e5}
+.team-reflection h3{margin:0 0 14px;font-size:20px}
+.team-reflection p{margin:8px 0;line-height:1.45}
+}
+
+.overlap-labels span{white-space:nowrap}
+.expectations-bars{margin-top:26px}
+.expectation-row{padding:20px 0;border-top:1px solid #e5e5e5}
+.expectation-row:first-child{border-top:0}
+.expectation-title{font-size:20px;font-weight:700;margin-bottom:12px}
+.bar-group{margin:8px 0 14px}
+.bar-label{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px;color:#666;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.bar-row{display:flex;align-items:center;gap:10px}
+.single-bar-track{flex:1;height:18px;border-radius:9px;background:#eee;overflow:hidden}
+.single-bar-fill{height:100%;border-radius:9px;background:#777}
+.single-bar-value{min-width:45px;text-align:right;font-weight:700}
+.fit-assessment{margin-top:28px;padding:24px 0;border-top:1px solid #e5e5e5}
+.fit-badge{font-weight:800;font-size:18px;letter-spacing:.04em;margin-bottom:10px}
+.fit-assessment p{margin:0 0 12px;color:#555;line-height:1.55}
+.fit-reflection{margin-top:18px;padding-top:16px;border-top:1px solid #eee}
+.team-reflection{margin-top:28px;padding:24px 0;border-top:1px solid #e5e5e5}
+.team-reflection h3{margin:0 0 14px;font-size:20px}
+.team-reflection p{margin:8px 0;line-height:1.45}
+.expectation-title{align-items:flex-start;flex-direction:column}}
+
+.overlap-marker{position:absolute;top:-3px;width:3px;height:28px;border-radius:2px;background:#666;z-index:3}
+.overlap-labels{display:flex;justify-content:space-between;margin-top:5px;font-size:13px;color:#666}
+.overlap-labels span{white-space:nowrap}
+
+/* LEGO profile – final report page test */
+.lego-page{max-width:900px;margin:0 auto}
+.lego-page h2{font-size:32px;line-height:1.15;margin:0 0 22px}
+.lego-page .lego-intro{font-size:20px;color:#666;line-height:1.5;margin:0 0 26px}
+.lego-name{font-size:29px;font-weight:800;line-height:1.2;margin:0 0 6px}
+.lego-secondary-profile{margin-top:8px;margin-bottom:22px}.lego-secondary-name{font-size:24px;margin-bottom:4px}
+.lego-type{font-size:17px;color:#666;margin:0 0 22px}
+.lego-row{display:grid;grid-template-columns:118px 1fr 58px;gap:14px;align-items:center;margin:18px 0 20px}
+.lego-row-brick{width:96px;height:68px;border-radius:7px;position:relative;box-shadow:inset 0 -6px 0 rgba(0,0,0,.12),0 3px 5px rgba(0,0,0,.10);display:flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:4px}
+.lego-row-brick:before{content:"";position:absolute;left:9px;top:-9px;width:15px;height:15px;border-radius:50%;background:inherit;box-shadow:24px 0 0 inherit,48px 0 0 inherit,72px 0 0 inherit,0 22px 0 inherit,24px 22px 0 inherit,48px 22px 0 inherit,72px 22px 0 inherit}
+.lego-row-brick:after{content:"";position:absolute;left:4px;right:4px;top:-6px;height:46px;border-radius:8px 8px 5px 5px;transform:skewY(-5deg);opacity:.16;pointer-events:none}
+.lego-row-brick span{position:relative;z-index:2;color:#fff;font-size:15px;font-weight:800;line-height:1;white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,.18)}
+.lego-track{height:15px;background:#eee;border-radius:9px;overflow:hidden}
+.lego-fill{height:100%;border-radius:9px}
+.lego-value{text-align:right;font-size:19px;font-weight:800}
+.lego-blue{background:#4a90e2}.lego-green{background:#65b84a}.lego-red{background:#d9534f}.lego-yellow{background:#f2c94c}
+.lego-note{background:#f7f7f7;border-radius:14px;padding:20px 22px;line-height:1.55;margin-top:24px}
+.lego-rule{margin-top:28px;padding-top:22px;border-top:1px solid #e5e5e5;color:#666;line-height:1.55}
+.lego-rule strong{color:#222}
+@media(max-width:600px){.lego-page h2{font-size:26px}.lego-name{font-size:25px}.lego-secondary-name{font-size:23px}.lego-row{grid-template-columns:105px 1fr 52px;gap:10px}.lego-row-brick{width:82px;height:56px}.lego-row-brick:before{left:8px;top:-7px;width:12px;height:12px;box-shadow:21px 0 0 inherit,42px 0 0 inherit,63px 0 0 inherit,0 21px 0 inherit,21px 21px 0 inherit,42px 21px 0 inherit,63px 21px 0 inherit}.lego-row-brick span{font-size:13px}.lego-value{font-size:16px}}
+
+.restart-notice{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px}
+.restart-notice.hidden{display:none}
+.restart-notice-box{max-width:520px;width:100%;background:#fff;border-radius:12px;padding:28px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.restart-notice-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+
+/* EMAIL MY REPORT — UI test only */
+.email-report-box{
+  margin-top:30px;
+  padding:22px;
+  background:#f7f7f7;
+  border:1px solid #e5e5e5;
+  border-radius:14px;
+}
+.email-report-box h3{
+  margin:0 0 8px;
+  font-size:21px;
+}
+.email-report-box p{
+  margin:0 0 14px;
+  color:#666;
+  line-height:1.5;
+}
+.email-report-fields{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.email-report-label{
+  font-size:14px;
+  font-weight:700;
+  color:#444;
+  margin-top:4px;
+}
+.email-report-label span{
+  font-weight:400;
+  color:#777;
+}
+.email-report-fields input{
+  width:100%;
+  padding:13px 14px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  font-size:16px;
+  background:#fff;
+  color:#222;
+}
+.email-report-fields button{
+  justify-self:start;
+  margin-top:6px;
+  white-space:nowrap;
+}
+.email-report-privacy{
+  margin-top:10px!important;
+  font-size:13px;
+  color:#777!important;
+}
+.email-report-status{
+  min-height:20px;
+  margin-top:10px;
+  font-size:14px;
+  color:#555;
+}
+@media(max-width:600px){
+  .email-report-fields button{width:100%;justify-self:stretch}
+}
+
+
+#sendReportEmail[disabled]{opacity:.55;cursor:wait}
+.email-report-status.success{color:#1f6b35;font-weight:700}
+.email-report-status.error{color:#a40020;font-weight:700}
+
+
+/* STEP1 — PDF cover + discreet contact / follow-up */
+.report-cover{
+  min-height:1120px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:#fff;
+  padding:70px 62px 42px;
+  color:#222;
+}
+.report-cover-main{padding-top:72px}
+.report-cover-brand{font-size:46px;font-weight:850;letter-spacing:-1px;line-height:1.05;margin:0 0 8px}
+.report-cover-product{font-size:24px;font-weight:700;color:#666;margin:0 0 46px}
+.report-cover-product:after{content:"";display:block;width:72px;height:2px;margin-top:26px;background:#222}
+.report-cover-label{font-size:12px;font-weight:800;letter-spacing:1px;color:#777;text-transform:uppercase;margin-bottom:9px}
+.report-cover-name{font-size:38px;font-weight:850;line-height:1.12;letter-spacing:-.35px;margin-bottom:44px;overflow-wrap:anywhere}
+.report-cover-topic{font-size:16px;font-weight:800;letter-spacing:.04em;line-height:1.5;margin:3px 0}
+.report-cover-date{font-size:15px;color:#666;margin-top:28px}
+.report-cover-footer{padding-top:14px;border-top:1px solid #e5e5e5;font-size:11.5px;line-height:1.55;color:#666}
+.report-cover-footer strong{color:#333}
+.report-follow-up{margin-top:28px;padding:20px 22px;border-top:1px solid #e5e5e5;background:#fafafa}
+.report-follow-up h3{margin:0 0 8px;font-size:18px}
+.report-follow-up p{margin:0;color:#555;line-height:1.5}
+.report-follow-up a{color:#222}
+
+/* STEP3 — PDF-only typography normalization */
+.pdf-render-root,
+.pdf-render-root *{
+  font-family:Arial,Helvetica,sans-serif!important;
+  word-spacing:normal!important;
+  letter-spacing:normal!important;
+  font-kerning:none!important;
+  text-rendering:geometricPrecision;
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="card intro" id="intro">
+
+<h1>START TO UNDERSTAND ME</h1>
+<p class="muted" style="font-size:18px;margin-top:-6px;"><strong>Icebreaker</strong></p>
+
+<div class="reflection" style="margin-top:22px;padding-top:22px;">
+<h2>WHY ARE WE DOING THIS?</h2>
+<p class="muted">This is a simple way to understand yourself and others.</p>
+<p class="muted">We all have different strengths, preferences and ways of working.</p>
+<p class="muted">The tool helps you put words to your strengths and ways of working. It creates a shared language for understanding ourselves and others, helping us recognize what we have in common and how we may think, communicate and work differently.</p>
+<p class="muted">When team members understand each other’s natural strengths and where they may need to stretch, it becomes easier to bring out the best in one another.</p>
+</div>
+
+<div class="reflection" style="margin-top:22px;padding-top:22px;">
+<h2>HOW TO ANSWER</h2>
+<p class="muted">In each group of four statements, you have <strong>seven checks</strong> to distribute.</p>
+<p class="muted">You can put all seven checks on one statement, or split them across several statements. Use exactly seven checks in each group.</p>
+<p class="muted">Each group is a fresh choice. When you start a new group, look at the four statements with fresh eyes.</p>
+
+<div style="background:#f7f7f7;border-radius:12px;padding:16px;margin-top:14px;">
+<p style="margin:0 0 8px;font-weight:700;">EXAMPLE</p>
+<p class="muted" style="margin:0;">7 checks can be distributed in many ways:</p>
+<p class="muted" style="margin:6px 0 0;">7 on one statement or 4 + 3 or 3 + 2 + 2 or 2 + 2 + 2 + 1.</p>
+</div>
+</div>
+
+<button class="main" id="start" style="margin-top:22px;">Start</button>
+<p class="muted" style="margin-top:18px;font-size:14px;">For more information: <a href="mailto:sverre.gjestrum@bedriftspartner.com">sverre.gjestrum@bedriftspartner.com</a></p>
+<p class="muted" style="margin-top:10px;font-size:13px;">© Bedriftspartner AS – Org nr 977 060 346 – START TO UNDERSTAND ME<br>Commercial use requires permission.</p>
+</section>
+
+<section class="card hidden" id="test">
+<div id="part"></div><div id="group" class="badge"></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div id="statements"></div>
+<div class="status" id="status"></div><div class="error" id="error"></div>
+<div class="nav"><button class="secondary" id="back">Back</button><button class="main" id="next">Next</button></div>
+</section>
+
+
+<section class="card hidden" id="transition">
+<h2>WHAT COMES NATURALLY TO ME?</h2>
+<p class="muted">So far, you have looked at what you feel your job requires from you.<br>
+Now we will look at what comes naturally to you.</p>
+<p class="muted">There are no right or wrong answers.</p>
+<div class="nav">
+  <button class="secondary" id="transitionBack">Back</button>
+  <button class="main" id="transitionContinue">Continue</button>
+</div>
+</section>
+
+<section class="report hidden" id="done">
+<div class="report-page active" data-report-page="1">
+  <div class="lego-page">
+    
+    <div id="legoProfile"></div>
+  </div>
+  <div class="report-nav">
+    <div class="page-count">Page 1 of 4</div>
+    <div class="report-actions">
+      <button class="secondary" disabled>Back</button>
+      <button class="main" id="reportNext1">Next</button>
+    </div>
+  </div>
+</div><div class="report-page" data-report-page="2">
+  <h2>Your natural strengths</h2>
+  <p class="report-subtitle">WHAT COMES NATURALLY TO ME?</p>
+
+  <div id="results"></div>
+  <div class="report-nav">
+    <div class="page-count">Page 2 of 4</div>
+    <div class="report-actions">
+      <button class="secondary" id="reportPrev1">Back</button>
+      <button class="main" id="reportNext2">Next</button>
+    </div>
+  </div>
+</div><div class="report-page" data-report-page="3">
+  <h2>START TO UNDERSTAND ME</h2>
+  <p class="report-subtitle">How to communicate and work well with me</p>
+  
+  <div id="startToUnderstandMe"></div>
+  <div class="report-nav">
+    <div class="page-count">Page 3 of 4</div>
+    <div class="report-actions">
+      <button class="secondary" id="reportPrev2">Back</button>
+      <button class="main" id="reportNext3">Next</button>
+    </div>
+  </div>
+</div><div class="report-page" data-report-page="4">
+  <h2>EXPECTATIONS <span style="display:inline-block;margin:0 7px;">vs.</span> BEING MYSELF</h2>
+  <p class="report-subtitle">What does my job require from me — and how does that compare with what comes naturally to me?</p>
+
+  <div id="expectationsBars"></div>
+
+  <div class="team-reflection">
+    <h3></h3>
+    <p><strong>Natural</strong><br>This shows how you tend to be when you can be yourself — the ways of working that feel most natural to you.</p>
+    <p><strong>Job expectation</strong><br>This shows how you feel your job requires you to be — the ways of working you believe are expected from you.</p>
+
+    <h3 style="margin-top:24px;">What can you learn?</h3>
+    <p>The difference between your natural strengths and your job expectations is that your job may require you to use strengths that do not come as naturally to you. Meeting these expectations may sometimes require you to stretch a little further and step outside your comfort zone. A larger difference may mean that you are relying more on strengths that take extra effort and energy.</p>
+    <p>Your natural profile shows how you tend to be when you can be yourself — the ways of working that feel most natural to you. It can therefore give you a clearer picture of your “real you”.</p>
+    <p style="margin-top:18px;"><strong>Use these two for reflection and clarification.</strong></p>
+  </div>
+
+  <p style="margin-top:18px;"><strong>TEAM = Together Everyone Achieves More.</strong></p>
+
+  <div class="report-follow-up">
+    <h3>Would you like to use me2work with your team or organization?</h3>
+    <p>For workshops, team development or more information: <a href="mailto:sverre.gjestrum@bedriftspartner.com"><strong>sverre.gjestrum@bedriftspartner.com</strong></a></p>
+  </div>
+
+  <div class="email-report-box" id="emailReportBox">
+    <h3>EMAIL MY REPORT</h3>
+    <p>Enter your name, then one or two email addresses, and we will send the five-page report.</p>
+
+    <div class="email-report-fields">
+      <label class="email-report-label" for="reportName">Name</label>
+      <input type="text" id="reportName" placeholder="Enter your name" autocomplete="name" required>
+
+      <label class="email-report-label" for="reportEmail1">Email address 1</label>
+      <input type="email" id="reportEmail1" placeholder="Enter email address" autocomplete="email" inputmode="email">
+
+      <label class="email-report-label" for="reportEmail2">Email address 2 <span>(optional)</span></label>
+      <input type="text" id="reportEmail2" name="secondary_report_email_manual" placeholder="Enter second email address" autocomplete="off" inputmode="email" autocapitalize="none" spellcheck="false" readonly>
+
+      <button class="main" id="sendReportEmail" type="button">Send my report</button>
+    </div>
+
+    <p class="email-report-privacy">The email addresses are only used to send this report.</p>
+    <div class="email-report-status" id="emailReportStatus" aria-live="polite"></div>
+  </div>
+
+<div class="report-nav">
+    <div class="page-count">Page 4 of 4</div>
+    <div class="report-actions">
+      <button class="secondary" id="reportPrev3">Back</button> <button class="secondary" id="startAgainNew" type="button">Start again</button>
+    </div>
+  </div>
+</div>
+
+</section><div id="restartNotice" class="restart-notice hidden" role="dialog" aria-modal="true" aria-labelledby="restartNoticeTitle">
+  <div class="restart-notice-box">
+    <h3 id="restartNoticeTitle">Start again?</h3>
+    <p>Before you start again, remember that your current result will be lost. It may be a good idea to take a screenshot of your profile first.</p>
+    <div class="restart-notice-actions">
+      <button type="button" class="secondary" id="restartCancel">Cancel</button>
+      <button type="button" class="main" id="restartConfirm">Start again</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+const groups=[
+[
+["Bring in new ideas.","Contribute to getting things done.","Make sure things are done properly.","Make sure everyone can contribute."],
+["Move discussions towards a decision.","Focus on facts and details.","Make sure different views are heard.","Change the focus when a new direction is needed."],
+["Keep things well organized.","Bring different strengths together.","Challenge old ways of doing things.","Drive things forward."],
+["Help people learn and grow.","Suggest new ways of doing things.","Get things done and move on.","Make sure nothing is overlooked."],
+["Look for opportunities.","Follow procedures.","Act quickly.","Make sure everyone is heard."],
+["Get through the workload.","Support people and be flexible.","Get things right the first time.","Work smarter, not harder."]
+],
+[
+["I enjoy bringing new ideas to the team.","I feel good when the team gets things done.","I am satisfied when the team does things properly.","I am at my best when everyone in the team can contribute."],
+["When people disagree, I focus on moving the discussion towards a decision.","When people disagree, I focus on the facts and details.","When people disagree, I help keep the discussion constructive.","When people disagree, I like to bring new perspectives to the table."],
+["I enjoy keeping things well organized.","I enjoy bringing different strengths together.","I enjoy challenging old ways of doing things.","I enjoy driving things forward."],
+["I enjoy helping people develop.","I like being the one who initiates new ideas.","I like to get things done and move on.","I like delivering high-quality work."],
+["I get frustrated when we get stuck in old ways of working.","I get frustrated when we change something that we know works well.","I get frustrated when we spend too much time thinking and not enough time doing.","I get frustrated when people are left out and not seen or heard."],
+["I struggle when people don't take action.","I struggle when people aren’t willing to learn from each other.","I struggle when people start doing before thinking.","I struggle when new ideas are not explored."]
+]
+];
+
+let page=0;
+let answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));
+
+const $=id=>document.getElementById(id);
+
+function start(){
+ $("intro").classList.add("hidden"); $("done").classList.add("hidden"); $("test").classList.remove("hidden"); page=0; render();
+}
+function render(){
+ const part=page<6?0:1, g=page%6;
+ $("part").innerHTML="<h2>"+(part===0?"WHAT DOES MY JOB REQUIRE FROM ME?":"WHAT COMES NATURALLY TO ME?")+"</h2>";
+ $("group").textContent="Group "+(g+1)+" of 6";
+ $("bar").style.width=((page+1)/12*100)+"%";
+ const box=$("statements"); box.innerHTML="";
+ groups[part][g].forEach((text,i)=>{
+   const row=document.createElement("div"); row.className="statement";
+   row.innerHTML='<div class="text">'+text+'</div><div class="controls">'+
+   '<button class="ctrl" aria-label="remove check" data-i="'+i+'" data-d="-1">−</button>'+
+   '<span class="count" id="c'+i+'">'+answers[part][g][i]+'</span>'+
+   '<button class="ctrl" aria-label="add check" data-i="'+i+'" data-d="1">+</button></div>';
+   box.appendChild(row);
+ });
+ box.querySelectorAll(".ctrl").forEach(b=>b.onclick=()=>change(+b.dataset.i,+b.dataset.d));
+ $("back").style.visibility=page===0?"hidden":"visible";
+ $("next").textContent="Next";
+ updateStatus();
+}
+function change(i,d){
+ const part=page<6?0:1,g=page%6,a=answers[part][g];
+ const next=a[i]+d,total=a.reduce((x,y)=>x+y,0);
+ if(next<0||next>7||total+d>7)return;
+ a[i]=next; $("c"+i).textContent=next; updateStatus();
+}
+function updateStatus(){
+  const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
+  $("status").textContent="Checks used: "+total+" / 7";
+  if(total===0){
+    $("error").textContent="Use exactly 7 checks before continuing.";
+  } else if(total<7){
+    $("error").textContent="You have used "+total+" of 7 checks. Add "+(7-total)+" more.";
+  } else {
+    $("error").textContent="";
+  }
+}
+
+
+const typeMap=[
+  [["E","D","O","Y"],["D","O","Y","E"],["O","Y","E","D"],["Y","E","D","O"],["E","O","D","Y"],["D","Y","O","E"]],
+  [["E","D","O","Y"],["D","O","Y","E"],["O","Y","E","D"],["Y","E","D","O"],["E","O","D","Y"],["D","Y","O","E"]]
+];
+
+function statementType(part,g,i){
+  return typeMap[part][g][i];
+}
+
+function calculateProfile(part){
+  const totals=[0,0,0,0];
+  for(let g=0;g<6;g++){
+    for(let i=0;i<4;i++){
+      totals[["D","O","E","Y"].indexOf(statementType(part,g,i))]+=answers[part][g][i];
+    }
+  }
+  return totals;
+}
+
+function sortedProfile(totals){
+  const names=["D","O","E","Y"];
+  const labels=["Doer","Organizer","Explorer","Unifier"];
+  const tieOrder={"D":0,"O":1,"E":2,"Y":3};
+  return totals.map((score,i)=>({score,name:names[i],label:labels[i]}))
+    .sort((a,b)=>b.score-a.score || tieOrder[a.name]-tieOrder[b.name]);
+}
+
+function profileHTML(title, totals){
+  const ranked=sortedProfile(totals);
+  let out='<div class="results-block"><p class="results-title">'+title+'</p>';
+  ranked.forEach(item=>{
+    const pct=item.score/42*100;
+    out+='<div class="profile-row"><div class="profile-label">'+item.name+' — '+item.label+'</div><div class="profile-track"><div class="profile-fill" style="width:'+pct+'%"></div></div><div class="profile-value">'+Math.round(pct)+'%</div></div>';
+  });
+  out+='</div>';
+  return out;
+}
+
+
+function sortedNaturalScores(totals){
+  const items=[
+    {key:"D",label:"Doer",score:totals[0],pct:Math.round(totals[0]/42*100)},
+    {key:"O",label:"Organizer",score:totals[1],pct:Math.round(totals[1]/42*100)},
+    {key:"E",label:"Explorer",score:totals[2],pct:Math.round(totals[2]/42*100)},
+    {key:"Y",label:"Unifier",score:totals[3],pct:Math.round(totals[3]/42*100)}
+  ];
+  // Classification uses the same rounded percentages shown to the candidate.
+  items.sort((a,b)=>b.pct-a.pct || b.score-a.score || a.label.localeCompare(b.label));
+  return items;
+}
+
+function classifyNaturalProfile(totals){
+  const s=sortedNaturalScores(totals);
+  const top=s[0].pct;
+  const second=s[1].pct;
+  const lowest=s[3].pct;
+  const range=top-lowest;
+  const topGap=top-second;
+
+  if(range<=7 && topGap<=3) return {type:"balanced",scores:s};
+  if(topGap<=3) return {type:"shared-strongest",scores:s};
+  if(top>0 && second/top>=0.60) return {type:"strong-leader-secondary",scores:s};
+  return {type:"clear-leader",scores:s};
+}
+
+function naturalVerbalProfileHTML(totals){
+  const data=[
+    {key:"D",label:"Doer",color:"🟢",descriptor:"Creates progress and gets things done."},
+    {key:"O",label:"Organizer",color:"🔴",descriptor:"Creates structure and ensures quality."},
+    {key:"E",label:"Explorer",color:"🔵",descriptor:"Sees possibilities and thinks differently."},
+    {key:"Y",label:"Unifier",color:"🟡",descriptor:"Brings people together and strengthens the team."}
+  ];
+  const idx={D:0,O:1,E:2,Y:3};
+  const sentenceMap={
+    "I am at my best when everyone in the team can contribute.":"You are at your best when everyone in the team can contribute.",
+    "When people disagree, I help keep the discussion constructive.":"You help keep discussions constructive when people disagree.",
+    "I enjoy bringing different strengths together.":"You enjoy bringing different strengths together.",
+    "I enjoy helping people develop.":"You enjoy helping people develop.",
+    "I get frustrated when people are left out and not seen or heard.":"You may become frustrated when people are left out or not heard.",
+    "I feel good when the team gets things done.":"You feel good when the team gets things done.",
+    "I struggle when people don't take action.":"You may become frustrated when people do not take action.",
+    "I enjoy driving things forward.":"You enjoy driving things forward.",
+    "I get frustrated when we spend too much time thinking and not enough time doing.":"You may become frustrated when too much time is spent thinking without enough action.",
+    "I like to get things done and move on.":"You like to get things done and move on.",
+    "I am satisfied when the team does things properly.":"You are satisfied when the team does things properly.",
+    "I like delivering high-quality work.":"You like delivering high-quality work.",
+    "When people disagree, I focus on the facts and details.":"You focus on facts and details when people disagree.",
+    "I enjoy keeping things well organized.":"You enjoy keeping things well organized.",
+    "I get frustrated when we get stuck in old ways of working.":"You may become frustrated when the team gets stuck in old ways of working.",
+    "I like being the one who initiates new ideas.":"You like to be the one who initiates new ideas.",
+    "I enjoy bringing new ideas to the team.":"You enjoy bringing new ideas to the team.",
+    "When people disagree, I like to bring new perspectives to the table.":"You like to bring new perspectives to the table when people disagree.",
+    "I enjoy challenging old ways of doing things.":"You enjoy challenging old ways of doing things.",
+    "I struggle when new ideas are not explored.":"You may find it difficult when new ideas are not explored.",
+    "I struggle when people start doing before thinking.":"You may find it difficult when people start doing before thinking.",
+    "I get frustrated when we change something that we know works well.":"You may become frustrated when something that works well is changed without a clear reason.",
+    "When people disagree, I focus on moving the discussion towards a decision.":"You focus on moving the discussion towards a decision when people disagree.",
+    "I struggle when people aren’t willing to learn from each other.":"You may find it difficult when people are not willing to learn from each other."
+  };
+
+  data.forEach(item=>{
+    item.score=totals[idx[item.key]];
+    item.pct=Math.round(item.score/42*100);
+    item.items=[];
+    for(let g=0;g<6;g++){
+      for(let i=0;i<4;i++){
+        if(statementType(1,g,i)===item.key && answers[1][g][i]>0){
+          item.items.push({weight:answers[1][g][i],text:groups[1][g][i],group:g+1});
+        }
+      }
+    }
+    item.items.sort((a,b)=>b.weight-a.weight || a.group-b.group);
+  });
+
+  const classification=classifyNaturalProfile(totals);
+  const ranked=classification.scores;
+  data.sort((a,b)=>{
+    const ra=ranked.findIndex(x=>x.key===a.key);
+    const rb=ranked.findIndex(x=>x.key===b.key);
+    return ra-rb;
+  });
+
+  let out='<div class="verbal-profile-clean">';
+
+  if(classification.type==="balanced"){
+    out+='<p class="profile-intro"><strong>Your profile appears relatively balanced, with all four strengths contributing in similar proportions.</strong></p>';
+  }
+
+  data.forEach((item, position)=>{
+    if(item.score<=0) return;
+
+    const count=item.pct>=50?4:item.pct>=30?3:item.pct>=15?2:1;
+    const top=item.items.slice(0,count);
+    const sentences=top.map(sig=>sentenceMap[sig.text]).filter(Boolean);
+
+    let lead="";
+
+    if(classification.type==="balanced"){
+      lead="This is an important part of your natural profile.";
+    }else if(classification.type==="shared-strongest"){
+      if(position<2){
+        lead="This is one of your strongest natural strengths.";
+      }else{
+        lead="This appears less prominent than your strongest strengths.";
+      }
+    }else if(classification.type==="strong-leader-secondary"){
+      if(position===0){
+        lead="Your strongest natural strength is "+item.label+".";
+      }else if(item.pct===classification.scores[1].pct){
+        lead=item.label+" is also an important part of your natural profile.";
+      }else{
+        lead="This appears less prominent in your natural profile.";
+      }
+    }else{
+      if(position===0){
+        lead="Your strongest natural strength is "+item.label+".";
+      }else{
+        lead="This appears less prominent in your natural profile.";
+      }
+    }
+
+    out+='<section class="verbal-section-clean">';
+    out+='<h3>'+item.color+' '+item.label+' <span class="strength-pct">'+item.pct+'%</span></h3>';
+    out+='<p class="descriptor">'+item.descriptor+'</p>';
+    out+='<p>'+lead;
+    sentences.forEach(sentence=>{out+=' '+sentence;});
+    if(position===0 && classification.type!=="balanced"){
+      out+=' Taken together, these answers help explain how you naturally contribute.';
+    }
+    out+='</p>';
+    out+='<div class="personal-signal"><strong>My own words</strong>';
+    top.forEach(sig=>out+='<br>“'+sig.text+'”');
+    out+='</div></section>';
+  });
+
+  out+='</div>';
+  return out;
+}
+
+function startToUnderstandMeHTML(totals){
+  const data=[
+    {key:"D",label:"Doer",color:"🟢",phrases:["Let me make it happen.","Let me take the lead and get started.","Let me do it my way.","Let me achieve the goal.","Judge me by what I achieve."]},
+    {key:"O",label:"Organizer",color:"🔴",phrases:["Let me get the details right.","Let me do it the right way.","Let me present the facts.","Let me make sure the rules are followed.","Let me check that the work is done right."]},
+    {key:"E",label:"Explorer",color:"🔵",phrases:["Let me think differently.","Let me challenge the way we do things.","Ask me about upsides and downsides.","Help me turn my new ideas into action.","Support my dreams."]},
+    {key:"Y",label:"Unifier",color:"🟡",phrases:["Let us strengthen teamwork.","Let’s stay focused on what matters.","Let’s face reality and keep moving forward.","Let’s celebrate our small wins.","Let’s bring out the best from each colour."]}
+  ];
+  const idx={D:0,O:1,E:2,Y:3};
+  const tie={E:0,D:1,O:2,Y:3};
+
+  const meaning={
+    D:"creating progress and getting things done",
+    O:"creating structure and ensuring quality",
+    E:"seeing possibilities and thinking differently",
+    Y:"bringing people together and strengthening the team"
+  };
+
+  data.forEach(item=>{
+    item.score=totals[idx[item.key]];
+    item.pct=Math.round(item.score/42*100);
+    item.items=[];
+    for(let g=0;g<6;g++){
+      for(let i=0;i<4;i++){
+        if(statementType(1,g,i)===item.key && answers[1][g][i]>0){
+          item.items.push({weight:answers[1][g][i],text:groups[1][g][i],group:g+1});
+        }
+      }
+    }
+    item.items.sort((a,b)=>b.weight-a.weight || a.group-b.group);
+  });
+  data.sort((a,b)=>b.score-a.score || tie[a.key]-tie[b.key]);
+
+  let out='<div class="start-understand-clean">';
+  out+='<p class="muted">When working with me, I appreciate it when you remember:</p>';
+
+  data.forEach(item=>{
+    if(item.score<=0) return;
+    const phraseCount=item.pct>=50?4:item.pct>=30?3:2;
+    const top=item.items.slice(0,phraseCount);
+
+    out+='<section class="start-understand-section-clean">';
+    out+='<h3>'+item.color+' '+item.label+' '+item.pct+'%</h3>';
+    out+='<div class="let-list">';
+    item.phrases.slice(0,phraseCount).forEach(p=>out+='<p>'+p+'</p>');
+    out+='</div>';
+
+    out+='<div class="personal-signal"><strong>My own words</strong>';
+    top.forEach(sig=>out+='<br>“'+sig.text+'”');
+    out+='</div></section>';
+  });
+
+  const low=data.filter(x=>x.pct<15);
+  if(low.length){
+    out+='<section class="start-understand-section-clean">';
+    out+='<h3>BE AWARE OF</h3>';
+    out+='<p>Some ways of contributing may feel less natural to me.</p>';
+    out+='<p><strong>You may want to be aware that:</strong></p>';
+    low.forEach(x=>{
+      out+='<p>'+x.color+' <strong>'+x.label+' — '+meaning[x.key]+' — may be a less natural way for me to contribute.</strong></p>';
+    });
+    out+='<p style="margin-top:10px;"><strong>Choose what you would like others to know about you.</strong></p>';
+    out+='</section>';
+  }
+
+  out+='</div>';
+  return out;
+}
+
+function expectationsBarsHTML(natural, job){
+  const data=[
+    {key:"D",label:"Doer",color:"🟢"},
+    {key:"O",label:"Organizer",color:"🔴"},
+    {key:"E",label:"Explorer",color:"🔵"},
+    {key:"Y",label:"Unifier",color:"🟡"}
+  ];
+  const idx={D:0,O:1,E:2,Y:3};
+
+  let out='<div class="expectations-bars">';
+  data.forEach(item=>{
+    const n=Math.round(natural[idx[item.key]]/42*100);
+    const j=Math.round(job[idx[item.key]]/42*100);
+
+    out+='<section class="expectation-row">';
+    out+='<div class="expectation-title">'+item.color+' '+item.label+'</div>';
+
+    out+='<div class="bar-group">';
+    out+='<div class="bar-label"><span>Natural</span><span>'+n+'%</span></div>';
+    out+='<div class="bar-row"><div class="single-bar-track"><div class="single-bar-fill" style="width:'+n+'%"></div></div></div>';
+    out+='</div>';
+
+    out+='<div class="bar-group">';
+    out+='<div class="bar-label"><span>Job expectation</span><span>'+j+'%</span></div>';
+    out+='<div class="bar-row"><div class="single-bar-track"><div class="single-bar-fill" style="width:'+j+'%"></div></div></div>';
+    out+='</div>';
+
+    out+='</section>';
+  });
+  out+='</div>';
+  return out;
+}
+
+
+function legoPercentages(totals){
+  const keys=["D","O","E","Y"];
+  return Object.fromEntries(keys.map((k,i)=>[k,Math.round(totals[i]/42*100)]));
+}
+
+const legoTwoColorNames={
+  "DO":{D:"THE DOER WITH DETAILS IN MIND",O:"THE ORGANIZER WITH ACTION IN MIND"},
+  "DE":{D:"THE DOER WITH NEW POSSIBILITIES IN MIND",E:"THE EXPLORER WITH ACTION IN MIND"},
+  "DY":{D:"THE DOER WITH PEOPLE IN MIND",Y:"THE UNIFIER WITH ACTION IN MIND"},
+  "EO":{O:"THE ORGANIZER WITH NEW POSSIBILITIES IN MIND",E:"THE EXPLORER WITH STRUCTURE IN MIND"},
+  "OY":{O:"THE ORGANIZER WITH PEOPLE IN MIND",Y:"THE UNIFIER WITH STRUCTURE IN MIND"},
+  "EY":{E:"THE EXPLORER WITH PEOPLE IN MIND",Y:"THE UNIFIER WITH NEW POSSIBILITIES IN MIND"}
+};
+const legoThreeColorNames={
+  "DEO":{D:"THE DOER WITH DETAILS AND NEW POSSIBILITIES IN MIND",O:"THE ORGANIZER WITH ACTION AND NEW POSSIBILITIES IN MIND",E:"THE EXPLORER WITH ACTION AND STRUCTURE IN MIND"},
+  "DOY":{D:"THE DOER WITH DETAILS AND PEOPLE IN MIND",O:"THE ORGANIZER WITH ACTION AND PEOPLE IN MIND",Y:"THE UNIFIER WITH ACTION AND STRUCTURE IN MIND"},
+  "DEY":{D:"THE DOER WITH NEW POSSIBILITIES AND PEOPLE IN MIND",E:"THE EXPLORER WITH ACTION AND PEOPLE IN MIND",Y:"THE UNIFIER WITH ACTION AND NEW POSSIBILITIES IN MIND"},
+  "EOY":{O:"THE ORGANIZER WITH NEW POSSIBILITIES AND PEOPLE IN MIND",E:"THE EXPLORER WITH STRUCTURE AND PEOPLE IN MIND",Y:"THE UNIFIER WITH STRUCTURE AND NEW POSSIBILITIES IN MIND"}
+};
+
+const legoLabels={D:"Doer",O:"Organizer",E:"Explorer",Y:"Unifier"};
+const legoClass={D:"lego-green",O:"lego-red",E:"lego-blue",Y:"lego-yellow"};
+
+function legoProfileDecision(p){
+  // A colour joins the profile when it is within 7 percentage points
+  // of the strongest colour. This rule is intentionally the only
+  // classification rule used here.
+  const tiePriority={D:0,O:1,E:2,Y:3};
+  const s=Object.entries(p).sort((a,b)=>b[1]-a[1] || tiePriority[a[0]]-tiePriority[b[0]]);
+  const max=s[0][1];
+  const included=s.filter(x=>max-x[1]<=7).map(x=>x[0]);
+  const primary=included[0];
+
+  if(included.length===4){
+    return {kind:"balanced",name:"THE ALL ROUNDER",keys:included};
+  }
+
+  if(included.length===3){
+    const key=included.slice().sort().join('');
+    const name=legoThreeColorNames[key]?.[primary];
+    if(!name) throw new Error("LEGO profile name missing for three-colour combination "+key+" / "+primary);
+    return {kind:"three",name,keys:included};
+  }
+
+  if(included.length===2){
+    const key=included.slice().sort().join('');
+    const name=legoTwoColorNames[key]?.[primary];
+    if(!name) throw new Error("LEGO profile name missing for two-colour combination "+key+" / "+primary);
+    return {kind:"two",name,keys:included};
+  }
+
+  return {kind:"one",name:"THE "+legoLabels[primary].toUpperCase(),keys:[primary]};
+}
+
+function legoProfileSelfCheck(){
+  const priority={D:0,O:1,E:2,Y:3};
+  const keys=["D","O","E","Y"];
+
+  // Check that the name tables are complete and have no unexpected keys.
+  const expectedPairs=["DE","DO","DY","EO","EY","OY"];
+  const expectedTriples=["DEO","DEY","DOY","EOY"];
+
+  if(Object.keys(legoTwoColorNames).sort().join(",")!==expectedPairs.slice().sort().join(",")){
+    throw new Error("LEGO self-check: incomplete two-colour name table.");
+  }
+  if(Object.keys(legoThreeColorNames).sort().join(",")!==expectedTriples.slice().sort().join(",")){
+    throw new Error("LEGO self-check: incomplete three-colour name table.");
+  }
+
+  expectedPairs.forEach(key=>{
+    const expectedKeys=key.split("");
+    if(expectedKeys.some(k=>!legoTwoColorNames[key][k])){
+      throw new Error("LEGO self-check: missing two-colour name for "+key);
+    }
+  });
+  expectedTriples.forEach(key=>{
+    const expectedKeys=key.split("");
+    if(expectedKeys.some(k=>!legoThreeColorNames[key][k])){
+      throw new Error("LEGO self-check: missing three-colour name for "+key);
+    }
+  });
+
+  // Exhaustively test every possible integer score profile whose four
+  // scores total 42 (the questionnaire's full natural-score total).
+  let tested=0;
+  for(let d=0;d<=42;d++){
+    for(let o=0;o<=42-d;o++){
+      for(let e=0;e<=42-d-o;e++){
+        const y=42-d-o-e;
+        const totals=[d,o,e,y];
+        const p=legoPercentages(totals);
+        const ranked=keys.map(k=>({k,v:p[k]}))
+          .sort((a,b)=>b.v-a.v || priority[a.k]-priority[b.k]);
+        const max=ranked[0].v;
+        const expectedIncluded=ranked.filter(x=>max-x.v<=7).map(x=>x.k);
+        const actual=legoProfileDecision(p);
+
+        if(actual.keys.join("")!==expectedIncluded.join("")){
+          throw new Error("LEGO self-check: inclusion mismatch at "+totals.join("/"));
+        }
+
+        const expectedKind=expectedIncluded.length===4?"balanced":
+          expectedIncluded.length===3?"three":
+          expectedIncluded.length===2?"two":"one";
+
+        if(actual.kind!==expectedKind){
+          throw new Error("LEGO self-check: kind mismatch at "+totals.join("/"));
+        }
+
+        if(actual.name.includes("(") || actual.name.includes(")")){
+          throw new Error("LEGO self-check: unexpected parentheses at "+totals.join("/"));
+        }
+
+        if(expectedKind==="two"){
+          const key=expectedIncluded.slice().sort().join("");
+          if(actual.name!==legoTwoColorNames[key][actual.keys[0]]){
+            throw new Error("LEGO self-check: two-colour name mismatch at "+totals.join("/"));
+          }
+        }
+        if(expectedKind==="three"){
+          const key=expectedIncluded.slice().sort().join("");
+          if(actual.name!==legoThreeColorNames[key][actual.keys[0]]){
+            throw new Error("LEGO self-check: three-colour name mismatch at "+totals.join("/"));
+          }
+        }
+        if(expectedKind==="one" && actual.name!=="THE "+legoLabels[actual.keys[0]].toUpperCase()){
+          throw new Error("LEGO self-check: one-colour name mismatch at "+totals.join("/"));
+        }
+        if(expectedKind==="balanced" && actual.name!=="THE ALL ROUNDER"){
+          throw new Error("LEGO self-check: balanced name mismatch at "+totals.join("/"));
+        }
+
+        tested++;
+      }
+    }
+  }
+
+  console.info("LEGO profile self-check passed:",tested,"score profiles tested.");
+  return true;
+}
+
+legoProfileSelfCheck();
+
+function renderLegoProfile(totals){
+  const p=legoPercentages(totals);
+  const decision=legoProfileDecision(p);
+  const order=Object.entries(p).sort((a,b)=>b[1]-a[1] || ({D:0,O:1,E:2,Y:3}[a[0]]-({D:0,O:1,E:2,Y:3}[b[0]])));
+
+  let out='';
+
+  // The displayed profile depends on how many colours are included.
+  // One colour: show the single-colour profile.
+  // Two or three colours: show the combined profile as the main result.
+  // Four colours: show THE ALL ROUNDER.
+  if(decision.kind==="balanced"){
+    out+='<div class="lego-name">THE ALL ROUNDER</div>';
+    out+='<p class="lego-type">Four-colour profile</p>';
+  } else {
+    out+='<div class="lego-name">'+decision.name+'</div>';
+    out+='<p class="lego-type">'+(decision.kind==="one"?"One-colour profile":decision.kind==="two"?"Two-colour profile":"Three-colour profile")+'</p>';
+  }
+
+  order.forEach(([k,v])=>{
+    out+='<div class="lego-row">';
+    out+='<div class="lego-row-brick '+legoClass[k]+'"><span>'+legoLabels[k]+'</span></div>';
+    out+='<div class="lego-track"><div class="lego-fill '+legoClass[k]+'" style="width:'+v+'%"></div></div>';
+    out+='<div class="lego-value">'+v+'%</div></div>';
+  });
+
+  const quotedName=(decision.kind==="balanced"?"The all rounder":decision.name.charAt(0)+decision.name.slice(1).toLowerCase());
+  let note='<div class="lego-note"><strong>How to read your profile</strong><br>';
+  note+='The name "'+quotedName+'" is a positive shorthand for the combination of your natural strengths shown by this analysis.<br>';
+  note+='The percentages show the strength of the different colours in your profile.';
+  note+='</div>';
+  out+=note;
+  return out;
+}
+
+function renderResults(){
+  const natural=calculateProfile(1);
+  const job=calculateProfile(0);
+  $("results").innerHTML=naturalVerbalProfileHTML(natural);
+  $("startToUnderstandMe").innerHTML=startToUnderstandMeHTML(natural);
+  $("expectationsBars").innerHTML=expectationsBarsHTML(natural,job);
+  $("legoProfile").innerHTML=renderLegoProfile(natural);
+}
+
+function next(){
+ const part=page<6?0:1,g=page%6,total=answers[part][g].reduce((x,y)=>x+y,0);
+ if(total!==7){updateStatus();return}
+ if(page===5){
+  $("test").classList.add("hidden");
+  $("transition").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+  return;
+ }
+ if(page<11){page++;render();window.scrollTo({top:0,behavior:"smooth"});}
+ else{$("test").classList.add("hidden");$("done").classList.remove("hidden");renderResults();}
+}
+function transitionContinue(){
+ $("transition").classList.add("hidden");
+ page=6;
+ $("test").classList.remove("hidden");
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function transitionBack(){
+ $("transition").classList.add("hidden");
+ page=5;
+ $("test").classList.remove("hidden");
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function back(){
+ if(page===6){
+  $("test").classList.add("hidden");
+  $("transition").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+  return;
+ }
+ if(page>0){page--;render();window.scrollTo({top:0,behavior:"smooth"});}
+}
+function restartTest(){
+  answers=Array.from({length:2},()=>Array.from({length:6},()=>[0,0,0,0]));
+  page=0;
+  reportPage=1;
+  $("done").classList.add("hidden");
+  $("transition").classList.add("hidden");
+  $("test").classList.add("hidden");
+  $("intro").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+$("start").onclick=start;
+$("next").onclick=next;
+$("back").onclick=back;
+
+$("transitionBack").onclick=transitionBack;
+$("transitionContinue").onclick=transitionContinue;
+
+let reportPage=1;
+function showReportPage(n){
+  reportPage=n;
+  document.querySelectorAll(".report-page").forEach(p=>p.classList.toggle("active",Number(p.dataset.reportPage)===n));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.addEventListener("click",function(e){
+  if(e.target.closest("#startAgainNew")){
+    e.preventDefault();
+    $("restartNotice").classList.remove("hidden");
+  }
+});
+$("restartCancel").onclick=()=>$("restartNotice").classList.add("hidden");
+$("restartConfirm").onclick=()=>restartTest();
+$("reportNext1").onclick=()=>showReportPage(2);
+$("reportPrev1").onclick=()=>showReportPage(1);
+$("reportNext2").onclick=()=>showReportPage(3);
+$("reportPrev2").onclick=()=>showReportPage(2);
+$("reportNext3").onclick=()=>showReportPage(4);
+$("reportPrev3").onclick=()=>showReportPage(3);
+
+
+
+const simpleEmailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+$("reportEmail2").addEventListener("focus",function(){
+  this.removeAttribute("readonly");
+});
+$("reportEmail2").addEventListener("pointerdown",function(){
+  this.removeAttribute("readonly");
+});
+
+
+
+
+// EMAIL MY REPORT — server send test
+function formatReportDate(date=new Date()){
+  return new Intl.DateTimeFormat('en-GB',{
+    day:'2-digit',
+    month:'2-digit',
+    year:'numeric'
+  }).format(date);
+}
+
+function makeReportCover(name){
+  const cover=document.createElement('section');
+  cover.className='report-cover';
+  cover.innerHTML=`
+    <div class="report-cover-main">
+      <div class="report-cover-brand">START TO UNDERSTAND ME</div>
+      <div class="report-cover-product">me2work</div>
+      <div class="report-cover-label">Report for</div>
+      <div class="report-cover-name"></div>
+      <div class="report-cover-topic">YOUR NATURAL STRENGTHS</div>
+      <div class="report-cover-topic">YOUR ASSUMED JOB REQUIREMENTS</div>
+      <div class="report-cover-date">Date: ${formatReportDate()}</div>
+    </div>
+    <div class="report-cover-footer">
+      <strong>For more information:</strong> sverre.gjestrum@bedriftspartner.com<br>
+      © Bedriftspartner AS – Org nr 977 060 346<br>
+      Commercial use requires permission.
+    </div>`;
+  cover.querySelector('.report-cover-name').textContent=name;
+  return cover;
+}
+
+async function renderReportElementToCanvas(el){
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  return await html2canvas(el,{
+    scale:2,
+    backgroundColor:'#ffffff',
+    useCORS:true,
+    logging:false,
+    windowWidth:900
+  });
+}
+
+function addCanvasToPdf(pdf,canvas){
+  const imgData=canvas.toDataURL('image/jpeg',0.94);
+  const pageW=210, pageH=297, margin=10;
+  const maxW=pageW-margin*2, maxH=pageH-margin*2;
+  const ratio=Math.min(maxW/canvas.width,maxH/canvas.height);
+  const imgW=canvas.width*ratio, imgH=canvas.height*ratio;
+  const x=(pageW-imgW)/2, y=margin;
+  pdf.addImage(imgData,'JPEG',x,y,imgW,imgH,undefined,'FAST');
+}
+
+async function buildReportPdfBlob(name){
+  if(typeof html2canvas==="undefined" || !window.jspdf || !window.jspdf.jsPDF){
+    throw new Error("PDF tools could not be loaded.");
+  }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});
+  const staging=document.createElement("div");
+  staging.style.position="fixed";
+  staging.style.left="-10000px";
+  staging.style.top="0";
+  staging.style.width="900px";
+  staging.style.background="#fff";
+  staging.style.zIndex="-1";
+  staging.className="pdf-render-root";
+  document.body.appendChild(staging);
+
+  try{
+    const cover=makeReportCover(name);
+    staging.innerHTML="";
+    staging.appendChild(cover);
+    const coverCanvas=await renderReportElementToCanvas(cover);
+    addCanvasToPdf(pdf,coverCanvas);
+
+    for(let pageNo=1; pageNo<=4; pageNo++){
+      const source=document.querySelector('.report-page[data-report-page="'+pageNo+'"]');
+      if(!source) throw new Error("Missing report page "+pageNo);
+
+      const clone=source.cloneNode(true);
+      clone.classList.add("active");
+      clone.style.display="block";
+      clone.style.width="900px";
+      clone.style.maxWidth="900px";
+      clone.style.background="#fff";
+      clone.querySelectorAll(".report-nav,.email-report-box").forEach(el=>el.remove());
+
+      staging.innerHTML="";
+      staging.appendChild(clone);
+      const canvas=await renderReportElementToCanvas(clone);
+
+      pdf.addPage();
+      addCanvasToPdf(pdf,canvas);
+    }
+    return pdf.output("blob");
+  } finally {
+    staging.remove();
+  }
+}
+
+async function sendReportByEmail(){
+  const name=$("reportName").value.trim();
+  const email1=$("reportEmail1").value.trim();
+  const email2=$("reportEmail2").value.trim();
+  const status=$("emailReportStatus");
+  const button=$("sendReportEmail");
+
+  status.className="email-report-status";
+  status.textContent="";
+
+  if(!name){
+    status.classList.add("error");
+    status.textContent="Enter your name.";
+    $("reportName").focus();
+    return;
+  }
+
+  if(!email1 && !email2){
+    status.classList.add("error");
+    status.textContent="Enter at least one email address.";
+    return;
+  }
+  if(email1 && !$("reportEmail1").checkValidity()){
+    status.classList.add("error");
+    status.textContent="Check email address 1.";
+    return;
+  }
+  if(email2 && !simpleEmailPattern.test(email2)){
+    status.classList.add("error");
+    status.textContent="Check email address 2.";
+    return;
+  }
+
+  const recipients=[email1,email2].filter(Boolean);
+  const uniqueRecipients=[...new Set(recipients.map(x=>x.toLowerCase()))];
+  if(uniqueRecipients.length!==recipients.length){
+    status.classList.add("error");
+    status.textContent="The two email addresses are the same. Use a different second address or leave it empty.";
+    return;
+  }
+
+  try{
+    button.disabled=true;
+    button.textContent="Preparing report...";
+    status.textContent="Creating your report...";
+
+    const pdfBlob=await buildReportPdfBlob(name);
+
+    button.textContent="Sending...";
+    status.textContent="Sending your report...";
+
+    const formData=new FormData();
+    formData.append("name",name);
+    formData.append("email1",email1);
+    formData.append("email2",email2);
+    formData.append("report",pdfBlob,"START_TO_UNDERSTAND_ME_report.pdf");
+
+    const response=await fetch("https://starttounderstandme.com/send-report.php",{
+      method:"POST",
+      body:formData,
+      credentials:"same-origin"
+    });
+
+    let payload={};
+    try{ payload=await response.json(); }catch(_){}
+
+    if(!response.ok || !payload.ok){
+      const detail = payload.detail ? " " + payload.detail : "";
+      throw new Error((payload.message || "The report could not be sent.") + detail);
+    }
+
+    status.className="email-report-status success";
+    status.textContent="Your report has been sent.";
+  }catch(err){
+    console.error(err);
+    status.className="email-report-status error";
+    status.textContent=err.message || "We could not send the report. Please try again.";
+  }finally{
+    button.disabled=false;
+    button.textContent="Send my report";
+  }
+}
+
+$("sendReportEmail").onclick=sendReportByEmail;
+
+</script>
+</body>
+</html>
