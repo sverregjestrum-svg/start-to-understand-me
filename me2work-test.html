@@ -330,6 +330,16 @@ button.secondary{background:#eee;color:#222;border:0;border-radius:10px;padding:
 .report-follow-up p{margin:0;color:#555;line-height:1.5}
 .report-follow-up a{color:#222}
 
+/* STEP3 — PDF-only typography normalization */
+.pdf-render-root,
+.pdf-render-root *{
+  font-family:Arial,Helvetica,sans-serif!important;
+  word-spacing:normal!important;
+  letter-spacing:normal!important;
+  font-kerning:none!important;
+  text-rendering:geometricPrecision;
+}
+
 </style>
 </head>
 <body>
@@ -1176,6 +1186,7 @@ async function buildReportPdfBlob(name){
   staging.style.width="900px";
   staging.style.background="#fff";
   staging.style.zIndex="-1";
+  staging.className="pdf-render-root";
   document.body.appendChild(staging);
 
   try{
